@@ -1,0 +1,2242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎌 Japon 2026 — Guide Interactif</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0D1117;--card:#161B22;--card2:#21262D;
+  --red:#E63946;--gold:#F4D03F;--green:#3FB950;
+  --text:#E6EDF3;--muted:#8B949E;--border:#30363D;
+  --purple:#A371F7;--blue:#58A6FF;
+}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+#header{background:linear-gradient(135deg,#1a0505 0%,#2d0a0a 40%,#0D1117 100%);padding:30px 20px;text-align:center;border-bottom:2px solid var(--red);position:relative;overflow:hidden}
+#header::before{content:'日本の旅';position:absolute;font-size:120px;opacity:0.04;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;font-weight:700}
+.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.header-title h1{font-size:2rem;font-weight:700;color:var(--text)}
+.header-title h1 span{color:var(--red)}
+.header-title p{color:var(--muted);font-size:0.9rem;margin-top:4px}
+.jp-sub{font-size:0.8rem;color:var(--gold);letter-spacing:3px;margin-bottom:8px;display:block}
+.countdown{display:flex;gap:16px}
+.count-box{background:rgba(230,57,70,0.15);border:1px solid var(--red);border-radius:12px;padding:12px 18px;text-align:center}
+.count-box .num{font-size:1.8rem;font-weight:700;color:var(--red);display:block}
+.count-box .lbl{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+
+/* NAV */
+#nav{background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+#nav::-webkit-scrollbar{display:none}
+.nav-btn{background:none;border:none;color:var(--muted);padding:14px 18px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:0.82rem;transition:all .2s;border-bottom:3px solid transparent;white-space:nowrap}
+.nav-btn:hover{color:var(--text);background:rgba(255,255,255,0.04)}
+.nav-btn.active{color:var(--red);border-bottom-color:var(--red);font-weight:600}
+
+/* MAIN */
+#main{max-width:1200px;margin:0 auto;padding:24px 16px}
+.tab{display:none}.tab.active{display:block}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.card-title{font-size:1rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-title .icon{font-size:1.2rem}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:600;margin-left:8px}
+.badge-red{background:rgba(230,57,70,.2);color:var(--red)}
+.badge-green{background:rgba(63,185,80,.2);color:var(--green)}
+.badge-gold{background:rgba(244,208,63,.2);color:var(--gold)}
+.badge-blue{background:rgba(88,166,255,.2);color:var(--blue)}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+
+/* SECTION TITLE */
+.section-title{font-size:1.4rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* OVERVIEW STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.stat-box .val{font-size:2rem;font-weight:700;color:var(--red)}
+.stat-box .key{font-size:0.75rem;color:var(--muted);margin-top:4px}
+
+/* DAY CARDS */
+.day-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.day-card:hover{border-color:rgba(230,57,70,.4)}
+.day-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;user-select:none}
+.day-num{background:var(--red);color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0}
+.day-num.done{background:var(--green)}
+.day-info{flex:1}
+.day-info .date{font-size:0.72rem;color:var(--muted)}
+.day-info .title{font-weight:600;font-size:0.95rem}
+.day-city{font-size:0.75rem;color:var(--gold);font-weight:500}
+.day-emoji{font-size:1.4rem;margin-left:auto}
+.day-toggle{color:var(--muted);font-size:0.9rem;transition:transform .3s;margin-left:8px}
+.day-card.open .day-toggle{transform:rotate(180deg)}
+.day-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border)}
+.day-card.open .day-body{display:block}
+.day-sections{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px}
+.day-section h4{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.day-section p{font-size:0.85rem;line-height:1.6;color:var(--text)}
+.highlights{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.highlight-tag{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:0.75rem;color:var(--text)}
+.tip-box{margin-top:12px;background:rgba(244,208,63,.08);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:10px 14px;font-size:0.82rem;color:var(--gold)}
+.day-check{appearance:none;width:18px;height:18px;border:2px solid var(--border);border-radius:4px;cursor:pointer;flex-shrink:0;transition:all .2s}
+.day-check:checked{background:var(--green);border-color:var(--green)}
+.notes-area{width:100%;margin-top:10px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--text);font-family:'Poppins',sans-serif;font-size:0.82rem;resize:vertical;min-height:60px}
+.notes-area:focus{outline:none;border-color:var(--red)}
+
+/* MAP */
+#map-container{position:relative}
+#map{height:520px;border-radius:12px;border:1px solid var(--border)}
+.map-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.filter-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:20px;cursor:pointer;font-size:0.8rem;transition:all .2s}
+.filter-btn.active{background:var(--red);border-color:var(--red);color:#fff}
+
+/* PLACE CARDS */
+.place-card{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px;transition:border-color .2s}
+.place-card:hover{border-color:rgba(230,57,70,.4)}
+.place-card h3{font-size:0.9rem;font-weight:600;margin-bottom:4px}
+.place-card .meta{font-size:0.75rem;color:var(--muted);margin-bottom:8px}
+.place-card p{font-size:0.8rem;color:var(--text);line-height:1.5}
+.place-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn{background:var(--red);color:#fff;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:0.78rem;font-family:'Poppins',sans-serif;font-weight:500;transition:opacity .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.btn:hover{opacity:0.85}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--card2);opacity:1}
+.btn-green{background:var(--green)}
+.btn-gold{background:var(--gold);color:#000}
+
+/* BUDGET */
+.budget-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.budget-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.budget-box .amount{font-size:1.6rem;font-weight:700}
+.budget-box .label{font-size:0.72rem;color:var(--muted);margin-top:2px}
+.expense-form{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px}
+.form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;flex-wrap:wrap}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group label{font-size:0.75rem;color:var(--muted)}
+.form-group input,.form-group select{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Poppins',sans-serif;font-size:0.85rem}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--red)}
+.expense-list{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.expense-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.expense-row:last-child{border-bottom:none}
+.expense-row .cat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.expense-row .desc{flex:1;font-size:0.85rem}
+.expense-row .amt{font-weight:600;color:var(--gold)}
+.expense-row .del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:4px}
+.expense-row .del:hover{color:var(--red)}
+
+/* SUGGESTIONS */
+.suggestion-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px;border-left:4px solid var(--purple)}
+.suggestion-card h3{font-size:1rem;font-weight:600;margin-bottom:6px}
+.suggestion-card .reason{font-size:0.82rem;color:var(--muted);margin-bottom:10px;line-height:1.5}
+.suggestion-card .category{font-size:0.72rem;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.suggestion-added{border-left-color:var(--green);opacity:.7}
+
+/* MODAL */
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center}
+#modal.open{display:flex}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;width:90%;max-width:480px;max-height:80vh;overflow-y:auto}
+.modal-box h3{font-size:1.1rem;font-weight:600;margin-bottom:16px}
+.modal-day-select{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:16px;max-height:240px;overflow-y:auto}
+.modal-day-btn{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:8px 4px;border-radius:8px;cursor:pointer;font-size:0.72rem;text-align:center;transition:all .2s}
+.modal-day-btn:hover,.modal-day-btn.selected{background:var(--red);border-color:var(--red);color:#fff}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+
+/* PRACTICAL */
+.phrase-table{width:100%;border-collapse:collapse}
+.phrase-table th{background:var(--card2);padding:10px 14px;text-align:left;font-size:0.78rem;color:var(--muted);font-weight:500}
+.phrase-table td{padding:10px 14px;border-top:1px solid var(--border);font-size:0.85rem}
+.phrase-table .jp{color:var(--gold);font-size:1rem}
+.info-block{background:var(--card2);border-radius:10px;padding:16px;margin-bottom:12px}
+.info-block h4{font-size:0.85rem;font-weight:600;margin-bottom:8px;color:var(--gold)}
+.info-block p,.info-block li{font-size:0.82rem;color:var(--text);line-height:1.7}
+.info-block ul{padding-left:16px}
+.emergency-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.emergency-box{background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.3);border-radius:10px;padding:14px;text-align:center}
+.emergency-box .num{font-size:1.8rem;font-weight:700;color:var(--red)}
+.emergency-box .desc{font-size:0.75rem;color:var(--muted);margin-top:4px}
+
+/* SEARCH */
+.search-bar{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px 16px;width:100%;color:var(--text);font-family:'Poppins',sans-serif;font-size:0.9rem;margin-bottom:20px}
+.search-bar:focus{outline:none;border-color:var(--red)}
+
+/* AIRBNB CARDS */
+.airbnb-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.airbnb-header{background:linear-gradient(135deg,var(--red),#8b0000);padding:20px;display:flex;align-items:center;gap:14px}
+.airbnb-header .icon{font-size:2rem}
+.airbnb-header h3{font-size:1.1rem;font-weight:600}
+.airbnb-header p{font-size:0.82rem;opacity:.8;margin-top:2px}
+.airbnb-body{padding:20px}
+.airbnb-detail{display:flex;gap:10px;margin-bottom:10px;font-size:0.85rem}
+.airbnb-detail .label{color:var(--muted);width:120px;flex-shrink:0}
+.airbnb-detail .value{color:var(--text);font-weight:500}
+.airbnb-nearby{margin-top:16px}
+.airbnb-nearby h4{font-size:0.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.nearby-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.82rem}
+.nearby-item:last-child{border-bottom:none}
+
+/* TRANSPORT CARDS */
+.transport-card{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px}
+.transport-card h3{font-size:0.95rem;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.transport-card p{font-size:0.82rem;color:var(--text);line-height:1.6}
+.transport-card ul{font-size:0.82rem;color:var(--text);line-height:1.8;padding-left:16px}
+
+/* SCROLL */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .header-inner{justify-content:center;text-align:center}
+  .header-title h1{font-size:1.5rem}
+  .countdown{justify-content:center}
+  .form-row{grid-template-columns:1fr}
+}
+
+.progress-bar{background:var(--card2);border-radius:20px;height:8px;overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:20px;transition:width .5s}
+
+.city-tab{display:flex;gap:8px;margin-bottom:0;flex-wrap:wrap}
+.city-pill{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:5px 16px;border-radius:20px;cursor:pointer;font-size:0.8rem;transition:all .2s}
+.city-pill.active{background:rgba(230,57,70,.2);border-color:var(--red);color:var(--red)}
+
+/* FAVORIS / VISITÉ */
+.fav-btn{background:none;border:1px solid var(--border);border-radius:20px;padding:3px 10px;cursor:pointer;font-size:.8rem;color:var(--muted);transition:all .2s}
+.fav-btn.active{background:rgba(230,57,70,.15);border-color:var(--red);color:var(--red)}
+.visit-btn{background:none;border:1px solid var(--border);border-radius:20px;padding:3px 10px;cursor:pointer;font-size:.8rem;color:var(--muted);transition:all .2s}
+.visit-btn.active{background:rgba(63,185,80,.15);border-color:var(--green);color:var(--green)}
+.place-card.visited{opacity:.55;filter:grayscale(.4)}
+.visited-badge{font-size:.65rem;background:rgba(63,185,80,.2);color:var(--green);padding:1px 7px;border-radius:10px;margin-left:6px}
+
+/* MÉTÉO */
+.weather-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.weather-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.weather-card .temp{font-size:2rem;font-weight:700;color:var(--red)}
+.weather-card .city-name{font-size:.85rem;font-weight:600;margin-bottom:4px}
+.weather-card .dates{font-size:.72rem;color:var(--muted);margin-bottom:10px}
+.weather-card .stats{font-size:.78rem;color:var(--text);line-height:1.8}
+
+/* BACK TO TOP */
+#back-top{position:fixed;bottom:24px;right:24px;background:var(--red);color:#fff;border:none;width:44px;height:44px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(230,57,70,.4);z-index:500;transition:opacity .2s}
+#back-top.show{display:flex}
+
+/* GLOBAL SEARCH */
+#gsearch-btn{background:none;border:none;color:var(--muted);cursor:pointer;padding:14px 16px;font-size:1rem;transition:color .2s}
+#gsearch-btn:hover{color:var(--text)}
+#gsearch-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:600;align-items:flex-start;justify-content:center;padding-top:80px}
+#gsearch-overlay.open{display:flex}
+.gsearch-box{background:var(--card);border:1px solid var(--border);border-radius:16px;width:90%;max-width:620px;overflow:hidden}
+.gsearch-input{width:100%;background:none;border:none;padding:16px 20px;color:var(--text);font-family:'Poppins',sans-serif;font-size:1rem;border-bottom:1px solid var(--border)}
+.gsearch-input:focus{outline:none}
+.gsearch-results{max-height:420px;overflow-y:auto;padding:8px 0}
+.gsearch-item{padding:10px 20px;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:.85rem;transition:background .15s}
+.gsearch-item:hover{background:var(--card2)}
+.gsearch-cat{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:10px 20px 4px;border-top:1px solid var(--border)}
+
+/* BUDGET CHART */
+.bbar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.bbar-label{font-size:.75rem;width:100px;flex-shrink:0;color:var(--text)}
+.bbar-track{flex:1;background:var(--card2);border-radius:20px;height:10px;overflow:hidden}
+.bbar-fill{height:100%;border-radius:20px;transition:width .5s}
+.bbar-val{font-size:.75rem;width:50px;text-align:right;flex-shrink:0;font-weight:600}
+
+/* CHECKLIST */
+.check-group{margin-bottom:22px}
+.check-group h4{font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.check-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;transition:background .15s;font-size:.84rem;user-select:none}
+.check-item:hover{background:var(--card2)}
+.check-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.check-item.done span{opacity:.45;text-decoration:line-through}
+.cl-bar{background:var(--card2);border-radius:20px;height:6px;overflow:hidden;margin-bottom:4px}
+.cl-fill{height:100%;background:var(--green);border-radius:20px;transition:width .4s}
+
+/* DOCUMENTS */
+.doc-field{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.doc-field label{font-size:.75rem;color:var(--muted);width:180px;flex-shrink:0}
+.doc-field input{background:none;border:none;color:var(--text);font-family:'Poppins',sans-serif;font-size:.84rem;flex:1;min-width:0}
+.doc-field input:focus{outline:none}
+.doc-field input::placeholder{color:var(--border)}
+
+/* METEO */
+.meteo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.meteo-card{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.meteo-card .week{font-size:.7rem;color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.meteo-card .temp{font-size:1.5rem;font-weight:700;margin-bottom:4px}
+.meteo-card .meteo-desc{font-size:.8rem;color:var(--muted);line-height:1.5;margin-bottom:6px}
+.meteo-card .meteo-alert{font-size:.75rem;background:rgba(230,57,70,.1);border-left:3px solid var(--red);padding:5px 10px;border-radius:0 6px 6px 0;color:var(--red)}
+
+/* SHOPPING LIST */
+.shop-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.83rem}
+.shop-item:last-child{border-bottom:none}
+.shop-item input[type=checkbox]{accent-color:var(--green);cursor:pointer;flex-shrink:0;width:15px;height:15px}
+.shop-item.bought span{opacity:.45;text-decoration:line-through}
+.shop-item .shop-note{font-size:.72rem;color:var(--muted);margin-left:auto}
+
+/* FESTIVAL ALERT */
+.festival-alert{background:linear-gradient(135deg,rgba(244,208,63,.12),rgba(230,57,70,.08));border:1px solid rgba(244,208,63,.5);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.festival-alert .fa-icon{font-size:2rem;flex-shrink:0}
+.festival-alert h4{font-size:.9rem;font-weight:600;color:var(--gold);margin-bottom:3px}
+.festival-alert p{font-size:.8rem;color:var(--muted)}
+
+/* PRINT */
+@media print{
+  #nav,#back-top,#gsearch-overlay,#gsearch-btn,.place-actions,.day-toggle,.btn,.map-filters,button{display:none!important}
+  body{background:#fff;color:#000;font-size:11pt}
+  #header{background:#fff;border-bottom:2px solid #000;color:#000}
+  #header *{color:#000!important}
+  .tab{display:block!important;page-break-before:always}
+  #tab-accueil{page-break-before:avoid}
+  .day-body{display:block!important}
+  #map,#tab-carte,#tab-budget,#tab-suggestions{display:none!important}
+  .card,.day-card,.place-card{border:1px solid #ccc;break-inside:avoid;margin-bottom:8pt}
+  .tab-content{display:block!important}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="header-inner">
+    <div class="header-title">
+      <span class="jp-sub">日本の旅 2026</span>
+      <h1>Notre Voyage au <span>Japon</span> 🎌</h1>
+      <p>15 Juillet — 13 Août 2026 &nbsp;·&nbsp; 30 Jours &nbsp;·&nbsp; 2 Voyageurs</p>
+    </div>
+    <div class="countdown">
+      <div class="count-box"><span class="num" id="cd-days">--</span><span class="lbl">Jours</span></div>
+      <div class="count-box"><span class="num" id="cd-hrs">--</span><span class="lbl">Heures</span></div>
+      <div class="count-box"><span class="num" id="cd-min">--</span><span class="lbl">Minutes</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav id="nav">
+  <button class="nav-btn active" data-tab="accueil">🏠 Accueil</button>
+  <button class="nav-btn" data-tab="planning">📅 Planning 30J</button>
+  <button class="nav-btn" data-tab="carte">🗺️ Carte</button>
+  <button class="nav-btn" data-tab="logements">🏠 Logements</button>
+  <button class="nav-btn" data-tab="food">🍜 Food & Restos</button>
+  <button class="nav-btn" data-tab="activites">⛩️ Activités</button>
+  <button class="nav-btn" data-tab="transport">🚄 Transport</button>
+  <button class="nav-btn" data-tab="budget">💴 Budget</button>
+  <button class="nav-btn" data-tab="suggestions">✨ Suggestions</button>
+  <button class="nav-btn" data-tab="checklist">✅ Checklist</button>
+  <button class="nav-btn" data-tab="pratique">📱 Pratique</button>
+  <button class="nav-btn" data-tab="tiktok">🎬 TikTok</button>
+  <button id="gsearch-btn" onclick="openSearch()" title="Recherche globale">🔍</button>
+</nav>
+
+<!-- GLOBAL SEARCH OVERLAY -->
+<div id="gsearch-overlay" onclick="if(event.target===this)closeSearch()">
+  <div class="gsearch-box">
+    <input class="gsearch-input" id="gsearch-input" placeholder="🔍 Rechercher dans tout le guide..." oninput="globalSearch(this.value)" autofocus>
+    <div class="gsearch-results" id="gsearch-results">
+      <div style="padding:20px;text-align:center;color:var(--muted);font-size:.85rem">Tapez pour chercher dans les jours, restaurants, activités, suggestions...</div>
+    </div>
+  </div>
+</div>
+
+<!-- BACK TO TOP -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- ===== ACCUEIL ===== -->
+<div class="tab active" id="tab-accueil">
+  <!-- EVENT BANNERS -->
+  <div class="festival-alert" id="banner-champuru" style="border-color:rgba(244,208,63,.4);background:rgba(244,208,63,.07)">
+    <div class="fa-icon">🎉</div>
+    <div style="flex:1">
+      <h4>Champuru Festival — 19 &amp; 20 Juillet 2026</h4>
+      <p>Festival okinawais gratuit à 10 min de votre Airbnb · Musique live, danse, street food · <span id="days-champuru" style="color:var(--gold);font-weight:600"></span></p>
+    </div>
+    <button onclick="this.closest('.festival-alert').style.display='none'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;flex-shrink:0">×</button>
+  </div>
+  <div class="festival-alert" id="banner-sumida" style="border-color:rgba(88,166,255,.4);background:rgba(88,166,255,.07)">
+    <div class="fa-icon">🎆</div>
+    <div style="flex:1">
+      <h4>Feux d'Artifice Sumida River — 25 Juillet 2026</h4>
+      <p>20 000 feux sur la rivière Sumida (Jour 11) · Arriver Sumida Park avant 17h · Feux de 19h05 à 20h30 · <span id="days-sumida" style="color:var(--blue);font-weight:600"></span></p>
+    </div>
+    <button onclick="this.closest('.festival-alert').style.display='none'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;flex-shrink:0">×</button>
+  </div>
+  <div class="festival-alert" id="banner-gion" style="border-color:rgba(163,113,247,.4);background:rgba(163,113,247,.07)">
+    <div class="fa-icon">⛩️</div>
+    <div style="flex:1">
+      <h4>Gion Matsuri — Procession 17 Juillet · Purification 30 Juillet 2026</h4>
+      <p>Grand festival de Kyoto tout le mois de juillet · Procession des chars (Yamaboko Junkō) le 17 · Nagoshi no Harae (purification) le 30 · <span id="days-gion" style="color:var(--purple);font-weight:600"></span></p>
+    </div>
+    <button onclick="this.closest('.festival-alert').style.display='none'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;flex-shrink:0">×</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="val">30</div><div class="key">Jours de voyage</div></div>
+    <div class="stat-box"><div class="val">2</div><div class="key">Voyageurs</div></div>
+    <div class="stat-box"><div class="val">4+</div><div class="key">Villes</div></div>
+    <div class="stat-box"><div class="val" id="days-done-stat">0</div><div class="key">Jours complétés</div></div>
+    <div class="stat-box"><div class="val">54</div><div class="key">Restaurants</div></div>
+    <div class="stat-box"><div class="val">45</div><div class="key">Activités</div></div>
+    <div class="stat-box"><div class="val" id="budget-stat">0€</div><div class="key">Budget dépensé</div></div>
+    <div class="stat-box"><div class="val" id="checklist-stat">0%</div><div class="key">Checklist</div></div>
+  </div>
+  <div class="progress-bar" style="margin-bottom:8px"><div class="progress-fill" id="trip-progress" style="width:0%"></div></div>
+  <div style="font-size:.72rem;color:var(--muted);text-align:right;margin-bottom:24px">Progression du voyage</div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
+    <button class="btn btn-ghost" onclick="showTab('planning')">📅 Planning</button>
+    <button class="btn btn-ghost" onclick="showTab('carte')">🗺️ Carte</button>
+    <button class="btn btn-ghost" onclick="showTab('food')">🍜 Restaurants</button>
+    <button class="btn btn-ghost" onclick="showTab('activites')">⛩️ Activités</button>
+    <button class="btn btn-ghost" onclick="showTab('checklist')">✅ Checklist pré-départ</button>
+    <button class="btn btn-ghost" onclick="showTab('budget')">💴 Budget</button>
+    <button class="btn" onclick="window.print()">🖨️ Imprimer le guide</button>
+  </div>
+
+  <div class="section-title">🗾 Itinéraire Général</div>
+  <div class="grid-2" style="margin-bottom:24px">
+    <div class="card">
+      <div class="card-title"><span class="icon">🗼</span> Tokyo <span class="badge badge-red">Jours 1–12</span></div>
+      <p style="font-size:.85rem;color:var(--muted);line-height:1.7">Shinjuku · Harajuku · Shibuya · Asakusa · Akihabara · Shimokitazawa · Excursions Nikko & Kamakura</p>
+      <div style="margin-top:10px;font-size:.75rem;color:var(--gold)">📅 15 – 26 Juillet</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">🗻</span> Hakone <span class="badge badge-blue">Jours 13–14</span></div>
+      <p style="font-size:.85rem;color:var(--muted);line-height:1.7">Ropeway · Owakudani · Lac Ashi · Onsen · Vue sur le Mont Fuji</p>
+      <div style="margin-top:10px;font-size:.75rem;color:var(--gold)">📅 27 – 28 Juillet</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">⛩️</span> Kyoto <span class="badge badge-gold">Jours 15–20</span></div>
+      <p style="font-size:.85rem;color:var(--muted);line-height:1.7">Gion · Arashiyama · Fushimi Inari · Kinkaku-ji · Excursion Nara · Chemin de la Philosophie</p>
+      <div style="margin-top:10px;font-size:.75rem;color:var(--gold)">📅 29 Juillet – 3 Août</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">🏯</span> Osaka <span class="badge badge-green">Jours 21–26</span> <span class="badge badge-red">+ Retour Tokyo 27–30</span></div>
+      <p style="font-size:.85rem;color:var(--muted);line-height:1.7">Dotonbori · Château d'Osaka · USJ · Shinsaibashi · Kaiyukan · Shinsekai · puis retour Tokyo (10–13 Août)</p>
+      <div style="margin-top:10px;font-size:.75rem;color:var(--gold)">📅 4 – 9 Août (Osaka) · 10 – 13 Août (Tokyo fin)</div>
+    </div>
+  </div>
+
+  <div class="section-title">⚡ Infos Clés Rapides</div>
+  <div class="grid-3">
+    <div class="card"><div class="card-title">💴 Monnaie</div><p style="font-size:.85rem">Yen japonais (¥). 1€ ≈ 160¥ (vérifier avant départ). Beaucoup d'endroits encore cash-only.</p></div>
+    <div class="card"><div class="card-title">🌡️ Météo Juillet/Août</div><p style="font-size:.85rem">Très chaud et humide. 30–35°C, forte humidité. Emporter ventilateur, vêtements légers.</p></div>
+    <div class="card"><div class="card-title">🚇 Transport</div><p style="font-size:.85rem">Acheter carte <strong>Suica</strong> à l'aéroport dès l'arrivée. Valable trains, métro, bus, konbini.</p></div>
+    <div class="card"><div class="card-title">📱 Données Mobile</div><p style="font-size:.85rem">Pocket WiFi ou eSIM japonaise. <strong>IIJmio</strong>, <strong>Sakura Mobile</strong> ou eSIM directement sur iPhone.</p></div>
+    <div class="card"><div class="card-title">🔌 Prise</div><p style="font-size:.85rem">Type A (même qu'aux USA, 110V). Les appareils européens ont besoin d'un adaptateur.</p></div>
+    <div class="card"><div class="card-title">💊 Santé</div><p style="font-size:.85rem">Pas de vaccin obligatoire. Emporter médicaments perso. Pharmacies : マツモトキヨシ (Matsumoto Kiyoshi).</p></div>
+  </div>
+</div>
+
+<!-- ===== PLANNING ===== -->
+<div class="tab" id="tab-planning">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+    <div class="section-title" style="margin:0">📅 Planning Jour par Jour</div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost" onclick="expandAll()">Tout ouvrir</button>
+      <button class="btn btn-ghost" onclick="collapseAll()">Tout fermer</button>
+    </div>
+  </div>
+  <div class="city-tab">
+    <span class="city-pill active" onclick="filterCity('all',this)">Tous</span>
+    <span class="city-pill" onclick="filterCity('Tokyo',this)">🗼 Tokyo</span>
+    <span class="city-pill" onclick="filterCity('Hakone',this)">🗻 Hakone</span>
+    <span class="city-pill" onclick="filterCity('Kyoto',this)">⛩️ Kyoto</span>
+    <span class="city-pill" onclick="filterCity('Osaka',this)">🏯 Osaka</span>
+  </div>
+  <div id="days-container"></div>
+</div>
+
+<!-- ===== CARTE ===== -->
+<div class="tab" id="tab-carte">
+  <div class="section-title">🗺️ Carte Interactive</div>
+  <div class="map-filters" id="map-filters">
+    <button class="filter-btn active" data-cat="all">Tous</button>
+    <button class="filter-btn" data-cat="logement">🏠 Logements</button>
+    <button class="filter-btn" data-cat="resto">🍜 Restaurants</button>
+    <button class="filter-btn" data-cat="activite">⛩️ Activités</button>
+    <button class="filter-btn" data-cat="transport">🚇 Transport</button>
+    <button class="filter-btn" data-cat="shop">🛍️ Shopping</button>
+    <button class="filter-btn" data-cat="suggestion">✨ Suggestions</button>
+  </div>
+  <div id="map"></div>
+  <p style="font-size:.75rem;color:var(--muted);margin-top:8px;text-align:center">Cliquez sur un marqueur pour voir les détails. Utilisez les filtres pour afficher par catégorie.</p>
+</div>
+
+<!-- ===== LOGEMENTS ===== -->
+<div class="tab" id="tab-logements">
+  <div class="section-title">🏠 Logements Airbnb</div>
+  <div style="background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.3);border-radius:10px;padding:14px;margin-bottom:20px;font-size:.83rem;color:var(--green)">
+    ✅ Airbnb #1 &amp; #2 confirmés — Yayoichō, Nakano, Tokyo (même quartier). &nbsp;·&nbsp; 🔍 Logements Kyoto/Osaka (30 Jul–12 Août) : suggestions ci-dessous.
+  </div>
+  <div class="grid-2">
+    <div class="airbnb-card">
+      <div class="airbnb-header">
+        <div class="icon">🏠</div>
+        <div><h3>Airbnb #1</h3><p>15 Juil → 29 Juil (14 nuits)</p></div>
+      </div>
+      <div class="airbnb-body">
+        <div class="airbnb-detail"><span class="label">Check-in</span><span class="value">15 Juillet 2026</span></div>
+        <div class="airbnb-detail"><span class="label">Check-out</span><span class="value">29 Juillet 2026</span></div>
+        <div class="airbnb-detail"><span class="label">Durée</span><span class="value">14 nuits</span></div>
+        <div class="airbnb-detail"><span class="label">Voyageurs</span><span class="value">2 adultes</span></div>
+        <div class="airbnb-detail"><span class="label">Adresse</span><span class="value">3-33 Yayoichō, Nakano City, Tokyo 164-0013</span></div>
+        <div class="airbnb-detail"><span class="label">Quartier</span><span class="value">Nakano — Résidentiel calme, authentique</span></div>
+        <a href="https://www.airbnb.fr/rooms/1424370603495539216?adults=2&check_in=2026-07-15&check_out=2026-07-29" target="_blank" class="btn" style="margin-top:14px">🔗 Voir sur Airbnb</a>
+        <a href="https://maps.google.com/?q=3-33+Yayoicho+Nakano+Tokyo" target="_blank" class="btn btn-ghost" style="margin-top:8px">🗺️ Google Maps</a>
+        <div class="airbnb-nearby" id="nearby-1">
+          <h4>🚇 Stations à proximité</h4>
+          <div class="nearby-item">🔴 Shin-Nakano (Marunouchi Line) — ~7 min à pied · → Shinjuku en 8 min</div>
+          <div class="nearby-item">🟠 Nakano (JR Chuo + Tozai Metro) — ~12 min à pied · → Shinjuku en 5 min</div>
+          <div class="nearby-item">🔵 Nakano-sakaue (Marunouchi + Oedo) — ~12 min à pied</div>
+          <h4 style="margin-top:12px">🛒 Supermarchés &amp; Konbini</h4>
+          <div class="nearby-item">🏪 Maruetsu Petit Nakano — supermarché à proximité</div>
+          <div class="nearby-item">🟢 7-Eleven, FamilyMart, Lawson — partout dans le quartier (24h/24)</div>
+          <div class="nearby-item">🛍️ Life Supermarket — chaîne principale, ouvert tard</div>
+          <h4 style="margin-top:12px">🍜 Restaurants locaux</h4>
+          <div class="nearby-item">🍜 Quartier ramen de Nakano — 50+ ramen shops autour de la gare</div>
+          <div class="nearby-item">🍺 Rengazaka Street — rue d'izakayas animée le soir</div>
+          <div class="nearby-item">🎭 Yakushi-Ai Alley — venelle de bars old-school près de Nakano Broadway</div>
+          <h4 style="margin-top:12px">🎌 À faire dans le quartier</h4>
+          <div class="nearby-item">🎮 Nakano Broadway — 12 min à pied · manga, anime, figurines rétro</div>
+          <div class="nearby-item">🛍️ Sun Mall Nakano — galerie marchande couverte</div>
+          <div class="nearby-item">🌳 Nakano Central Park — parc tranquille à ~5 min</div>
+        </div>
+      </div>
+    </div>
+    <div class="airbnb-card">
+      <div class="airbnb-header">
+        <div class="icon">🏡</div>
+        <div><h3>Airbnb #2</h3><p>Juste à côté de l'Airbnb #1 — Nakano</p></div>
+      </div>
+      <div class="airbnb-body">
+        <div class="airbnb-detail"><span class="label">Check-in</span><span class="value">15 Juillet 2026</span></div>
+        <div class="airbnb-detail"><span class="label">Check-out</span><span class="value">29 Juillet 2026</span></div>
+        <div class="airbnb-detail"><span class="label">Durée</span><span class="value">14 nuits</span></div>
+        <div class="airbnb-detail"><span class="label">Voyageurs</span><span class="value">2 adultes</span></div>
+        <div class="airbnb-detail"><span class="label">Adresse</span><span class="value">Yayoichō, Nakano City, Tokyo 164-0013</span></div>
+        <div class="airbnb-detail"><span class="label">Quartier</span><span class="value">Nakano — même zone que l'Airbnb #1</span></div>
+        <a href="https://www.airbnb.fr/rooms/1599841994653044721?adults=2&check_in=2026-07-15&check_out=2026-07-29" target="_blank" class="btn" style="margin-top:14px">🔗 Voir sur Airbnb</a>
+        <a href="https://maps.google.com/?q=Yayoicho+Nakano+Tokyo" target="_blank" class="btn btn-ghost" style="margin-top:8px">🗺️ Google Maps</a>
+        <div class="airbnb-nearby">
+          <h4>🚇 Stations à proximité</h4>
+          <div class="nearby-item">🔴 Shin-Nakano (Marunouchi Line) — ~7 min à pied · → Shinjuku en 8 min</div>
+          <div class="nearby-item">🟠 Nakano (JR Chuo + Tozai Metro) — ~12 min à pied · → Shinjuku en 5 min</div>
+          <div class="nearby-item">🔵 Nakano-sakaue (Marunouchi + Oedo) — ~12 min à pied</div>
+          <h4 style="margin-top:12px">🛒 Supermarchés &amp; Konbini</h4>
+          <div class="nearby-item">🏪 Maruetsu Petit Nakano — supermarché à proximité</div>
+          <div class="nearby-item">🟢 7-Eleven, FamilyMart, Lawson — partout dans le quartier (24h/24)</div>
+          <div class="nearby-item">🛍️ Life Supermarket — chaîne principale, ouvert tard</div>
+          <h4 style="margin-top:12px">🍜 Restaurants locaux</h4>
+          <div class="nearby-item">🍜 Quartier ramen de Nakano — 50+ ramen shops autour de la gare</div>
+          <div class="nearby-item">🍺 Rengazaka Street — rue d'izakayas animée le soir</div>
+          <div class="nearby-item">🎭 Yakushi-Ai Alley — venelle de bars old-school près de Nakano Broadway</div>
+          <h4 style="margin-top:12px">🎌 À faire dans le quartier</h4>
+          <div class="nearby-item">🎮 Nakano Broadway — 12 min à pied · manga, anime, figurines rétro</div>
+          <div class="nearby-item">🛍️ Sun Mall Nakano — galerie marchande couverte</div>
+          <div class="nearby-item">🌳 Nakano Central Park — parc tranquille à ~5 min</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- KYOTO / OSAKA SECTION -->
+  <div style="margin-top:28px">
+    <div class="section-title">🏨 Kyoto &amp; Osaka — 30 Juil au 12 Août (13 nuits)</div>
+    <div style="background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.3);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:.82rem;color:var(--blue)">
+      💡 Ces logements sont des suggestions. Clique sur les liens pour vérifier dispo &amp; prix sur les dates exactes.
+    </div>
+    <div class="grid-2">
+
+      <!-- KYOTO -->
+      <div class="airbnb-card">
+        <div class="airbnb-header" style="background:linear-gradient(135deg,#2d1b69,#1a0a4a)">
+          <div class="icon">⛩️</div>
+          <div><h3>Kyoto — 30 Jul → 7 Août</h3><p>7 nuits · Quartier Gion recommandé</p></div>
+        </div>
+        <div class="airbnb-body">
+          <div class="airbnb-detail"><span class="label">Check-in</span><span class="value">30 Juillet 2026</span></div>
+          <div class="airbnb-detail"><span class="label">Check-out</span><span class="value">7 Août 2026</span></div>
+          <div class="airbnb-detail"><span class="label">Durée</span><span class="value">7 nuits</span></div>
+          <div class="airbnb-detail"><span class="label">Budget estimé</span><span class="value">~120–280€/nuit (machiya) · 60–100€/nuit (appart)</span></div>
+          <div style="margin-top:14px;font-size:.82rem;font-weight:600;color:var(--gold);margin-bottom:8px">🏆 Zones recommandées :</div>
+          <div style="font-size:.82rem;line-height:1.8;color:var(--text)">
+            <strong>Gion / Higashiyama</strong> — Au cœur de Kyoto, temples à pied, geishas le soir. Le plus cher mais idéal.<br>
+            <strong>Shijo-Kawaramachi</strong> — Centre animé, transports parfaits, Nishiki Market à pied.<br>
+            <strong>Fushimi</strong> — Plus calme et moins cher, Fushimi Inari à 5 min.
+          </div>
+          <div style="margin-top:14px;font-size:.82rem;font-weight:600;color:var(--purple);margin-bottom:8px">✨ Type de logement idéal :</div>
+          <div style="font-size:.82rem;color:var(--text);line-height:1.7">
+            <strong>Machiya (町家)</strong> = maison traditionnelle japonaise en bois. Expérience unique à Kyoto. Budget ~150–300€/nuit mais inoubliable.<br>
+            <strong>Appartement standard</strong> = confort moderne, budget ~60–120€/nuit.
+          </div>
+          <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+            <a href="https://www.airbnb.fr/s/Kyoto--Japon/homes?adults=2&checkin=2026-07-30&checkout=2026-08-07" target="_blank" class="btn">🔍 Chercher sur Airbnb</a>
+            <a href="https://www.airbnb.com/rooms/1160445" target="_blank" class="btn btn-ghost">⭐ Machiya Gion (suggestion)</a>
+          </div>
+          <div class="airbnb-nearby" style="margin-top:16px">
+            <h4>🚇 Transport depuis Kyoto</h4>
+            <div class="nearby-item">🚆 Gare de Kyoto — Bus locaux, Shinkansen, JR Biwako Line</div>
+            <div class="nearby-item">🚌 Bus 205 — Fait le tour de Kyoto (Nishiki, Kinkaku-ji, Gion)</div>
+            <div class="nearby-item">🚲 Vélo — Le meilleur transport à Kyoto ! Location ~1000¥/jour</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OSAKA -->
+      <div class="airbnb-card">
+        <div class="airbnb-header" style="background:linear-gradient(135deg,#1a4a0a,#0a2d05)">
+          <div class="icon">🏙️</div>
+          <div><h3>Osaka — 7 Août → 12 Août</h3><p>5 nuits · Quartier Namba recommandé</p></div>
+        </div>
+        <div class="airbnb-body">
+          <div class="airbnb-detail"><span class="label">Check-in</span><span class="value">7 Août 2026</span></div>
+          <div class="airbnb-detail"><span class="label">Check-out</span><span class="value">12 Août 2026</span></div>
+          <div class="airbnb-detail"><span class="label">Durée</span><span class="value">5 nuits</span></div>
+          <div class="airbnb-detail"><span class="label">Budget estimé</span><span class="value">~50–120€/nuit · Osaka est moins cher que Tokyo/Kyoto</span></div>
+          <div style="margin-top:14px;font-size:.82rem;font-weight:600;color:var(--gold);margin-bottom:8px">🏆 Zones recommandées :</div>
+          <div style="font-size:.82rem;line-height:1.8;color:var(--text)">
+            <strong>Namba / Shinsaibashi</strong> — Centre de tout : Dotonbori, shopping, food. Idéal.<br>
+            <strong>Umeda / Osaka Station</strong> — Hub transport, accès facile toutes directions.<br>
+            <strong>Shinsekai</strong> — Authentique et pas cher, bon pour l'ambiance retro.
+          </div>
+          <div style="margin-top:14px;font-size:.82rem;font-weight:600;color:var(--purple);margin-bottom:8px">💡 Tips logement Osaka :</div>
+          <div style="font-size:.82rem;color:var(--text);line-height:1.7">
+            Osaka est plus abordable que Tokyo et Kyoto. Choisir un logement proche de <strong>Namba Station</strong> ou <strong>Shinsaibashi Station</strong> pour être au cœur de l'action et à 15 min d'Osaka Castle.
+          </div>
+          <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+            <a href="https://www.airbnb.fr/s/Osaka--Japon/homes?adults=2&checkin=2026-08-07&checkout=2026-08-12" target="_blank" class="btn">🔍 Chercher sur Airbnb</a>
+          </div>
+          <div class="airbnb-nearby" style="margin-top:16px">
+            <h4>🚇 Transport depuis Osaka</h4>
+            <div class="nearby-item">🚆 Namba Station — Osaka Metro Midosuji Line (axe principal)</div>
+            <div class="nearby-item">🚆 Shin-Osaka — Départ Shinkansen retour Tokyo (12 Août → Tokyo)</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- LAST NIGHT -->
+    <div class="card" style="margin-top:16px;border-left:4px solid var(--gold)">
+      <div class="card-title">🛫 Nuit du 12 au 13 Août — Retour vers Tokyo</div>
+      <p style="font-size:.83rem;color:var(--muted);line-height:1.7">
+        Après le check-out d'Osaka le 12 Août, il faut rejoindre Tokyo (ou l'aéroport) pour le vol du 13 Août.<br>
+        Options : <strong>Shinkansen Osaka→Tokyo</strong> le 12 (2h30, ~14 000¥) + nuit à Tokyo, ou <strong>Bus de nuit</strong> (départ 23h, arrivée 7h, ~4000¥). Si le vol est à Narita : prévoir Haneda ou Tokyo Station pour le train aéroport.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOD ===== -->
+<div class="tab" id="tab-food">
+  <div class="section-title">🍜 Restaurants & Food</div>
+  <input class="search-bar" placeholder="🔍 Chercher un restaurant, une cuisine, un quartier..." id="search-food" oninput="applyFoodFilters()">
+  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px">
+    <div>
+      <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">🌏 Ville</div>
+      <div class="city-tab" id="food-city-filter">
+        <span class="city-pill active" onclick="setFoodFilter('city','all',this)">Toutes</span>
+        <span class="city-pill" onclick="setFoodFilter('city','Tokyo',this)">🗼 Tokyo</span>
+        <span class="city-pill" onclick="setFoodFilter('city','Kyoto',this)">⛩️ Kyoto</span>
+        <span class="city-pill" onclick="setFoodFilter('city','Osaka',this)">🏯 Osaka</span>
+        <span class="city-pill" onclick="setFoodFilter('city','favs',this)">❤️ Favoris</span>
+        <span class="city-pill" onclick="setFoodFilter('city','visited',this)">✓ Visités</span>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">📍 Quartier (Tokyo)</div>
+      <div class="city-tab" id="food-neighborhood-filter">
+        <span class="city-pill active" onclick="setFoodFilter('neighborhood','all',this)">Tous</span>
+        <span class="city-pill" onclick="setFoodFilter('neighborhood','Nakano',this)">🏠 Nakano (Airbnb)</span>
+        <span class="city-pill" onclick="setFoodFilter('neighborhood','Shinjuku',this)">Shinjuku</span>
+        <span class="city-pill" onclick="setFoodFilter('neighborhood','Shibuya',this)">Shibuya</span>
+        <span class="city-pill" onclick="setFoodFilter('neighborhood','Asakusa',this)">Asakusa</span>
+        <span class="city-pill" onclick="setFoodFilter('neighborhood','Harajuku',this)">Harajuku</span>
+        <span class="city-pill" onclick="setFoodFilter('neighborhood','Roppongi',this)">Roppongi</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">⭐ Note minimum</div>
+        <div class="city-tab" id="food-rating-filter">
+          <span class="city-pill active" onclick="setFoodFilter('rating','0',this)">Tous</span>
+          <span class="city-pill" onclick="setFoodFilter('rating','4',this)">⭐ 4.0+</span>
+          <span class="city-pill" onclick="setFoodFilter('rating','4.3',this)">⭐ 4.3+</span>
+          <span class="city-pill" onclick="setFoodFilter('rating','4.5',this)">⭐ 4.5+</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">💴 Budget</div>
+        <div class="city-tab" id="food-price-filter">
+          <span class="city-pill active" onclick="setFoodFilter('price','all',this)">Tous</span>
+          <span class="city-pill" onclick="setFoodFilter('price','¥',this)">¥ Pas cher</span>
+          <span class="city-pill" onclick="setFoodFilter('price','¥¥',this)">¥¥ Moyen</span>
+          <span class="city-pill" onclick="setFoodFilter('price','¥¥¥',this)">¥¥¥ Gastro</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:.78rem;color:var(--muted);margin-bottom:12px" id="food-count"></div>
+  <div class="grid-3" id="food-list"></div>
+</div>
+
+<!-- ===== ACTIVITES ===== -->
+<div class="tab" id="tab-activites">
+  <div class="section-title">⛩️ Activités & Sites</div>
+  <input class="search-bar" placeholder="🔍 Chercher une activité, un site, un quartier..." id="search-act" oninput="applyActFilters()">
+  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px">
+    <div>
+      <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">🌏 Ville</div>
+      <div class="city-tab" id="act-city-filter">
+        <span class="city-pill active" onclick="setActFilter('city','all',this)">Toutes</span>
+        <span class="city-pill" onclick="setActFilter('city','Tokyo',this)">🗼 Tokyo</span>
+        <span class="city-pill" onclick="setActFilter('city','Hakone',this)">🗻 Hakone</span>
+        <span class="city-pill" onclick="setActFilter('city','Kyoto',this)">⛩️ Kyoto</span>
+        <span class="city-pill" onclick="setActFilter('city','Nara',this)">🦌 Nara</span>
+        <span class="city-pill" onclick="setActFilter('city','Osaka',this)">🏯 Osaka</span>
+        <span class="city-pill" onclick="setActFilter('city','favs',this)">❤️ Favoris</span>
+        <span class="city-pill" onclick="setActFilter('city','visited',this)">✓ Visités</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">📍 Quartier (Tokyo)</div>
+        <div class="city-tab" id="act-neighborhood-filter">
+          <span class="city-pill active" onclick="setActFilter('neighborhood','all',this)">Tous</span>
+          <span class="city-pill" onclick="setActFilter('neighborhood','Nakano',this)">🏠 Nakano (Airbnb)</span>
+          <span class="city-pill" onclick="setActFilter('neighborhood','Asakusa',this)">Asakusa</span>
+          <span class="city-pill" onclick="setActFilter('neighborhood','Shibuya',this)">Shibuya</span>
+          <span class="city-pill" onclick="setActFilter('neighborhood','Harajuku',this)">Harajuku</span>
+          <span class="city-pill" onclick="setActFilter('neighborhood','Akihabara',this)">Akihabara</span>
+          <span class="city-pill" onclick="setActFilter('neighborhood','Roppongi',this)">Roppongi</span>
+          <span class="city-pill" onclick="setActFilter('neighborhood','Chiyoda',this)">Chiyoda</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">⭐ Note minimum</div>
+        <div class="city-tab" id="act-rating-filter">
+          <span class="city-pill active" onclick="setActFilter('rating','0',this)">Tous</span>
+          <span class="city-pill" onclick="setActFilter('rating','4.3',this)">⭐ 4.3+</span>
+          <span class="city-pill" onclick="setActFilter('rating','4.5',this)">⭐ 4.5+</span>
+          <span class="city-pill" onclick="setActFilter('rating','4.7',this)">⭐ 4.7+ Top</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:.78rem;color:var(--muted);margin-bottom:12px" id="act-count"></div>
+  <div class="grid-3" id="act-list"></div>
+</div>
+
+<!-- ===== TRANSPORT ===== -->
+<div class="tab" id="tab-transport">
+  <div class="section-title">🚄 Transport & Déplacements</div>
+  <div class="grid-2">
+    <div class="transport-card">
+      <h3>🎫 Carte Suica (IC Card)</h3>
+      <p>Indispensable dès l'arrivée. S'achète au JR East Travel Service Center à Narita ou Haneda.<br><br>
+      <strong>Welcome Suica</strong> : 1500¥ préchargés, valable 28 jours, pas de dépôt.<br>
+      <strong>Utilisation</strong> : Métro, JR, bus, konbini, distributeurs, restaurants.</p>
+    </div>
+    <div class="transport-card">
+      <h3>🚄 Shinkansen (Bullet Train)</h3>
+      <p>Pour se déplacer entre les villes.<br><br>
+      <strong>Tokyo → Kyoto</strong> : ~2h15, ~14 000¥/personne<br>
+      <strong>Kyoto → Osaka</strong> : ~15min, ~560¥<br>
+      <strong>Tokyo → Hakone</strong> : ~1h (Odakyu Romance Car)<br><br>
+      Réserver à l'avance via <strong>SmartEX</strong> ou au guichet.</p>
+    </div>
+    <div class="transport-card">
+      <h3>🚇 Métro Tokyo</h3>
+      <p>2 réseaux : <strong>Tokyo Metro</strong> et <strong>Toei Subway</strong>. Suica fonctionne sur les deux.<br><br>
+      <strong>Google Maps</strong> est parfait pour les trajets (réglé sur "Transit").<br>
+      Les annonces sont en anglais sur les grandes lignes.</p>
+    </div>
+    <div class="transport-card">
+      <h3>✈️ Aéroports</h3>
+      <p><strong>Narita (NRT)</strong> : 1h15–1h30 de Tokyo. Narita Express (N'EX) ~3000¥.<br>
+      <strong>Haneda (HND)</strong> : 30–40 min de Tokyo. Plus pratique.<br><br>
+      Arriver 3h avant le départ international recommandé.</p>
+    </div>
+    <div class="transport-card" style="border-left:4px solid var(--gold)">
+      <h3>🎫 JR Pass — Vaut-il le coup ?</h3>
+      <p>Pour votre itinéraire Tokyo → Hakone → Kyoto → Osaka → Tokyo :<br><br>
+      <strong>Sans JR Pass (coût réel) :</strong><br>
+      Tokyo→Kyoto : ~14 000¥/p · Kyoto→Osaka : 560¥ · Osaka→Tokyo : ~14 000¥/p<br>
+      Total 2 personnes : ~57 000¥<br><br>
+      <strong>JR Pass 21 jours :</strong> ~70 000¥/p (×2 = 140 000¥)<br><br>
+      <span style="color:var(--gold)">⚠️ Verdict : Le JR Pass ne vaut probablement <strong>pas</strong> le coup pour votre voyage — le trajet Hakone se fait en Odakyu (hors JR). Acheter les billets Shinkansen séparément via <strong>SmartEX</strong> est moins cher.</span></p>
+    </div>
+    <div class="transport-card">
+      <h3>🚌 Bus de nuit</h3>
+      <p>Option économique entre les villes (~3000–5000¥ vs 14 000¥ Shinkansen).<br>
+      <strong>Willer Express</strong>, <strong>JR Bus</strong>. Durée ~8h Tokyo→Osaka.<br>
+      Idéal si on veut économiser sur le transport.</p>
+    </div>
+    <div class="transport-card">
+      <h3>🚕 Taxi & Uber</h3>
+      <p>Taxis japonais : très chers (~700¥ prise en charge + ~250¥/400m).<br>
+      <strong>Uber</strong> fonctionne à Tokyo et quelques autres villes.<br>
+      <strong>GO</strong> (app japonaise) = meilleure alternative au taxi traditionnel.</p>
+    </div>
+    <div class="transport-card">
+      <h3>🚲 Vélo</h3>
+      <p>Très répandu au Japon. Locations disponibles dans la plupart des villes.<br>
+      <strong>Docomo Bike Share</strong> (app) à Tokyo.<br>
+      <strong>PiPPA</strong> à Kyoto et Osaka.<br>
+      Idéal pour explorer les quartiers à leur rythme.</p>
+    </div>
+    <div class="transport-card">
+      <h3>📍 Apps Indispensables</h3>
+      <ul>
+        <li><strong>Google Maps</strong> — Navigation transports</li>
+        <li><strong>Hyperdia</strong> — Horaires trains</li>
+        <li><strong>SmartEX</strong> — Réservation Shinkansen</li>
+        <li><strong>Suica app</strong> (iPhone) — Recharge Suica</li>
+        <li><strong>Google Translate</strong> — Caméra pour menus</li>
+        <li><strong>Tabelog</strong> — Avis restos japonais</li>
+        <li><strong>PayPay</strong> — Paiement mobile (utile)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BUDGET ===== -->
+<div class="tab" id="tab-budget">
+  <div class="section-title">💴 Suivi Budget</div>
+  <!-- BUDGET PRÉVISIONNEL -->
+  <div class="card" style="margin-bottom:20px;border-left:4px solid var(--gold)">
+    <div class="card-title">📋 Budget Prévisionnel — 2 personnes, 30 jours</div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+        <thead><tr style="border-bottom:1px solid var(--border)">
+          <th style="text-align:left;padding:8px 6px;color:var(--muted)">Étape</th>
+          <th style="text-align:center;padding:8px 6px;color:var(--muted)">Nuits</th>
+          <th style="text-align:right;padding:8px 6px;color:var(--muted)">Budget/jour (2p)</th>
+          <th style="text-align:right;padding:8px 6px;color:var(--muted)">Total estimé</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 6px">🗼 Tokyo (Airbnbs inclus)</td><td style="text-align:center">14</td><td style="text-align:right;color:var(--blue)">~12 000¥</td><td style="text-align:right;font-weight:600">~168 000¥</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 6px">🗻 Hakone (ryokan/hôtel)</td><td style="text-align:center">2</td><td style="text-align:right;color:var(--blue)">~30 000¥</td><td style="text-align:right;font-weight:600">~60 000¥</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 6px">⛩️ Kyoto (logement à trouver)</td><td style="text-align:center">6</td><td style="text-align:right;color:var(--blue)">~15 000¥</td><td style="text-align:right;font-weight:600">~90 000¥</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 6px">🏯 Osaka (logement à trouver)</td><td style="text-align:center">6</td><td style="text-align:right;color:var(--blue)">~14 000¥</td><td style="text-align:right;font-weight:600">~84 000¥</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 6px">🗼 Tokyo retour (10–12 Août)</td><td style="text-align:center">3</td><td style="text-align:right;color:var(--blue)">~12 000¥</td><td style="text-align:right;font-weight:600">~36 000¥</td></tr>
+          <tr style="border-bottom:2px solid var(--border);background:rgba(244,208,63,.05)"><td style="padding:8px 6px">🚄 Transports inter-villes</td><td style="text-align:center">—</td><td style="text-align:right;color:var(--gold)">Forfait</td><td style="text-align:right;font-weight:600;color:var(--gold)">~57 000¥</td></tr>
+          <tr style="background:rgba(230,57,70,.08)"><td style="padding:10px 6px;font-weight:700">TOTAL ESTIMÉ (2p)</td><td style="text-align:center;font-weight:700">30</td><td style="text-align:right"></td><td style="text-align:right;font-weight:700;color:var(--red);font-size:.95rem">~495 000¥<br><span style="font-size:.75rem;color:var(--muted)">≈ 3 095€ au taux 160</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:.75rem;color:var(--muted);margin-top:10px;line-height:1.6">
+      ⚠️ Hors vols aller-retour · Hors logements Kyoto/Osaka (non réservés) · Hors shopping · Budget activités majeures (TeamLab, DisneySea, USJ) : ~40 000¥ supplémentaires
+    </div>
+  </div>
+
+  <!-- EXCHANGE RATE -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;flex-wrap:wrap">
+    <span style="font-size:.82rem;color:var(--muted)">💱 Taux de change :</span>
+    <span style="font-size:.82rem">1 € =</span>
+    <input id="rate-input" type="number" value="160" min="100" max="300" step="1" style="background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:var(--text);font-family:'Poppins',sans-serif;font-size:.85rem;width:70px" oninput="updateRate(this.value)">
+    <span style="font-size:.82rem">¥ japonais</span>
+    <span style="font-size:.75rem;color:var(--muted);margin-left:8px">Vérifier sur Google avant le départ</span>
+  </div>
+
+  <div class="budget-summary">
+    <div class="budget-box"><div class="amount" id="total-eur" style="color:var(--red)">0 €</div><div class="label">Total dépensé</div></div>
+    <div class="budget-box"><div class="amount" id="total-yen" style="color:var(--gold)">0 ¥</div><div class="label">En Yen</div></div>
+    <div class="budget-box"><div class="amount" id="budget-resto" style="color:var(--blue)">0 €</div><div class="label">Restaurants</div></div>
+    <div class="budget-box"><div class="amount" id="budget-act" style="color:var(--purple)">0 €</div><div class="label">Activités</div></div>
+    <div class="budget-box"><div class="amount" id="budget-shop" style="color:var(--green)">0 €</div><div class="label">Shopping</div></div>
+    <div class="budget-box"><div class="amount" id="budget-trans" style="color:var(--gold)">0 €</div><div class="label">Transport</div></div>
+  </div>
+
+  <!-- BUDGET CHART -->
+  <div class="card" style="margin-bottom:20px" id="budget-chart-section">
+    <div class="card-title" style="margin-bottom:14px">📊 Répartition des dépenses</div>
+    <div id="budget-chart">
+      <div class="bbar-row"><span class="bbar-label">🍜 Restaurants</span><div class="bbar-track"><div class="bbar-fill" id="bar-resto" style="width:0%;background:#58A6FF"></div></div><span class="bbar-val" id="bval-resto">0€</span></div>
+      <div class="bbar-row"><span class="bbar-label">⛩️ Activités</span><div class="bbar-track"><div class="bbar-fill" id="bar-act" style="width:0%;background:#A371F7"></div></div><span class="bbar-val" id="bval-act">0€</span></div>
+      <div class="bbar-row"><span class="bbar-label">🛍️ Shopping</span><div class="bbar-track"><div class="bbar-fill" id="bar-shop" style="width:0%;background:#3FB950"></div></div><span class="bbar-val" id="bval-shop">0€</span></div>
+      <div class="bbar-row"><span class="bbar-label">🚄 Transport</span><div class="bbar-track"><div class="bbar-fill" id="bar-trans" style="width:0%;background:#F4D03F"></div></div><span class="bbar-val" id="bval-trans">0€</span></div>
+      <div class="bbar-row"><span class="bbar-label">🏠 Logement</span><div class="bbar-track"><div class="bbar-fill" id="bar-logement" style="width:0%;background:#E63946"></div></div><span class="bbar-val" id="bval-logement">0€</span></div>
+      <div class="bbar-row"><span class="bbar-label">📦 Autre</span><div class="bbar-track"><div class="bbar-fill" id="bar-autre" style="width:0%;background:#888"></div></div><span class="bbar-val" id="bval-autre">0€</span></div>
+    </div>
+  </div>
+
+  <div class="expense-form">
+    <div class="card-title" style="margin-bottom:16px">➕ Ajouter une dépense</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" id="exp-desc" placeholder="Ex: Dîner ramen Shinjuku">
+      </div>
+      <div class="form-group">
+        <label>Montant (€)</label>
+        <input type="number" id="exp-amt" placeholder="0.00" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Catégorie</label>
+        <select id="exp-cat">
+          <option value="resto">🍜 Restaurant</option>
+          <option value="activite">⛩️ Activité</option>
+          <option value="transport">🚄 Transport</option>
+          <option value="shopping">🛍️ Shopping</option>
+          <option value="logement">🏠 Logement</option>
+          <option value="autre">📦 Autre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Jour</label>
+        <select id="exp-day">
+          <option value="">Sans date</option>
+        </select>
+      </div>
+      <button class="btn" onclick="addExpense()" style="height:40px;margin-top:20px">Ajouter</button>
+    </div>
+  </div>
+
+  <div class="card-title" style="margin-bottom:12px">📋 Dépenses</div>
+  <div class="expense-list" id="expense-list">
+    <div style="padding:20px;text-align:center;color:var(--muted);font-size:.85rem">Aucune dépense enregistrée</div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <div class="card-title">💡 Budget estimé Japon (30 jours, 2 personnes)</div>
+    <div class="grid-3" style="margin-top:12px">
+      <div style="font-size:.83rem"><strong>🍜 Repas</strong><br><span style="color:var(--muted)">Konbini: 500–800¥/repas<br>Ramen: 800–1200¥<br>Sushi conveyor: 1500–3000¥<br>Restaurant mid-range: 2000–5000¥</span></div>
+      <div style="font-size:.83rem"><strong>⛩️ Activités</strong><br><span style="color:var(--muted)">Temples/Jardins: 500–1000¥<br>TeamLab: 3200¥/p<br>DisneySea: 10 900¥/p<br>USJ: 10 400¥/p</span></div>
+      <div style="font-size:.83rem"><strong>🚄 Transport</strong><br><span style="color:var(--muted)">Métro Tokyo: 200–400¥/trajet<br>Tokyo→Kyoto: ~14 000¥/p<br>Kyoto→Osaka: 560¥<br>Suica: 1500¥ départ</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SUGGESTIONS ===== -->
+<div class="tab" id="tab-suggestions">
+  <div class="section-title">✨ Suggestions Claude</div>
+  <div style="background:rgba(163,113,247,.08);border:1px solid rgba(163,113,247,.3);border-radius:10px;padding:14px;margin-bottom:20px;font-size:.83rem;color:var(--purple)">
+    🤖 Ces suggestions sont mes recommandations personnelles — des lieux moins touristiques, des expériences uniques, et des hidden gems. Cliquez sur "Ajouter à un jour" pour les intégrer au planning.
+  </div>
+  <div id="suggestions-list"></div>
+
+  <!-- SHOPPING LIST -->
+  <div style="margin-top:32px">
+    <div class="section-title">🛍️ Liste de Courses Japon</div>
+    <div style="background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.3);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:.82rem;color:var(--green)">
+      🛒 Cochez au fur et à mesure de vos achats au Japon. Sauvegardé automatiquement.
+    </div>
+    <div class="grid-2" id="shopping-list-container"></div>
+  </div>
+</div>
+
+<!-- ===== CHECKLIST ===== -->
+<div class="tab" id="tab-checklist">
+  <div class="section-title">✅ Checklist Pré-Départ</div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-size:.85rem;font-weight:600" id="cl-label">0 / 0 complété</span>
+      <button class="btn btn-ghost" onclick="resetChecklist()" style="font-size:.75rem;padding:4px 10px">Réinitialiser</button>
+    </div>
+    <div class="cl-bar"><div class="cl-fill" id="cl-fill" style="width:0%"></div></div>
+  </div>
+  <div class="grid-2" id="checklist-container"></div>
+</div>
+
+<!-- ===== PRATIQUE ===== -->
+<div class="tab" id="tab-pratique">
+  <div class="section-title">📱 Infos Pratiques</div>
+
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-title">🚨 Numéros d'urgence</div>
+    <div class="emergency-grid">
+      <div class="emergency-box"><div class="num">110</div><div class="desc">Police</div></div>
+      <div class="emergency-box"><div class="num">119</div><div class="desc">Pompiers & Ambulance</div></div>
+      <div class="emergency-box"><div class="num">03-3501-0110</div><div class="desc">Police Tokyo (étranger)</div></div>
+      <div class="emergency-box"><div class="num">+33 1 48 88 62 00</div><div class="desc">Ambassade France Tokyo</div></div>
+    </div>
+  </div>
+
+  <div class="section-title">🗣️ Phrases Essentielles</div>
+  <div class="card" style="margin-bottom:20px;padding:0;overflow:hidden">
+    <table class="phrase-table">
+      <thead><tr><th>Français</th><th>Japonais</th><th>Prononciation</th></tr></thead>
+      <tbody id="phrases-table"></tbody>
+    </table>
+  </div>
+
+  <div class="section-title">🌡️ Météo Juillet — Août 2026</div>
+  <div class="meteo-grid" style="margin-bottom:24px">
+    <div class="meteo-card">
+      <div class="week">15–21 Juillet</div>
+      <div class="temp">30–33°C 🌧️</div>
+      <div class="meteo-desc">Fin de la mousson (tsuyu). Humidité extrême, pluies fréquentes. Premiers jours de canicule.</div>
+      <div class="meteo-alert">Emporter parapluie compact. Séchage lent des vêtements.</div>
+    </div>
+    <div class="meteo-card">
+      <div class="week">22–28 Juillet</div>
+      <div class="temp">32–36°C ☀️</div>
+      <div class="meteo-desc">Canicule estivale. Soleil intense, humidité forte (70-85%). Très éprouvant en extérieur.</div>
+      <div class="meteo-alert">Visiter les sites tôt (avant 9h) ou en soirée. Hydratation constante.</div>
+    </div>
+    <div class="meteo-card">
+      <div class="week">29 Jul — 7 Août</div>
+      <div class="temp">33–37°C 🌤️</div>
+      <div class="meteo-desc">Plein été japonais. Risque de typhons en mer. Orages possibles l'après-midi.</div>
+      <div class="meteo-alert">Vérifier météo typhons sur Japan Meteorological Agency. Éviter plages si alerte.</div>
+    </div>
+    <div class="meteo-card">
+      <div class="week">8–13 Août</div>
+      <div class="temp">31–34°C 🌤️</div>
+      <div class="meteo-desc">Période du Obon (fête des ancêtres). Léger rafraîchissement en soirée. Foule réduite à Osaka/Kyoto.</div>
+      <div class="meteo-alert">Obon (13-16 Août) : certains restos/shops fermés. Prévoir alternatives.</div>
+    </div>
+  </div>
+  <div style="background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.3);border-radius:10px;padding:12px 16px;margin-bottom:24px;font-size:.82rem;color:var(--blue)">
+    ☀️ <strong>Kit survie chaleur :</strong> Mini ventilateur USB · Spray eau thermale · Serviette rafraîchissante · Crème solaire SPF50+ (à renouveler) · Chaussettes absorbantes · Vêtements en lin/coton · Électrolytes
+  </div>
+
+  <div class="section-title">🗂️ Mes Documents de Voyage</div>
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-title" style="margin-bottom:14px">Sauvegarder ici vos infos importantes (stocké en local)</div>
+    <div class="doc-field"><label>N° Passeport (voyageur 1)</label><input type="text" id="doc-passport1" placeholder="Ex: 12AB34567" oninput="saveDoc('passport1',this.value)"></div>
+    <div class="doc-field"><label>N° Passeport (voyageur 2)</label><input type="text" id="doc-passport2" placeholder="Ex: 12AB34567" oninput="saveDoc('passport2',this.value)"></div>
+    <div class="doc-field"><label>Compagnie aérienne</label><input type="text" id="doc-airline" placeholder="Ex: Air France AF275" oninput="saveDoc('airline',this.value)"></div>
+    <div class="doc-field"><label>Vol aller</label><input type="text" id="doc-vol-aller" placeholder="Ex: CDG→NRT — 15 Jul 22:10" oninput="saveDoc('vol-aller',this.value)"></div>
+    <div class="doc-field"><label>Vol retour</label><input type="text" id="doc-vol-retour" placeholder="Ex: NRT→CDG — 13 Aug 11:30" oninput="saveDoc('vol-retour',this.value)"></div>
+    <div class="doc-field"><label>Assurance voyage</label><input type="text" id="doc-assurance" placeholder="Ex: AXA Assistance — N° 123456" oninput="saveDoc('assurance',this.value)"></div>
+    <div class="doc-field"><label>N° Urgence Assurance</label><input type="text" id="doc-tel-assurance" placeholder="Ex: +33 1 55 92 42 42" oninput="saveDoc('tel-assurance',this.value)"></div>
+    <div class="doc-field"><label>Hôtel/Airbnb Kyoto</label><input type="text" id="doc-kyoto" placeholder="Nom + adresse" oninput="saveDoc('kyoto',this.value)"></div>
+    <div class="doc-field"><label>Hôtel/Airbnb Osaka</label><input type="text" id="doc-osaka" placeholder="Nom + adresse" oninput="saveDoc('osaka',this.value)"></div>
+    <div class="doc-field"><label>Notes importantes</label><input type="text" id="doc-notes" placeholder="Allergies, médicaments, contacts..." oninput="saveDoc('notes',this.value)"></div>
+  </div>
+
+  <div class="section-title">🌡️ Météo par Étape</div>
+  <div class="weather-grid">
+    <div class="weather-card"><div class="city-name">🗼 Tokyo</div><div class="dates">15 – 29 Juillet</div><div class="temp">33°C</div><div class="stats">💧 Humidité : 78%<br>🌧️ Pluies : fréquentes<br>☀️ UV : 8/10 (très fort)<br>🌀 Typhon : rare en juillet</div></div>
+    <div class="weather-card"><div class="city-name">🗻 Hakone</div><div class="dates">27 – 28 Juillet</div><div class="temp">28°C</div><div class="stats">💧 Humidité : 70%<br>🌫️ Brouillard fréquent<br>☁️ Fuji souvent caché<br>🌡️ Plus frais qu'en ville</div></div>
+    <div class="weather-card"><div class="city-name">⛩️ Kyoto</div><div class="dates">29 Jul – 3 Août</div><div class="temp">35°C</div><div class="stats">💧 Humidité : 72%<br>☀️ Très ensoleillé<br>🥵 La ville la plus chaude<br>🌀 Typhon : possible août</div></div>
+    <div class="weather-card"><div class="city-name">🏯 Osaka</div><div class="dates">4 – 12 Août</div><div class="temp">33°C</div><div class="stats">💧 Humidité : 74%<br>🌀 Saison typhon active<br>☀️ UV : 9/10<br>🌧️ Averses soudaines</div></div>
+  </div>
+  <div style="background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.3);border-radius:10px;padding:14px;margin-bottom:24px;font-size:.82rem">
+    🌀 <strong>Typhons (août) :</strong> En cas d'alerte typhon → rester à l'intérieur, vérifier <strong>tenki.jp</strong> ou l'app Météo. Les transports sont souvent annulés. Prévoir provisions de konbini. Les hôtels/Airbnb ont généralement des instructions. Pas de panique — ça passe vite.
+  </div>
+
+  <div class="section-title">🆘 Urgences</div>
+  <div class="emergency-grid" style="margin-bottom:20px">
+    <div class="emergency-box"><div class="num">110</div><div class="desc">🚔 Police<br>Agression, vol, accident</div></div>
+    <div class="emergency-box"><div class="num">119</div><div class="desc">🚑 SAMU / Pompiers<br>Urgence médicale, incendie</div></div>
+    <div class="emergency-box" style="background:rgba(88,166,255,.1);border-color:rgba(88,166,255,.3)"><div class="num" style="color:var(--blue);font-size:1.1rem">+81 3<br>5798-6000</div><div class="desc">🇫🇷 Ambassade de France<br>4-11-44 Minami-Azabu, Tokyo<br><em style="font-size:.68rem">Lun-Ven 9h-12h30</em></div></div>
+    <div class="emergency-box" style="background:rgba(63,185,80,.1);border-color:rgba(63,185,80,.3)"><div class="num" style="color:var(--green);font-size:1rem">Hôpital<br>Nakano</div><div class="desc">🏥 Tokyo Medical University<br>Shinjuku (15 min metro)<br><em style="font-size:.68rem">Urgences 24h/24</em></div></div>
+  </div>
+  <div style="font-size:.78rem;color:var(--muted);margin-bottom:24px;line-height:1.7">
+    💡 En cas de vol : déposer plainte au <strong>koban</strong> (petit poste de police en bas de chaque quartier) — ils parlent souvent un peu anglais et sont très efficaces. Conserver le récépissé pour l'assurance.
+  </div>
+
+  <div class="section-title">💡 Conseils Importants</div>
+  <div class="grid-2">
+    <div class="info-block">
+      <h4>🏦 Argent & Cash</h4>
+      <ul>
+        <li>Le Japon est encore très cash. Toujours avoir du liquide.</li>
+        <li>Les ATM des 7-Eleven et Japan Post acceptent les cartes étrangères.</li>
+        <li>Les bureaux de change → Travelex ou bureaux à l'aéroport.</li>
+        <li>Carta Visa/MC fonctionne dans les grands magasins et hôtels.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>🎎 Étiquette Japonaise</h4>
+      <ul>
+        <li>Ne pas manger/boire en marchant dans la rue.</li>
+        <li>Se déchausser à l'entrée des temples et ryokans.</li>
+        <li>Pas de pourboires — considéré comme impoli.</li>
+        <li>Parler doucement dans les transports.</li>
+        <li>Deux mains pour donner/recevoir une carte.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>☀️ Chaleur Juillet/Août</h4>
+      <ul>
+        <li>Température : 32–38°C avec forte humidité.</li>
+        <li>Emporter : mini ventilateur, spray eau fraîche, crème solaire.</li>
+        <li>Visiter les sites populaires tôt le matin (Fushimi Inari = 6h).</li>
+        <li>Les konbini ont des boissons fraîches pas chères.</li>
+        <li>La saison des pluies (tsuyu) se termine mi-juillet.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>📡 Connexion Internet</h4>
+      <ul>
+        <li><strong>eSIM</strong> : Airalo, Holafly — à acheter avant de partir.</li>
+        <li><strong>Pocket WiFi</strong> : à récupérer à l'aéroport (IIJmio, Sakura Mobile).</li>
+        <li>Le WiFi gratuit est disponible dans la plupart des konbini et gares.</li>
+        <li>Désactiver le roaming automatique avant l'arrivée.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>🛍️ Shopping Tips</h4>
+      <ul>
+        <li><strong>Tax Free</strong> : dépenser +5000¥ dans un magasin → remboursement TVA (8–10%).</li>
+        <li>Don Quijote (Donki) = tout à prix bas, ouvert 24h/24.</li>
+        <li>Recycle shops (2nd main) : Super Bazaar, Book-Off.</li>
+        <li>Les supermarchés ferment à 23h-minuit selon les enseignes.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>🏥 Santé</h4>
+      <ul>
+        <li>Emporter une assurance voyage (carte bleue souvent insuffisante).</li>
+        <li>EHIC/CEAM ne fonctionne pas au Japon.</li>
+        <li>Pharmacies Matsumoto Kiyoshi (マツモトキヨシ) — excellentes.</li>
+        <li>Emporter les médicaments habituels + ordonnances traduites.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>♨️ Règles Onsen — À lire avant Hakone !</h4>
+      <ul>
+        <li>🚫 <strong>Tatouages interdits</strong> dans presque tous les onsen publics — même petits.</li>
+        <li>🧼 <strong>Se laver entièrement</strong> avant d'entrer dans le bain (siège + douche fournis).</li>
+        <li>🩲 <strong>Nu obligatoire</strong> — pas de maillot de bain dans le bain commun.</li>
+        <li>💆 <strong>Cheveux longs</strong> : les attacher ou mettre en chignon.</li>
+        <li>🚿 <strong>Ne pas plonger la serviette</strong> dans l'eau — la poser sur la tête.</li>
+        <li>🤒 <strong>Ne pas y aller malade</strong>, avec une plaie ouverte ou en état d'ivresse.</li>
+        <li>♂️♀️ <strong>Séparation hommes/femmes</strong> dans les onsen publics (sauf rotenburo mixte rare).</li>
+        <li>📵 <strong>Pas de photo</strong> dans les vestiaires ni dans les bains.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title">🏪 Guide Konbini — Indispensable au Japon</div>
+  <div class="grid-2" style="margin-bottom:24px">
+    <div class="info-block">
+      <h4>🍙 Les incontournables à manger</h4>
+      <ul>
+        <li><strong>Onigiri</strong> (おにぎり) — Boulette de riz farcie (thon mayo, saumon, prune, crevette). ~130¥. Déjeuner parfait.</li>
+        <li><strong>Sandwiches</strong> — Egg salad, katsu, club. Toujours frais, renouvelés 3x/jour. ~250–350¥.</li>
+        <li><strong>Nikuman</strong> (肉まん) — Brioche vapeur fourrée au porc chaude, comptoir entrée. ~130¥ (hiver/été).</li>
+        <li><strong>Karaage-kun</strong> — Poulet frit chaud (chez Lawson exclusivement). ~230¥. Addictif.</li>
+        <li><strong>Soba / Udon</strong> — Pots de nouilles chaudes ou froides. ~280–400¥.</li>
+        <li><strong>Bento frais</strong> — Repas complet réchauffable micro-ondes gratuit en caisse. ~500–700¥.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>🍮 Desserts & Boissons</h4>
+      <ul>
+        <li><strong>Purin</strong> (プリン) — Crème caramel japonaise, veloutée et sucrée. ~130¥.</li>
+        <li><strong>Mochi ice cream</strong> — Glace enrobée de riz gluant. 3 boules ~200¥.</li>
+        <li><strong>Taiyaki / Dorayaki</strong> — Gâteau fourré anko (pâte de haricot rouge). ~150¥.</li>
+        <li><strong>Canned coffee Georgia</strong> — Café chaud/froid en canette. Iconique. ~130¥.</li>
+        <li><strong>Mugicha</strong> (麦茶) — Thé d'orge froid, sans caféine, parfait pour la chaleur. ~100¥.</li>
+        <li><strong>Pocari Sweat / Aquarius</strong> — Boissons isotoniques anti-chaleur. ~160¥.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>🏪 Les 3 grandes chaînes</h4>
+      <ul>
+        <li><strong>7-Eleven</strong> (セブン‐イレブン) — Le plus répandu. Meilleurs sandwiches et desserts. ATM accepte cartes FR.</li>
+        <li><strong>Lawson</strong> (ローソン) — Meilleure pâtisserie (Uchi Café). Karaage-kun exclusif. Bon pour les bento.</li>
+        <li><strong>FamilyMart</strong> (ファミリーマート) — Meilleur poulet frit Famichiki. Bon choix de boissons chaudes.</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>💡 Astuces konbini</h4>
+      <ul>
+        <li>Demander à chauffer le bento : "Atatamete kudasai" (温めてください).</li>
+        <li>Les prix affichés incluent la taxe — pas de surprise à la caisse.</li>
+        <li>Points de fidélité : 7-Eleven → 7-Eleven app (scan à chaque achat).</li>
+        <li>Wi-Fi gratuit disponible chez les 3 enseignes (réseau: 7SPOT, Lawson_Free_Wi-Fi, au_Wi-Fi).</li>
+        <li>Photocopies, impressions, rechargements Suica disponibles aux bornes.</li>
+        <li>Ouverts 24h/24, 7j/7 — même les jours fériés et typhons.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title">📖 Vocabulaire Menu Japonais</div>
+  <div class="card" style="margin-bottom:24px;padding:0;overflow:hidden">
+    <table class="phrase-table">
+      <thead><tr><th>Japonais</th><th>Romanisation</th><th>Signification</th></tr></thead>
+      <tbody>
+        <tr><td colspan="3" style="background:var(--card2);padding:8px 14px;font-size:.78rem;font-weight:600;color:var(--gold);border-top:2px solid var(--border)">🍱 Types de plats</td></tr>
+        <tr><td class="jp">定食</td><td>Teishoku</td><td>Menu complet (plat + riz + soupe + accompagnements)</td></tr>
+        <tr><td class="jp">ランチセット</td><td>Ranchi setto</td><td>Menu déjeuner (souvent moins cher le midi)</td></tr>
+        <tr><td class="jp">おまかせ</td><td>Omakase</td><td>"Je m'en remets au chef" — menu surprise du chef</td></tr>
+        <tr><td class="jp">食べ放題</td><td>Tabehōdai</td><td>Buffet à volonté</td></tr>
+        <tr><td class="jp">飲み放題</td><td>Nomihōdai</td><td>Boissons à volonté</td></tr>
+        <tr><td colspan="3" style="background:var(--card2);padding:8px 14px;font-size:.78rem;font-weight:600;color:var(--gold);border-top:2px solid var(--border)">🥩 Viandes & Poissons</td></tr>
+        <tr><td class="jp">刺身</td><td>Sashimi</td><td>Poisson cru tranché</td></tr>
+        <tr><td class="jp">焼き鳥</td><td>Yakitori</td><td>Brochettes de poulet grillées</td></tr>
+        <tr><td class="jp">豚肉</td><td>Butaniku</td><td>Viande de porc</td></tr>
+        <tr><td class="jp">牛肉</td><td>Gyūniku</td><td>Viande de bœuf</td></tr>
+        <tr><td class="jp">鶏肉</td><td>Toriniku</td><td>Viande de poulet</td></tr>
+        <tr><td class="jp">海鮮</td><td>Kaisen</td><td>Fruits de mer</td></tr>
+        <tr><td colspan="3" style="background:var(--card2);padding:8px 14px;font-size:.78rem;font-weight:600;color:var(--gold);border-top:2px solid var(--border)">🍳 Cuissons & Préparations</td></tr>
+        <tr><td class="jp">揚げ物</td><td>Agemono</td><td>Friture (tempura, karaage, katsu...)</td></tr>
+        <tr><td class="jp">煮物</td><td>Nimono</td><td>Mijoté (ragoût japonais)</td></tr>
+        <tr><td class="jp">焼き物</td><td>Yakimono</td><td>Grillé (au four, à la plancha)</td></tr>
+        <tr><td class="jp">蒸し物</td><td>Mushimono</td><td>Vapeur</td></tr>
+        <tr><td colspan="3" style="background:var(--card2);padding:8px 14px;font-size:.78rem;font-weight:600;color:var(--gold);border-top:2px solid var(--border)">⚠️ Allergènes importants</td></tr>
+        <tr><td class="jp">卵</td><td>Tamago</td><td>Œuf</td></tr>
+        <tr><td class="jp">小麦</td><td>Komugi</td><td>Blé / gluten</td></tr>
+        <tr><td class="jp">乳製品</td><td>Nyūseihin</td><td>Produits laitiers</td></tr>
+        <tr><td class="jp">大豆</td><td>Daizu</td><td>Soja</td></tr>
+        <tr><td class="jp">えび</td><td>Ebi</td><td>Crevette</td></tr>
+        <tr><td class="jp">かに</td><td>Kani</td><td>Crabe</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-title">👗 Conversion Tailles EU → JP</div>
+  <div class="card" style="margin-bottom:24px;padding:0;overflow:hidden">
+    <table class="phrase-table">
+      <thead><tr><th>Catégorie</th><th>EU / FR</th><th>JP</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4" style="background:var(--card2);padding:8px 14px;font-size:.78rem;font-weight:600;color:var(--gold);border-top:2px solid var(--border)">👗 Vêtements Femme (hauts)</td></tr>
+        <tr><td>XS</td><td>34–36</td><td>S (5–7)</td><td>Coupes JP plus ajustées</td></tr>
+        <tr><td>S</td><td>36–38</td><td>M (9–11)</td><td>—</td></tr>
+        <tr><td>M</td><td>38–40</td><td>L (13–15)</td><td>Prendre une taille au-dessus</td></tr>
+        <tr><td>L</td><td>40–42</td><td>LL / XL</td><td>Taille rare dans les boutiques JP</td></tr>
+        <tr><td colspan="4" style="background:var(--card2);padding:8px 14px;font-size:.78rem;font-weight:600;color:var(--gold);border-top:2px solid var(--border)">👔 Vêtements Homme (hauts)</td></tr>
+        <tr><td>S</td><td>44–46</td><td>S</td><td>—</td></tr>
+        <tr><td>M</td><td>48–50</td><td>M</td><td>—</td></tr>
+        <tr><td>L</td><td>52–54</td><td>L</td><td>—</td></tr>
+        <tr><td>XL</td><td>56–58</td><td>XL / 2L</td><td>Coupes JP plus courtes</td></tr>
+        <tr><td colspan="4" style="background:var(--card2);padding:8px 14px;font-size:.78rem;font-weight:600;color:var(--gold);border-top:2px solid var(--border)">👟 Chaussures (cm = pointure JP)</td></tr>
+        <tr><td>EU 36</td><td>FR 36</td><td>22.5–23 cm</td><td>—</td></tr>
+        <tr><td>EU 37</td><td>FR 37</td><td>23–23.5 cm</td><td>—</td></tr>
+        <tr><td>EU 38</td><td>FR 38</td><td>24 cm</td><td>—</td></tr>
+        <tr><td>EU 39</td><td>FR 39</td><td>24.5–25 cm</td><td>—</td></tr>
+        <tr><td>EU 40</td><td>FR 40</td><td>25–25.5 cm</td><td>—</td></tr>
+        <tr><td>EU 41</td><td>FR 41</td><td>26 cm</td><td>—</td></tr>
+        <tr><td>EU 42</td><td>FR 42</td><td>26.5–27 cm</td><td>—</td></tr>
+        <tr><td>EU 43</td><td>FR 43</td><td>27–27.5 cm</td><td>—</td></tr>
+        <tr><td>EU 44</td><td>FR 44</td><td>28 cm</td><td>—</td></tr>
+        <tr><td colspan="4" style="background:rgba(88,166,255,.08);padding:8px 14px;font-size:.76rem;color:var(--blue);border-top:1px solid var(--border)">💡 <strong>Astuce :</strong> Les boutiques japonaises ont souvent des chaussettes de mesure à essayer. N'hésitez pas à essayer avant d'acheter. Taille JP affichée en centimètres sur les boîtes.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== TIKTOK / YOUTUBE ===== -->
+<div class="tab" id="tab-tiktok">
+  <div class="section-title">🎬 TikTok &amp; YouTube</div>
+  <div style="background:rgba(244,208,63,.08);border:1px solid rgba(244,208,63,.3);border-radius:10px;padding:16px;margin-bottom:20px;font-size:.83rem;color:var(--gold)">
+    🎬 <strong>Comment ça marche :</strong> Colle un lien TikTok ou YouTube ci-dessous → reviens me voir en disant "j'ai ajouté des liens" → j'analyse le contenu et j'ajoute les lieux, restaurants et activités mentionnés directement dans le guide.
+    <br><br>⚠️ <em>Je ne peux pas regarder les vidéos directement, mais j'extrais les titres, descriptions et commentaires pour identifier les lieux cités.</em>
+  </div>
+  <div id="tiktok-links-container">
+    <div class="card" style="border-left:4px solid var(--gold)">
+      <div class="card-title">📋 Liens sauvegardés</div>
+      <div id="tiktok-list" style="font-size:.85rem;color:var(--muted)">
+        Aucun lien ajouté pour l'instant.
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <input id="tiktok-input" type="url" placeholder="Coller un lien TikTok ou YouTube..." style="flex:1;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Poppins',sans-serif;font-size:.83rem;min-width:200px">
+        <button class="btn" onclick="addTiktokLink()">➕ Sauvegarder</button>
+      </div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:6px">Les liens sont sauvegardés entre les sessions. Reviens me voir quand tu en as ajouté plusieurs.</div>
+    </div>
+  </div>
+  <div id="tiktok-places" style="margin-top:16px"></div>
+</div>
+
+</main>
+
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <h3>📅 Ajouter à quel jour ?</h3>
+    <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px" id="modal-place-name"></p>
+    <div class="modal-day-select" id="modal-days"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-green" onclick="confirmAdd()">✓ Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+
+const DAYS = [
+  {day:1,date:"15 Jul",city:"Tokyo",area:"Arrivée — Narita/Haneda → Nakano",emoji:"✈️",morning:"Atterrissage. Récupérer les bagages. Acheter la carte Suica au JR East Travel Service Center à l'aéroport (1500¥). Activer eSIM ou pocket WiFi.",afternoon:"Narita Express jusqu'à Shinjuku puis métro Marunouchi Line → Shin-Nakano (7 min à pied de l'Airbnb). Ou JR Chuo Line → Nakano (12 min à pied). Installation : 3-33 Yayoichō, Nakano City.",evening:"Première sortie dans le quartier Nakano. Dîner dans un ramen local ou konbini. Nakano Broadway à 12 min si pas trop fatigués.",highlights:["Carte Suica à l'aéroport","Nakano Broadway","Premier konbini","Quartier résidentiel authentique"],tip:"Depuis Narita : Narita Express jusqu'à Shinjuku (1h15, 3020¥) puis Marunouchi Line direction Ogikubo, descendre Shin-Nakano (2 stops). Total ~1h30 depuis l'aéroport."},
+  {day:2,date:"16 Jul",city:"Tokyo",area:"Shinjuku",emoji:"🌆",morning:"Shinjuku Gyoen (jardin national) — magnifique même en été. Ouvert 9h-18h, 500¥.",afternoon:"Quartier de Shinjuku Est — Isetan, Takashimaya. Kabukicho (quartier animé). Don Quijote.",evening:"Omoide Yokocho (Ruelle des Souvenirs) pour dîner yakitori. Puis Golden Gai pour un verre.",highlights:["Shinjuku Gyoen","Golden Gai","Omoide Yokocho","Kabukicho"],tip:"Omoide Yokocho = ruelle étroite avec des mini-bars et grillades. Très authentique et photographique."},
+  {day:3,date:"17 Jul",city:"Tokyo",area:"Harajuku & Omotesando",emoji:"👗",morning:"Meiji Jingu (temple shinto) tôt le matin dans la forêt. Entrée gratuite.",afternoon:"Takeshita Street (mode décalée, kawaii). Puis Omotesando pour les grandes marques et architecture.",evening:"Cat Street (boutiques indé). Dîner dans les ruelles d'Omotesando.",highlights:["Meiji Jingu","Takeshita Street","Omotesando","Cat Street"],tip:"Visiter Meiji Jingu avant 9h pour l'avoir presque pour soi. La forêt est étonnamment calme en plein Tokyo."},
+  {day:4,date:"18 Jul",city:"Tokyo",area:"Shibuya, Daikanyama & Nakameguro",emoji:"🎌",morning:"Shibuya Scramble Crossing (le plus fréquenté du monde). Shibuya Sky pour la vue panoramique (2000¥).",afternoon:"Daikanyama — quartier branché, cafés design, librairie Tsutaya Books.",evening:"Nakameguro — canal romantique, restaurants, boutiques vintage. Dîner en bord de canal.",highlights:["Shibuya Crossing","Shibuya Sky","Tsutaya Books Daikanyama","Canal Nakameguro"],tip:"Nakameguro est le quartier le plus instagrammable de Tokyo. Venez en fin d'après-midi pour la lumière."},
+  {day:5,date:"19 Jul",city:"Tokyo",area:"Asakusa & Ueno",emoji:"🏯",morning:"Senso-ji (le plus vieux temple de Tokyo) — arriver avant 8h pour éviter la foule. Nakamise shopping street.",afternoon:"Ueno Park et ses musées (Musée National, Zoo). Tokyo National Museum recommandé.",evening:"🎉 CHAMPURU FESTIVAL à Nakano (19-20 Juil) — festival culturel okinawais gratuit autour de la gare ! Musique live, danse, street food okinawais. À ne pas manquer !",highlights:["Senso-ji Temple","Nakamise Street","Ueno Park","🎉 Champuru Festival Nakano"],tip:"Le Champuru Festival se tient PENDANT votre séjour (19-20 Juil) à 10 min de votre Airbnb. C'est gratuit et très animé — ne le manquez pas !"},
+  {day:6,date:"20 Jul",city:"Tokyo",area:"Tsukiji & Ginza",emoji:"🐟",morning:"Tsukiji Outer Market (6h30-14h) — sushi du matin, brochettes, tamagoyaki. Ne pas manquer.",afternoon:"Ginza — quartier luxe, galeries d'art, flagship stores. Mitsukoshi et Itoya (papeterie 10 étages).",evening:"TeamLab Planets Toyosu (réserver à l'avance ! ~3200¥/p). Art numérique immersif.",highlights:["Tsukiji Outer Market","Ginza","Itoya","TeamLab Planets"],tip:"Réserver TeamLab AVANT le départ sur teamlab.art. Les billets partent très vite en été."},
+  {day:7,date:"21 Jul",city:"Tokyo",area:"Akihabara & Yanaka",emoji:"🎮",morning:"Akihabara — capitale mondiale des mangas, anime, électronique. Multi-étages de figurines, jeux retro.",afternoon:"Kanda Myojin (temple près d'Akiha). Yanaka Ginza — rue commerçante old-school.",evening:"Shimokitazawa pour les bars live music et cafés indés. Soirée décontractée.",highlights:["Akihabara électronique","Mandarake","Yanaka Ginza","Shimokitazawa"],tip:"Akihabara a des arcades (game centers) avec des jeux introuvables ailleurs. Tentez les claw machines !"},
+  {day:8,date:"22 Jul",city:"Tokyo",area:"Tokyo DisneySea",emoji:"🎡",morning:"Ouverture de DisneySea (8h ou 9h selon saison). Arriver 30 min avant l'ouverture pour les premières attractions.",afternoon:"Tower of Terror, Indiana Jones, Sindbad. Déjeuner sur place (prévoir budget).",evening:"Retour vers 18h-19h. DisneySea est épuisant ! Repas léger et repos.",highlights:["DisneySea","Tower of Terror","Indiana Jones","Spectacle nocturne"],tip:"DisneySea vaut vraiment plus que Disneyland Tokyo pour les adultes. Billet : ~10 900¥/p. Réserver à l'avance sur le site Disney."},
+  {day:9,date:"23 Jul",city:"Tokyo",area:"Shimokitazawa & Sangenjaya",emoji:"🎸",morning:"Grasse matinée méritée. Brunch dans un café de Shimokitazawa.",afternoon:"Exploration de Shimokitazawa (friperies, disquaires, cafés littéraires, théâtres). Atmosphère bohème.",evening:"Sangenjaya voisin pour les bars et izakayas. Quartier populaire des Tokyoïtes.",highlights:["Shimokitazawa vintage shops","Disquaires","Bars live music","Sangenjaya"],tip:"Shimokitazawa = le Marais de Tokyo. Excellent pour trouver des vêtements vintage japonais authentiques."},
+  {day:10,date:"24 Jul",city:"Tokyo",area:"Excursion Nikko",emoji:"🌲",morning:"Train depuis Asakusa (Tobu Nikko Line ~2h, réservation conseillée). Arrivée à Nikko.",afternoon:"Tosho-gu Shrine (UNESCO) — mausolée de Tokugawa lEyasu. Rinno-ji, Futarasan Shrine.",evening:"Retour vers Tokyo. Dîner en chemin ou à l'arrivée.",highlights:["Tosho-gu UNESCO","Singe ne voir/entendre/parler","Pont Shinkyo","Forêt de cèdres"],tip:"Nikko est splendide mais épuisant. Partir tôt (7h) pour avoir du temps. Emporter un coupe-vent."},
+  {day:11,date:"25 Jul",city:"Tokyo",area:"Kamakura + Feux d'Artifice Sumida 🎆",emoji:"🎆",morning:"Train depuis Shinjuku (JR ~1h). Grand Bouddha de Kamakura (Kotoku-in). Hase-dera Temple.",afternoon:"Rentrer vers 15h IMPÉRATIVEMENT. Direction Asakusa / Sumida Park pour trouver une bonne place.",evening:"🎆 SUMIDA RIVER FIREWORKS — 19h05 à 20h30. 20 000 feux d'artifice sur la rivière Sumida. L'un des plus grands événements de l'été à Tokyo. Arriver à Sumida Park avant 17h.",highlights:["Grand Bouddha Kamakura","🎆 Sumida River Fireworks","Sumida Park","Pont Komagata"],tip:"Le 25 Juillet c'est le Sumida Hanabi — NE PAS MANQUER ! Rentrer de Kamakura avant 15h. Porter une yukata si possible (location dans les konbini). Apporter tapis, pique-nique, insect spray."},
+  {day:12,date:"26 Jul",city:"Tokyo",area:"Liberté & Shopping Final",emoji:"🛍️",morning:"Shopping libre selon envies : Harajuku, Akihabara ou Ginza. Derniers achats Tokyo.",afternoon:"Préparation valises pour le départ vers Hakone demain. Isetan Shinjuku (B1-B2 = paradis alimentaire).",evening:"Dîner spécial à Tokyo — choisir un restaurant qui vous tenait à cœur.",highlights:["Isetan Shinjuku","Depachika B2","Loft","Tokyu Hands"],tip:"Les depachika (sous-sols des grands magasins) sont parfaits pour les cadeaux alimentaires japonais."},
+  {day:13,date:"27 Jul",city:"Hakone",area:"Hakone — Ropeway & Lac Ashi",emoji:"🗻",morning:"Shinkansen ou train jusqu'à Odawara puis Hakone Tozan train. Check-in ryokan si réservé.",afternoon:"Hakone Ropeway (télécabine au-dessus des fumerolles d'Owakudani). Lac Ashi + ferry.",evening:"Dîner kaiseki au ryokan ou restaurant local. Onsen privé si ryokan.",highlights:["Hakone Ropeway","Owakudani fumerolles","Lac Ashi","Ferry Ashinoko"],tip:"Si le temps est clair, la vue sur le Fuji depuis le lac Ashi est absolument incroyable. Matin = meilleures chances."},
+  {day:14,date:"28 Jul",city:"Hakone",area:"Hakone — Onsen & Fuji",emoji:"♨️",morning:"Onsen matinal (sources chaudes). Hakone Open Air Museum (~1600¥) — sculptures Picasso en plein air.",afternoon:"Dernière vue sur le Fuji avant de repartir. Shinkansen vers Kyoto depuis Odawara.",evening:"Arrivée Kyoto. Check-in Airbnb ou hôtel. Première promenade dans Gion.",highlights:["Onsen matinal","Hakone Open Air Museum","Vue sur le Fuji","Arrivée Kyoto"],tip:"Le Hakone Open Air Museum est surprenant — sculptures monumentales, dont une salle entière dédiée à Picasso."},
+  {day:15,date:"29 Jul",city:"Kyoto",area:"Arrivée Kyoto & Gion Matsuri 🏮",emoji:"🏮",morning:"Installation logement Kyoto. Déjeuner au Nishiki Market (marché couvert, 400m de stands alimentaires).",afternoon:"Gion district — fin du Gion Matsuri ! Le festival dure tout juillet. Stands de street food, kimono, lanternes autour de Yasaka Shrine.",evening:"Promenade crépusculaire dans Gion avec les dernières décorations du festival. Pontocho pour le dîner (ruelles étroites).",highlights:["Nishiki Market","🏮 Fin du Gion Matsuri","Gion Hanamikoji","Pontocho"],tip:"Vous arrivez pour les derniers jours du Gion Matsuri (1-31 juillet) ! Les décorations de lanternes et les stands sont encore présents. Le 31 juillet a lieu le Nagoshi no Harae — cérémonie de purification à Yasaka Shrine à ne pas manquer."},
+  {day:16,date:"30 Jul",city:"Kyoto",area:"Arashiyama",emoji:"🎍",morning:"Arashiyama Bamboo Grove à l'ouverture (8h). Tenryu-ji (jardin zen, 500¥). Rivière Oi.",afternoon:"Monkey Park Iwatayama (escalade + vue Kyoto + singes macaques). Rickshaw optionnel.",evening:"Retour Kyoto. Dîner dans une izakaya de Kyoto-style (tofu et légumes de saison).",highlights:["Bambouseraie Arashiyama","Tenryu-ji UNESCO","Monkey Park","Rickshaw"],tip:"La bambouseraie est très fréquentée. Arriver à 7h30 (avant l'ouverture officielle, accessible librement) pour de meilleures photos."},
+  {day:17,date:"31 Jul",city:"Kyoto",area:"Fushimi Inari & Nagoshi no Harae 🏮",emoji:"🦊",morning:"Fushimi Inari Taisha à 6h (TÔTÔT !). Montée complète jusqu'au sommet (2h A/R). Vues magnifiques.",afternoon:"Retour en train. Tofuku-ji (jardin de mousse). Nishiki Market pour lunch et emplettes.",evening:"🏮 Nagoshi no Harae à Yasaka Shrine (18h-21h) — cérémonie de purification de fin juillet, dernier soir du Gion Matsuri. Passer sous le cercle de roseaux (chinowa kuguri) pour se purifier. Gratuit et émouvant.",highlights:["Fushimi Inari 6h matin","10 000 torii gates","🏮 Nagoshi no Harae Yasaka","Dernier soir Gion Matsuri"],tip:"Le 31 juillet à Yasaka Shrine est magique — lanternes, kimono, cérémonie. C'est le dernier soir du Gion Matsuri, ça ne se reproduira pas. À ne pas rater !"},
+  {day:18,date:"01 Août",city:"Kyoto",area:"Kinkaku-ji & Châteaux",emoji:"🏯",morning:"Kinkaku-ji (Pavillon d'Or) à l'ouverture 9h — 500¥. Puis Ryoan-ji (jardin de pierres zen).",afternoon:"Nijo Castle (château du shogun, 1000¥). Quartier Nishijin (quartier des tisserands de soie).",evening:"Karasuma Oike pour dîner. Quartier dynamique le soir avec restaurants variés.",highlights:["Kinkaku-ji Temple Doré","Ryoan-ji jardin sec","Nijo Castle","Nishijin"],tip:"Kinkaku-ji est très photographié mais vaut le déplacement. Essayez d'y être dès 9h pour éviter les groupes."},
+  {day:19,date:"02 Août",city:"Kyoto",area:"Excursion Nara",emoji:"🦌",morning:"Train JR Nara (50 min depuis Kyoto). Nara Park — cerfs sacrés en liberté partout.",afternoon:"Todai-ji Temple (Grand Bouddha de 15m, le plus grand du Japon). Kasuga Taisha (5000 lanternes).",evening:"Retour Kyoto. Dîner tranquille — vous serez épuisés d'une si bonne journée.",highlights:["Cerfs de Nara","Todai-ji Grand Bouddha","Kasuga Taisha","Isuien Garden"],tip:"Les cerfs de Nara s'inclinent pour demander des craquelins (shika senbei, 200¥). C'est craquant mais ils peuvent être insistants !"},
+  {day:20,date:"03 Août",city:"Kyoto",area:"Chemin de la Philosophie",emoji:"🌿",morning:"Chemin de la Philosophie (Tetsugaku-no-michi) le matin tôt — canal bordé d'érables.",afternoon:"Nanzen-ji (aqueduc Meiji + sous-temple Tenjuan). Eikan-do. Quartier Higashiyama.",evening:"Préparation départ Osaka demain. Dîner kaiseki léger ou izakaya.",highlights:["Tetsugaku-no-michi","Nanzen-ji aqueduc","Eikan-do","Higashiyama"],tip:"Le Chemin de la Philosophie fait 2 km le long d'un canal. Prévoir 2h de promenade tranquille avec arrêts cafés."},
+  {day:21,date:"04 Août",city:"Osaka",area:"Arrivée Osaka & Dotonbori",emoji:"🏙️",morning:"Shinkansen Kyoto→Osaka (15 min, 560¥). Installation. Osaka est plus décontractée que Tokyo.",afternoon:"Dotonbori — le cœur touristique. Glico Running Man, takoyaki, okonomiyaki. Très animé.",evening:"Namba (quartier nocturne animé). Ramen, izakayas, karaoké. Osaka est la capitale de la street food.",highlights:["Dotonbori","Glico Man","Takoyaki","Namba Walk"],tip:"Osaka est réputée pour le 'kuidaore' (se ruiner en mangeant). Budget street food = 1500-3000¥/repas."},
+  {day:22,date:"05 Août",city:"Osaka",area:"Château & Marché",emoji:"🏯",morning:"Osaka Castle Park (extérieur gratuit). Musée du château (600¥). Vue panoramique du donjon.",afternoon:"Kuromon Ichiba Market — le 'ventre d'Osaka'. Fruits de mer frais, wagyu, street food premium.",evening:"Shinsekai — quartier populaire des années 50. Kushikatsu (brochettes frites) spécialité locale.",highlights:["Osaka Castle","Kuromon Market","Shinsekai","Tsutenkaku Tower"],tip:"Shinsekai est rough mais authentique. La règle d'or du kushikatsu : ne jamais re-tremper dans la sauce !"},
+  {day:23,date:"06 Août",city:"Osaka",area:"Universal Studios Japan",emoji:"🎢",morning:"Universal Studios Japan (ouverture à 8h ou 9h). Harry Potter World, Nintendo World.",afternoon:"Rides : Hollywood Dream, Jurassic Park, Spider-Man. Nintendo World = expérience unique.",evening:"Retour épuisés mais heureux. Repas léger et repos total.",highlights:["Harry Potter World","Nintendo World","Hollywood Dream","Mario Kart Ride"],tip:"Réserver les 'Express Pass' à l'avance pour Harry Potter et Nintendo World — les files sont énormes sans. Billet : ~10 400¥/p."},
+  {day:24,date:"07 Août",city:"Osaka",area:"Shopping & Culture",emoji:"🛍️",morning:"Shinsaibashi (grande rue piétonne shopping). Amerika-Mura (streetwear japonais et vintage).",afternoon:"Den Den Town (équivalent d'Akihabara à Osaka — électronique, anime). Namba Parks.",evening:"Hozenji Yokocho — venelle mystérieuse avec temple moussu et restaurants traditionnels.",highlights:["Shinsaibashi","Amerika-Mura vintage","Den Den Town","Hozenji Yokocho"],tip:"Amerika-Mura est excellent pour le streetwear japonais à des prix raisonnables. Beaucoup de pièces uniques."},
+  {day:25,date:"08 Août",city:"Osaka",area:"Kaiyukan & Tempozan",emoji:"🐋",morning:"Aquarium Kaiyukan (2400¥) — l'un des plus grands du monde avec un requin-baleine. Ouverture 10h.",afternoon:"Ferris Wheel de Tempozan (1000¥) · Vue panoramique sur la baie d'Osaka. Marché d'artisanat Tempozan.",evening:"Namba Grand Kagetsu (comedy théâtre de manzai/rakugo). Puis Hozenji Yokocho — venelle mystérieuse, temple moussu, dîner izakaya.",highlights:["Requin-baleine Kaiyukan","Grande Roue Tempozan","Hozenji Yokocho","Manzai comedy"],tip:"Kaiyukan est idéal par forte chaleur — 28°C à l'intérieur. Réserver en ligne pour éviter la file. Le requin-baleine nage dans un bassin central visible depuis tous les étages."},
+  {day:26,date:"09 Août",city:"Osaka",area:"Osaka — Journée Libre",emoji:"🌸",morning:"Tempozan Harbour Village. Osaka Aquarium Kaiyukan (2400¥) — l'un des plus grands du monde.",afternoon:"America Mura ou shopping de dernière minute à Osaka. Préparation retour Tokyo.",evening:"Dîner d'adieu à Osaka — Dotonbori ou restaurant choisi par vous.",highlights:["Kaiyukan Aquarium","Ferris Wheel Tempozan","Shopping final Osaka"],tip:"L'Aquarium de Kaiyukan a un requin-baleine — spectaculaire. Idéal si il fait trop chaud dehors."},
+  {day:27,date:"10 Août",city:"Tokyo",area:"Retour Tokyo",emoji:"🚄",morning:"Shinkansen Osaka→Tokyo (2h30, ~14 000¥/p). Arrivée Tokyo en milieu de matinée.",afternoon:"Ikebukuro — quartier moins touristique avec Sunshine City, animes et Seibu/Tobu department stores.",evening:"Akihabara pour les derniers achats electronics/anime. Soirée libres.",highlights:["Shinkansen retour","Ikebukuro Sunshine City","Pokemon Center Ikebukuro"],tip:"Ikebukuro est souvent négligée mais c'est une excellente alternative à Akihabara pour les mangas/anime."},
+  {day:28,date:"11 Août",city:"Tokyo",area:"Revisiter les Favoris",emoji:"🌟",morning:"Retour dans le quartier préféré de votre séjour. Petit café cosy, promenade sans agenda.",afternoon:"Harajuku ou Shibuya shopping final. Takeshita Street pour les souvenirs kawaii.",evening:"Dîner dans le meilleur restaurant du séjour (à choisir pendant le voyage).",highlights:["Quartier favori","Shopping final","Restaurant favori"],tip:"Journée intentionnellement libre — profitez de retrouver des endroits aimés plutôt que de courir."},
+  {day:29,date:"12 Août",city:"Tokyo",area:"Achats Souvenirs & Dernière Nuit",emoji:"🎁",morning:"Asakusa pour les souvenirs traditionnels (éventails, chopsticks, sake, Kit-Kat japonais).",afternoon:"Don Quijote de Shinjuku pour les derniers achats (cosmétiques, bonbons, snacks).",evening:"Dîner spécial pour fêter la fin du voyage. Kaiseki, sushi bar ou teppanyaki.",highlights:["Nakamise souvenirs","Don Quijote","Isetan Shinjuku","Dîner d'adieu"],tip:"Les Kit-Kat japonais et les snacks rares sont excellents cadeaux. Don Quijote est parfait pour charger les valises."},
+  {day:30,date:"13 Août",city:"Tokyo",area:"Départ — Sayonara Japon ! 🙏",emoji:"🛫",morning:"Petit-déjeuner tranquille. Vérification valises. Départ pour aéroport 3h avant le vol.",afternoon:"Narita Express ou Limousine Bus. Embarquement. Regard mélancolique par le hublot.",evening:"Dans l'avion — déjà l'envie de revenir.",highlights:["Narita/Haneda","Dernier konbini","Premier regard sur Tokyo depuis le hublot"],tip:"N'oubliez pas de demander le remboursement de la taxe sur vos achats tax-free avant le départ (comptoir détaxe à l'aéroport)."}
+];
+
+const RESTAURANTS = [
+  // ── NAKANO (autour de l'Airbnb) ──────────────────────────────
+  {name:"Maguro Mart",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"izakaya",cuisine:"🐟 Thon/Seafood",rating:4.5,price:"¥¥",lat:35.7085,lng:139.6648,desc:"Thon entier servi de toutes les façons — sashimi, tartare, tempura, brochettes. Hidden gem de Nakano. Réservation 1 mois à l'avance obligatoire.",gmaps:"https://maps.google.com/?q=Maguro+Mart+Nakano+Tokyo"},
+  {name:"Ramen Minowaya",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"ramen",cuisine:"🍜 Ramen",rating:5.0,price:"¥¥",lat:35.7088,lng:139.6646,desc:"Note parfaite TripAdvisor. Ramen copieux et nourrissant. Bouillon riche, noodles épaisses maison. Incontournable à Nakano.",gmaps:"https://maps.google.com/?q=Ramen+Minowaya+Nakano+Tokyo"},
+  {name:"Sushi Kunimitsu",city:"Tokyo",area:"Nakano",neighborhood:"Higashi-Nakano",cat:"sushi",cuisine:"🍣 Sushi Omakase",rating:4.7,price:"¥¥¥",lat:35.7104,lng:139.6780,desc:"Omakase d'exception avec fruits de mer de saison. Riz au vinaigre traditionnel. Service en anglais. 5.0 TripAdvisor sur 34 avis.",gmaps:"https://maps.google.com/?q=Sushi+Kunimitsu+Higashinakano+Tokyo"},
+  {name:"Okajoki",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"izakaya",cuisine:"🐟 Seafood Izakaya",rating:4.3,price:"¥¥¥",lat:35.7092,lng:139.6643,desc:"Seafood izakaya depuis les années 70. Poisson entier grillé au charbon (robata). Décor Showa authentique. Menus en bois sculptés.",gmaps:"https://maps.google.com/?q=Okajoki+Nakano+Tokyo"},
+  {name:"Chuka Soba Aoba",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"ramen",cuisine:"🍜 Ramen",rating:3.9,price:"¥¥",lat:35.7090,lng:139.6642,desc:"L'original qui a inventé le double-bouillon Tokyo (shoyu + dashi poisson). Noodles épaisses maison. 830¥ le bol.",gmaps:"https://maps.google.com/?q=Chuka+Soba+Aoba+Nakano+Tokyo"},
+  {name:"Tadaima Henshinchu",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Broadway",cat:"ramen",cuisine:"🍜 Ramen Fusion",rating:4.3,price:"¥¥",lat:35.7087,lng:139.6647,desc:"Ramen franco-japonais — broth léger à base de daurade et huîtres. Technique française appliquée au ramen japonais. Unique.",gmaps:"https://maps.google.com/?q=Tadaima+Henshinchu+Nakano+Tokyo"},
+  {name:"Tensuke (Tempura)",city:"Tokyo",area:"Nakano",neighborhood:"Koenji",cat:"tempura",cuisine:"🍤 Tempura",rating:4.5,price:"¥¥",lat:35.7050,lng:139.6490,desc:"Minuscule comptoir tempura — l'œuf mollet en tempura sur riz est légendaire. File d'attente mais ça vaut l'attente. Proche Nakano.",gmaps:"https://maps.google.com/?q=Tensuke+Koenji+Tokyo"},
+  {name:"Tototo (Pizza)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"pizza",cuisine:"🍕 Pizza Japonaise",rating:4.2,price:"¥¥",lat:35.7084,lng:139.6649,desc:"Pizza au four à bois avec ingrédients japonais (shirasu, karasumi). Poisson frais de Toyosu chaque matin. Par l'équipe Maguro Mart.",gmaps:"https://maps.google.com/?q=Tototo+Pizza+Nakano+Tokyo"},
+  {name:"Unatoto Nakano",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"japonais",cuisine:"🐟 Unagi (Anguille)",rating:3.8,price:"¥",lat:35.7086,lng:139.6648,desc:"Anguille grillée (unadon) dès 590¥. Rapport qualité-prix imbattable pour un plat normalement très cher au Japon.",gmaps:"https://maps.google.com/?q=Unatoto+Nakano+Tokyo"},
+  {name:"Nakano Beer Kobo",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"bar",cuisine:"🍺 Craft Beer",rating:4.1,price:"¥",lat:35.7087,lng:139.6647,desc:"Micro-brasserie artisanale — IPA, White, Pale Ale en rotation. Fried chicken maison. Petite ruelle cosy derrière la gare.",gmaps:"https://maps.google.com/?q=Nakano+Beer+Kobo+Tokyo"},
+  {name:"Juke 80's J-Pop Bar",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"bar",cuisine:"🎵 Bar/Musique",rating:4.5,price:"¥",lat:35.7089,lng:139.6644,desc:"Bar underground 80s japonais. Musique J-Pop/City Pop sur demande, sans cover charge. Bières 500¥. Expérience nocturne unique.",gmaps:"https://maps.google.com/?q=Juke+80s+Bar+Nakano+Tokyo"},
+  {name:"Coffee Zingaro",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Broadway",cat:"cafe",cuisine:"☕ Café/Art",rating:4.3,price:"¥¥",lat:35.7086,lng:139.6643,desc:"Café de Takashi Murakami. Tables gaming consoles vintage (Mario, Street Fighter). Café Nordic Fuglen. Pancakes spectaculaires.",gmaps:"https://maps.google.com/?q=Coffee+Zingaro+Nakano+Broadway+Tokyo"},
+  {name:"Shimonya Honten",city:"Tokyo",area:"Nakano",neighborhood:"Araiyakushi-mae",cat:"izakaya",cuisine:"🍢 Yakitori/Yakiton",rating:4.2,price:"¥",lat:35.7211,lng:139.6481,desc:"Izakaya historique au toit jaune. Brochettes dès 110¥. Spécialités rares (basashi, steak rare). Ambiance vieux Tokyo années 60.",gmaps:"https://maps.google.com/?q=Shimonya+Honten+Araiyakushi+Tokyo"},
+  {name:"Oyakidokoro Refutei",city:"Tokyo",area:"Nakano",neighborhood:"Sun Mall",cat:"streetfood",cuisine:"🥮 Street Food",rating:4.0,price:"¥",lat:35.7083,lng:139.6650,desc:"Imagawayaki frais — petits gâteaux chauds fourrés (anko, chocolat, cream cheese). Tout sous 200¥. Incontournable dans la galerie.",gmaps:"https://maps.google.com/?q=Oyakidokoro+Refutei+Nakano+Sun+Mall"},
+  {name:"Daily Chiko (Glaces)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Broadway",cat:"dessert",cuisine:"🍦 Glaces",rating:4.2,price:"¥",lat:35.7086,lng:139.6643,desc:"Soft serve de 20cm à 8 couches ! Parfums saisonniers changeants. Instagrammable garantit. Dans le sous-sol de Nakano Broadway.",gmaps:"https://maps.google.com/?q=Daily+Chiko+Nakano+Broadway"},
+  {name:"Mamatoko (Kakigori)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"dessert",cuisine:"🧊 Kakigori",rating:4.5,price:"¥",lat:35.7086,lng:139.6649,desc:"La 'Reine du Kakigori' (glace pilée japonaise). Sirops de fruits frais, lie de saké, granola. Parfums inventifs selon saison. File l'été.",gmaps:"https://maps.google.com/?q=Mamatoko+Nakano+Tokyo"},
+  {name:"Pao Caravansarai",city:"Tokyo",area:"Nakano",neighborhood:"Higashi-Nakano",cat:"international",cuisine:"🌍 Afghan",rating:4.2,price:"¥¥",lat:35.7100,lng:139.6782,desc:"Cuisine afghane authentique à Tokyo. Brochettes d'agneau (seekh kebab), manti (raviolis). Cadre traditionnel dépaysant.",gmaps:"https://maps.google.com/?q=Pao+Caravansarai+Higashinakano+Tokyo"},
+  {name:"Kadouchi Kappo Sanzai",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"japonais",cuisine:"🍶 Kappo/Sake",rating:4.4,price:"¥¥¥",lat:35.7090,lng:139.6645,desc:"Comptoir kappo intime. 40 sakés au verre, menu fusion 8-10 plats. L'endroit pour une soirée gastronomique sur place.",gmaps:"https://maps.google.com/?q=Kadouchi+Kappo+Sanzai+Nakano+Tokyo"},
+  // ── TOKYO AUTRES QUARTIERS ─────────────────────────────────────
+  {name:"Gyopao Gyoza Shinjuku",city:"Tokyo",area:"Shinjuku",neighborhood:"Shinjuku",cat:"japonais",cuisine:"🥟 Gyoza",rating:4.5,price:"¥¥",lat:35.6913,lng:139.7006,desc:"Gyoza hybride xiaolongbao — soup dumpling avec bouillon qui éclate en bouche. Aussi des gyoza classiques et du sake. Ambiance izakaya cosy. ~1500¥.",gmaps:"https://maps.google.com/?q=Gyopao+Gyoza+Shinjuku+Tokyo"},
+  {name:"Ebisoba Ichigen",city:"Tokyo",area:"Shinjuku",neighborhood:"Shinjuku",cat:"ramen",cuisine:"🍜 Ramen Crevettes",rating:4.6,price:"¥¥",lat:35.6907,lng:139.6999,desc:"Ramen au bouillon de crevettes — prawn-tonkotsu crémeux et ultra-umami. Unique à Tokyo. ~1300¥. File à l'heure du déjeuner mais ça va vite.",gmaps:"https://maps.google.com/?q=Ebisoba+Ichigen+Shinjuku+Tokyo"},
+  {name:"Kyushu Jangara Ramen",city:"Tokyo",area:"Harajuku",neighborhood:"Harajuku",cat:"ramen",cuisine:"🍜 Ramen Kyushu",rating:4.3,price:"¥¥",lat:35.6696,lng:139.7030,desc:"Ramen de Kyushu — bouillon de porc riche et noodles fines. Servi avec gyoza et riz inclus. Classique de Harajuku depuis des décennies. ~1400¥.",gmaps:"https://maps.google.com/?q=Kyushu+Jangara+Ramen+Harajuku+Tokyo"},
+  {name:"Udon Shin",city:"Tokyo",area:"Shinjuku",neighborhood:"Shinjuku",cat:"japonais",cuisine:"🍜 Udon",rating:4.6,price:"¥¥",lat:35.6912,lng:139.7008,desc:"Le udon carbonara de Tokyo — bouillon dashi + beurre + bacon + parmesan. Noodles épaisses maison. Expérience unique. ~1500¥. File le midi.",gmaps:"https://maps.google.com/?q=Udon+Shin+Shinjuku+Tokyo"},
+  {name:"Ichiran Ramen Shinjuku",city:"Tokyo",area:"Shinjuku",neighborhood:"Shinjuku Est",cat:"ramen",cuisine:"🍜 Ramen",rating:4.2,price:"¥¥",lat:35.6914,lng:139.7003,desc:"Ramen solo en box individuelle. Box privative, personnalisation du bouillon. Tonkotsu crémeux. ~1200¥.",gmaps:"https://maps.google.com/?q=Ichiran+Ramen+Shinjuku"},
+  {name:"Afuri Ramen Harajuku",city:"Tokyo",area:"Harajuku",neighborhood:"Harajuku",cat:"ramen",cuisine:"🍜 Ramen",rating:4.4,price:"¥¥",lat:35.6687,lng:139.7027,desc:"Ramen yuzu (citron japonais) ultra-léger et délicat. Cadre design et moderne. Un des meilleurs ramen de Tokyo. ~1400¥.",gmaps:"https://maps.google.com/?q=Afuri+Ramen+Harajuku"},
+  {name:"Gyukatsu Motomura Shibuya",city:"Tokyo",area:"Shibuya",neighborhood:"Shibuya",cat:"viande",cuisine:"🥩 Gyukatsu",rating:4.3,price:"¥¥",lat:35.6580,lng:139.7016,desc:"Escalope de bœuf panée cuite à la pierre chaude devant vous. Expérience interactive. ~2000¥. File inévitable.",gmaps:"https://maps.google.com/?q=Gyukatsu+Motomura+Shibuya"},
+  {name:"Uobei Conveyor Belt Sushi",city:"Tokyo",area:"Shibuya",neighborhood:"Shibuya",cat:"sushi",cuisine:"🍣 Sushi",rating:4.0,price:"¥",lat:35.6607,lng:139.6985,desc:"Sushi livré par tube à grande vitesse sur votre table. Fun et économique (100-200¥/assiette). Parfait pour une pause rapide.",gmaps:"https://maps.google.com/?q=Uobei+Sushi+Shibuya"},
+  {name:"Tsukiji Outer Market",city:"Tokyo",area:"Tsukiji",neighborhood:"Tsukiji",cat:"marché",cuisine:"🐠 Marché/Seafood",rating:4.5,price:"¥¥",lat:35.6654,lng:139.7706,desc:"Le marché du matin de Tokyo — sushi ultra-frais, tamagoyaki, brochettes de fruits de mer. Ouvert 6h30-14h.",gmaps:"https://maps.google.com/?q=Tsukiji+Outer+Market"},
+  {name:"Gonpachi Nishi-Azabu",city:"Tokyo",area:"Roppongi",neighborhood:"Nishi-Azabu",cat:"izakaya",cuisine:"🍱 Izakaya",rating:4.1,price:"¥¥¥",lat:35.6584,lng:139.7208,desc:"Le restaurant Kill Bill. Yakitori et cuisine japonaise dans un décor architectural à plusieurs niveaux. 3000-5000¥.",gmaps:"https://maps.google.com/?q=Gonpachi+Nishi-Azabu+Tokyo"},
+  {name:"Tempura Narikura",city:"Tokyo",area:"Asakusa",neighborhood:"Asakusa",cat:"tempura",cuisine:"🍤 Tempura",rating:4.5,price:"¥¥¥",lat:35.7148,lng:139.7967,desc:"Tempura préparée à la minute, légère et croustillante. File inévitable le midi. Réservation recommandée. ~3000¥.",gmaps:"https://maps.google.com/?q=Narikura+Tempura+Asakusa"},
+  {name:"Ippudo Ramen Akihabara",city:"Tokyo",area:"Akihabara",neighborhood:"Akihabara",cat:"ramen",cuisine:"🍜 Ramen",rating:4.2,price:"¥¥",lat:35.6987,lng:139.7730,desc:"Ramen hakata (bouillon de porc crémeux). Chaîne parmi les meilleures du Japon. ~1300¥.",gmaps:"https://maps.google.com/?q=Ippudo+Ramen+Akihabara"},
+  {name:"Omoide Yokocho",city:"Tokyo",area:"Shinjuku",neighborhood:"Shinjuku Ouest",cat:"izakaya",cuisine:"🍢 Yakitori",rating:4.4,price:"¥¥",lat:35.6924,lng:139.6994,desc:"Ruelle des Souvenirs — mini-bars et grillades yakitori dans des ruelles étroites. Atmosphère retro, fumée et convivialité. Dès 18h.",gmaps:"https://maps.google.com/?q=Omoide+Yokocho+Shinjuku+Tokyo"},
+  {name:"Golden Gai",city:"Tokyo",area:"Shinjuku",neighborhood:"Kabukicho",cat:"bar",cuisine:"🍺 Bars",rating:4.5,price:"¥¥",lat:35.6933,lng:139.7038,desc:"300+ micro-bars thématiques dans 6 ruelles. Chaque bar a sa personnalité et ses 5-10 places. Prix: 500-1500¥/verre + cover charge.",gmaps:"https://maps.google.com/?q=Golden+Gai+Shinjuku+Tokyo"},
+  // ── KYOTO ─────────────────────────────────────────────────────
+  {name:"Issen Yoshoku",city:"Kyoto",area:"Kyoto",neighborhood:"Gion",cat:"japonais",cuisine:"🥞 Kyoto Okonomiyaki",rating:4.4,price:"¥¥",lat:35.0034,lng:135.7752,desc:"Le berceau de l'okonomiyaki de Kyoto depuis 1870. Décor rétro avec mannequins en cire et affiches d'époque. La recette originale (gyūniku-yaki) est différente du style Osaka. ~1200¥.",gmaps:"https://maps.google.com/?q=Issen+Yoshoku+Gion+Kyoto"},
+  {name:"Sushi Gion Matsudaya",city:"Kyoto",area:"Kyoto",neighborhood:"Gion",cat:"sushi",cuisine:"🍣 Sushi Omakase",rating:4.8,price:"¥¥¥",lat:35.0038,lng:135.7759,desc:"1 étoile Michelin. Sushi Edo-style par le Chef Matsuda. Omakase en 12 pièces avec produits locaux de saison. Réservation indispensable des semaines à l'avance. ~15 000¥/p.",gmaps:"https://maps.google.com/?q=Sushi+Gion+Matsudaya+Kyoto"},
+  {name:"Tofu Hachinoki (Yudofu)",city:"Kyoto",area:"Kyoto",neighborhood:"Nanzenji",cat:"japonais",cuisine:"🫕 Tofu/Végétarien",rating:4.5,price:"¥¥¥",lat:35.0115,lng:135.7929,desc:"Yudofu (tofu mijoté dans un bouillon dashi) dans un jardin traditionnel près de Nanzenji. Cuisine bouddhiste shojin. ~2500¥. Vue jardin obligatoire.",gmaps:"https://maps.google.com/?q=Tofu+Hachinoki+Nanzenji+Kyoto"},
+  {name:"Nakamuraya (Wagashi)",city:"Kyoto",area:"Kyoto",neighborhood:"Gion",cat:"dessert",cuisine:"🍡 Wagashi/Thé",rating:4.4,price:"¥¥",lat:35.0038,lng:135.7754,desc:"Salon de thé traditionnel dans Gion. Mochi, anmitsu, wagashi de saison. Matcha parfait à 1200¥. Cadre authentique, service cérémoniel.",gmaps:"https://maps.google.com/?q=Nakamuraya+Gion+Kyoto"},
+  {name:"Nishiki Market",city:"Kyoto",area:"Kyoto",neighborhood:"Centre Kyoto",cat:"marché",cuisine:"🏮 Marché",rating:4.4,price:"¥",lat:35.0047,lng:135.7653,desc:"400m de stands alimentaires couverts. Tofu, mochi, pickles, poisson grillé. Le marché le plus savoureux de Kyoto.",gmaps:"https://maps.google.com/?q=Nishiki+Market+Kyoto"},
+  {name:"Pontocho Alley",city:"Kyoto",area:"Kyoto",neighborhood:"Pontocho",cat:"izakaya",cuisine:"🏮 Izakaya/Kaiseki",rating:4.5,price:"¥¥¥",lat:35.0055,lng:135.7710,desc:"Ruelle mythique 300m en bord de rivière Kamo. Terrasses kawayu en été sur l'eau. Dizaines de restaurants variés. 2000-6000¥.",gmaps:"https://maps.google.com/?q=Pontocho+Kyoto"},
+  {name:"Kyoboshi",city:"Kyoto",area:"Kyoto",neighborhood:"Gion",cat:"japonais",cuisine:"🍱 Cuisine de Kyoto",rating:4.6,price:"¥¥¥",lat:35.0038,lng:135.7757,desc:"Cuisine traditionnelle de Kyoto (Kyo-ryori) dans le quartier de Gion. Déjeuner kaiseki plus abordable que le dîner.",gmaps:"https://maps.google.com/?q=Kyoboshi+Gion+Kyoto"},
+  {name:"Izuju (Sushi Presse)",city:"Kyoto",area:"Kyoto",neighborhood:"Gion",cat:"sushi",cuisine:"🍣 Sushi",rating:4.5,price:"¥¥",lat:35.0040,lng:135.7761,desc:"Spécialité de Kyoto : sushi mackerel pressé (sabazushi) depuis 1781. Complètement différent du sushi de Tokyo. À goûter absolument.",gmaps:"https://maps.google.com/?q=Izuju+Sushi+Gion+Kyoto"},
+  // ── OSAKA ─────────────────────────────────────────────────────
+  {name:"Jiyūken",city:"Osaka",area:"Osaka",neighborhood:"Namba",cat:"japonais",cuisine:"🍛 Curry Japonais",rating:4.5,price:"¥",lat:34.6697,lng:135.5082,desc:"Depuis 1910 — curry sec sur riz blanc avec un jaune d'œuf cru posé dessus. Mélanger avant de manger. Plat culte d'Osaka à moins de 1000¥. Simple, unique, inoubliable.",gmaps:"https://maps.google.com/?q=Jiyuken+Namba+Osaka"},
+  {name:"Yaekatsu Kushikatsu",city:"Osaka",area:"Osaka",neighborhood:"Shinsekai",cat:"streetfood",cuisine:"🍢 Kushikatsu",rating:4.4,price:"¥",lat:34.6519,lng:135.5060,desc:"Référence du kushikatsu depuis 50 ans à Shinsekai. Dès 165¥/brochette. Plus populaire auprès des locaux que les chaînes touristiques. Ambiance shōwa authentique. Double-trempage interdit !",gmaps:"https://maps.google.com/?q=Yaekatsu+Kushikatsu+Shinsekai+Osaka"},
+  {name:"Time Out Market Osaka",city:"Osaka",area:"Osaka",neighborhood:"Namba",cat:"marché",cuisine:"🌍 Food Hall Multi-cuisine",rating:4.4,price:"¥¥",lat:34.6705,lng:135.5021,desc:"Premier Time Out Market d'Asie ouvert en 2025. 17 cuisines de chefs locaux sélectionnés + 2 bars. Yakitori, sushi, ramen, gyoza, pizza — tout en un lieu. Moderne et animé.",gmaps:"https://maps.google.com/?q=Time+Out+Market+Osaka"},
+  {name:"Ajinoya Honten Okonomiyaki",city:"Osaka",area:"Osaka",neighborhood:"Namba",cat:"okonomiyaki",cuisine:"🥞 Okonomiyaki",rating:4.5,price:"¥¥",lat:34.6690,lng:135.5017,desc:"Bib Gourmand Michelin. Okonomiyaki Osaka style préparé devant vous sur la plaque. Adresse de référence du quartier Namba depuis des décennies. ~1500¥.",gmaps:"https://maps.google.com/?q=Ajinoya+Okonomiyaki+Namba+Osaka"},
+  {name:"Hanadako",city:"Osaka",area:"Osaka",neighborhood:"Umeda",cat:"streetfood",cuisine:"🐙 Takoyaki",rating:4.5,price:"¥",lat:34.7014,lng:135.4978,desc:"Takoyaki negi-mayo (mayo + oignon vert) depuis des décennies — parmi les meilleurs d'Osaka selon les locaux. File permanente. ~500¥/8 pièces.",gmaps:"https://maps.google.com/?q=Hanadako+Umeda+Osaka"},
+  {name:"Izakaya Toyo",city:"Osaka",area:"Osaka",neighborhood:"Fukushima",cat:"izakaya",cuisine:"🐟 Seafood/Thon",rating:4.6,price:"¥¥",lat:34.6942,lng:135.4878,desc:"Réputation internationale pour la joue de thon (maguro kama). Stand de rue devenu restaurant culte. Réservation indispensable. ~3000¥.",gmaps:"https://maps.google.com/?q=Izakaya+Toyo+Osaka"},
+  {name:"Kushikatsu Daruma",city:"Osaka",area:"Osaka",neighborhood:"Shinsekai",cat:"streetfood",cuisine:"🍢 Kushikatsu",rating:4.4,price:"¥",lat:34.6515,lng:135.5063,desc:"La référence du kushikatsu à Osaka depuis 1929. Brochettes panées frites (viande, légumes, fruits de mer). Règle d'or : ne jamais re-tremper dans la sauce ! ~150¥/brochette.",gmaps:"https://maps.google.com/?q=Kushikatsu+Daruma+Shinsekai+Osaka"},
+  {name:"Shin Umeda Shokudogai",city:"Osaka",area:"Osaka",neighborhood:"Umeda",cat:"marché",cuisine:"🏮 Food Market",rating:4.3,price:"¥",lat:34.7017,lng:135.4972,desc:"Dédale de 100+ restaurants abordables sous les voies ferrées d'Umeda. Okonomiyaki, ramen, gyoza, izakayas. Authentique et populaire. Ouvert jusqu'à 23h.",gmaps:"https://maps.google.com/?q=Shin+Umeda+Shokudogai+Osaka"},
+  {name:"Okonomiyaki Kiji",city:"Osaka",area:"Osaka",neighborhood:"Umeda",cat:"okonomiyaki",cuisine:"🥞 Okonomiyaki",rating:4.4,price:"¥¥",lat:34.6998,lng:135.4980,desc:"Okonomiyaki style Osaka légendaire. File devant la porte mais saveur imbattable. ~1500¥.",gmaps:"https://maps.google.com/?q=Kiji+Okonomiyaki+Osaka"},
+  {name:"Wanaka Takoyaki",city:"Osaka",area:"Osaka",neighborhood:"Namba",cat:"streetfood",cuisine:"🐙 Takoyaki",rating:4.5,price:"¥",lat:34.6693,lng:135.5024,desc:"Les meilleurs takoyaki (boulettes pieuvre) d'Osaka selon les locaux. Portion de 8 ~500¥. File constante mais rapide.",gmaps:"https://maps.google.com/?q=Wanaka+Takoyaki+Osaka"},
+  {name:"Kuromon Ichiba Market",city:"Osaka",area:"Osaka",neighborhood:"Nipponbashi",cat:"marché",cuisine:"🐠 Marché Premium",rating:4.4,price:"¥¥",lat:34.6681,lng:135.5083,desc:"Le ventre d'Osaka. Fruits de mer ultra-frais, wagyu à déguster sur place, street food premium. Ouvert 8h-18h.",gmaps:"https://maps.google.com/?q=Kuromon+Ichiba+Market+Osaka"},
+  {name:"Hozenji Yokocho — Izakayas",city:"Osaka",area:"Osaka",neighborhood:"Namba",cat:"izakaya",cuisine:"🏮 Izakaya",rating:4.5,price:"¥¥",lat:34.6687,lng:135.5028,desc:"Venelle mystique avec temple moussu. Restaurants traditionnels intimistes le soir. Atmosphère unique et photogénique.",gmaps:"https://maps.google.com/?q=Hozenji+Yokocho+Osaka"},
+  {name:"Ichiran Ramen Dotonbori",city:"Osaka",area:"Osaka",neighborhood:"Dotonbori",cat:"ramen",cuisine:"🍜 Ramen",rating:4.2,price:"¥¥",lat:34.6687,lng:135.5014,desc:"La branche Dotonbori de l'iconique Ichiran. Même concept box privative. Idéal après une soirée Dotonbori.",gmaps:"https://maps.google.com/?q=Ichiran+Ramen+Dotonbori+Osaka"},
+  {name:"Mizuno (Okonomiyaki)",city:"Osaka",area:"Osaka",neighborhood:"Dotonbori",cat:"okonomiyaki",cuisine:"🥞 Okonomiyaki",rating:4.3,price:"¥¥",lat:34.6689,lng:135.5017,desc:"Référence absolue de l'okonomiyaki à Osaka depuis des décennies. En bord de Dotonbori. ~1800¥. File parfois longue.",gmaps:"https://maps.google.com/?q=Mizuno+Okonomiyaki+Dotonbori+Osaka"}
+];
+
+const ACTIVITIES = [
+  // ── NAKANO (autour de l'Airbnb) ──────────────────────────────
+  {name:"Nakano Broadway",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"shopping",rating:4.4,prix:"Gratuit",lat:35.7086,lng:139.6643,desc:"5 niveaux, 350+ boutiques manga/anime/figurines rétro/vintage. Mandarake, Coffee Zingaro, Hidari Zingaro. 12 min à pied de l'Airbnb.",gmaps:"https://maps.google.com/?q=Nakano+Broadway+Tokyo"},
+  {name:"Coffee Zingaro (Murakami)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Broadway",cat:"culture",rating:4.3,prix:"~800¥",lat:35.7086,lng:139.6644,desc:"Café de l'artiste Takashi Murakami. Tables gaming rétro (Mario, Donkey Kong). Café Nordic Fuglen. Pancakes spectaculaires.",gmaps:"https://maps.google.com/?q=Coffee+Zingaro+Nakano+Broadway"},
+  {name:"Hidari Zingaro Gallery",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Broadway",cat:"culture",rating:4.2,prix:"Gratuit",lat:35.7086,lng:139.6644,desc:"Galerie art contemporain Kaikai Kiki (Takashi Murakami) au 3e étage de Nakano Broadway. Expositions rotatives.",gmaps:"https://maps.google.com/?q=Hidari+Zingaro+Nakano+Broadway"},
+  {name:"Fujiya Camera (Nakano)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"shopping",rating:4.5,prix:"Variable",lat:35.7062,lng:139.6649,desc:"80 ans d'histoire. 2000+ appareils et objectifs d'occasion. Paradis pour passionnés photo argentique et vintage.",gmaps:"https://maps.google.com/?q=Fujiya+Camera+Nakano+Tokyo"},
+  {name:"Araiyakushi Baishoin Temple",city:"Tokyo",area:"Nakano",neighborhood:"Araiyakushi-mae",cat:"temple",rating:4.3,prix:"Gratuit",lat:35.7214,lng:139.6478,desc:"Temple Shingon du 16e siècle. Réputé pour soigner les maladies des yeux. Amulettes et plaques ema originales. Calme et authentique.",gmaps:"https://maps.google.com/?q=Araiyakushi+Temple+Nakano+Tokyo"},
+  {name:"Ichi no Yu — Sento",city:"Tokyo",area:"Nakano",neighborhood:"Numabukuro",cat:"onsen",rating:4.4,prix:"520¥",lat:35.7155,lng:139.6540,desc:"Bain public traditionnel (sento) ouvert jusqu'à 1h30 du matin. Sauna vapeur, bain extérieur. Serviettes incluses. Expérience locale.",gmaps:"https://maps.google.com/?q=Ichi+no+Yu+Nakano+Tokyo"},
+  {name:"Nakano Central Park",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"parc",rating:4.1,prix:"Gratuit",lat:35.7065,lng:139.6644,desc:"Grand parc au nord de la gare Nakano. Food trucks 11h-16h en semaine. Parfait pour un déjeuner en plein air au calme.",gmaps:"https://maps.google.com/?q=Nakano+Central+Park+Tokyo"},
+  {name:"🎉 Champuru Festival (19-20 Juil)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Station",cat:"événement",rating:5.0,prix:"Gratuit",lat:35.7063,lng:139.6650,desc:"PENDANT VOTRE SÉJOUR ! 21e édition du festival culturel okinawais. Musique, danse, cuisine traditionnelle. Autour de la gare de Nakano. Week-end du 19-20 juillet.",gmaps:"https://maps.google.com/?q=Nakano+Station+Tokyo"},
+  {name:"Mandarake (Vintage Manga)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Broadway",cat:"shopping",rating:4.4,prix:"Variable",lat:35.7086,lng:139.6643,desc:"Le plus grand magasin de manga/anime vintage du monde. 1M+ articles. Figures rares, dojinshi, jouets US vintage.",gmaps:"https://maps.google.com/?q=Mandarake+Nakano+Broadway"},
+  {name:"Aji no Machidaya (Sake Shop)",city:"Tokyo",area:"Nakano",neighborhood:"Araiyakushi-mae",cat:"shopping",rating:4.3,prix:"Variable",lat:35.7213,lng:139.6479,desc:"Cave à saké, shochu, umeshu artisanaux. Sélection de 'one-cup sake' unique. Service d'envoi à domicile possible.",gmaps:"https://maps.google.com/?q=Aji+No+Machidaya+Nakano+Tokyo"},
+  // ── TOKYO AUTRES QUARTIERS ─────────────────────────────────────
+  {name:"🎆 Sumida River Fireworks (25 Jul)",city:"Tokyo",area:"Asakusa",neighborhood:"Asakusa",cat:"événement",rating:5.0,prix:"Gratuit",lat:35.7101,lng:139.8007,desc:"PENDANT VOTRE SÉJOUR ! L'un des plus grands feux d'artifice du Japon — 20 000 feux sur 1h30 au-dessus de la Sumida. 25 Juillet dès 19h05. Spots : Sumida Park, pont Komagata, Chabangibashi. Arriver avant 17h pour avoir une place.",gmaps:"https://maps.google.com/?q=Sumida+Park+Asakusa+Tokyo"},
+  {name:"TeamLab Borderless Azabudai",city:"Tokyo",area:"Roppongi",neighborhood:"Roppongi",cat:"art",rating:4.8,prix:"3800¥/p",lat:35.6572,lng:139.7394,desc:"La version grand format de TeamLab — 10 000m² d'art numérique immersif sans limites. Réouvert en 2024 à Azabudai Hills. Différent de Planets ! Réserver sur teamlab.art.",gmaps:"https://maps.google.com/?q=TeamLab+Borderless+Azabudai+Hills+Tokyo",booking:"https://www.teamlab.art/e/borderless-azabudai/"},
+  {name:"Jimbocho — Quartier des Livres",city:"Tokyo",area:"Chiyoda",neighborhood:"Chiyoda",cat:"culture",rating:4.4,prix:"Gratuit",lat:35.6962,lng:139.7577,desc:"200+ librairies d'occasion couvrant des pâtés de maisons entiers. Mangas rares, livres illustrés japonais vintage, cartes anciennes. Paradis pour les curieux.",gmaps:"https://maps.google.com/?q=Jimbocho+Book+District+Tokyo"},
+  {name:"Tokyo Toilet Art Project",city:"Tokyo",area:"Shibuya",neighborhood:"Shibuya",cat:"culture",rating:4.3,prix:"Gratuit",lat:35.6697,lng:139.6912,desc:"17 toilettes publiques redessinées par des architectes de renommée mondiale (Tadao Ando, Kengo Kuma...). Parcours entre Yoyogi et Daikanyama. Gratuit et surprenant.",gmaps:"https://maps.google.com/?q=The+Tokyo+Toilet+Project+Shibuya"},
+  {name:"Senso-ji Temple",city:"Tokyo",area:"Asakusa",neighborhood:"Asakusa",cat:"temple",rating:4.6,prix:"Gratuit",lat:35.7148,lng:139.7967,desc:"Le plus vieux temple de Tokyo (645 AD). Nakamise Shopping Street. Arriver avant 8h pour éviter la foule.",gmaps:"https://maps.google.com/?q=Senso-ji+Temple+Asakusa"},
+  {name:"Meiji Jingu Shrine",city:"Tokyo",area:"Harajuku",neighborhood:"Harajuku",cat:"temple",rating:4.6,prix:"Gratuit",lat:35.6763,lng:139.6993,desc:"Temple shinto dans une forêt de 70 ha au cœur de Tokyo. Calme absolu à 10 min de Harajuku.",gmaps:"https://maps.google.com/?q=Meiji+Jingu+Shrine+Tokyo"},
+  {name:"Shibuya Scramble Crossing",city:"Tokyo",area:"Shibuya",neighborhood:"Shibuya",cat:"incontournable",rating:4.7,prix:"Gratuit",lat:35.6595,lng:139.7004,desc:"Le croisement le plus fréquenté du monde. Vue parfaite depuis Starbucks au-dessus ou Shibuya Sky (2000¥).",gmaps:"https://maps.google.com/?q=Shibuya+Scramble+Crossing"},
+  {name:"TeamLab Planets Toyosu",city:"Tokyo",area:"Toyosu",neighborhood:"Toyosu",cat:"art",rating:4.7,prix:"3200¥/p",lat:35.6481,lng:139.7942,desc:"Art numérique immersif — marcher dans l'eau entre les projections lumineuses. Réserver AVANT le voyage sur teamlab.art.",gmaps:"https://maps.google.com/?q=TeamLab+Planets+Toyosu",booking:"https://teamlab.art/e/planets/"},
+  {name:"Shinjuku Gyoen",city:"Tokyo",area:"Shinjuku",neighborhood:"Shinjuku",cat:"parc",rating:4.5,prix:"500¥",lat:35.6851,lng:139.7100,desc:"Grand jardin national (58 ha). Jardin japonais, français et anglais. Parfait pour pique-niquer. Interdit alcool.",gmaps:"https://maps.google.com/?q=Shinjuku+Gyoen+National+Garden"},
+  {name:"Tokyo Skytree",city:"Tokyo",area:"Asakusa",neighborhood:"Oshiage",cat:"vue",rating:4.4,prix:"2060-3090¥",lat:35.7101,lng:139.8107,desc:"La plus haute tour du Japon (634m). Vue à 360° sur Tokyo et par temps clair sur le Fuji. Réserver à l'avance.",gmaps:"https://maps.google.com/?q=Tokyo+Skytree"},
+  {name:"Akihabara Electric Town",city:"Tokyo",area:"Akihabara",neighborhood:"Akihabara",cat:"shopping",rating:4.5,prix:"Variable",lat:35.6984,lng:139.7731,desc:"Capitale mondiale de l'électronique, manga et jeux vidéo. Multi-étages de figurines, arcades, tech neuve et d'occasion.",gmaps:"https://maps.google.com/?q=Akihabara+Tokyo"},
+  {name:"DisneySea Tokyo",city:"Tokyo",area:"Maihama",neighborhood:"Maihama",cat:"parc",rating:4.8,prix:"10900¥/p",lat:35.6267,lng:139.8850,desc:"Le meilleur parc Disney du monde pour adultes. Tower of Terror, Indiana Jones, Sindbad. Ambiance unique 'port maritime'.",gmaps:"https://maps.google.com/?q=Tokyo+DisneySea",booking:"https://www.tokyodisneyresort.jp/"},
+  // ── HAKONE ────────────────────────────────────────────────────
+  {name:"Hakone Ropeway",city:"Hakone",area:"Hakone",neighborhood:"Owakudani",cat:"nature",rating:4.5,prix:"~1500¥",lat:35.2486,lng:139.0253,desc:"Télécabine au-dessus des fumerolles volcaniques d'Owakudani. Vue imprenable sur le Fuji par temps clair.",gmaps:"https://maps.google.com/?q=Hakone+Ropeway"},
+  {name:"Hakone Open Air Museum",city:"Hakone",area:"Hakone",neighborhood:"Chokoku-no-Mori",cat:"musée",rating:4.6,prix:"1600¥",lat:35.2416,lng:139.0346,desc:"Sculptures monumentales en plein air dont une salle Picasso entière. Surprenant et magnifique.",gmaps:"https://maps.google.com/?q=Hakone+Open+Air+Museum"},
+  // ── KYOTO ─────────────────────────────────────────────────────
+  {name:"🏛️ Ninnaji",city:"Kyoto",area:"Kyoto",neighborhood:"Kinkaku-ji",cat:"temple",rating:4.7,prix:"1000¥",lat:35.0306,lng:135.7143,desc:"Temple UNESCO fondé en 888 ap. J.-C. Pagode à 5 étages, jardins zen, cerisiers. Vérifie sur ninnaji.jp si des bâtiments historiques ouvrent en été 2026 — certains espaces sont en accès spécial selon les saisons.",gmaps:"https://maps.google.com/?q=Ninnaji+Temple+Kyoto"},
+  {name:"Atelier Poterie Kyoto (Kyo-yaki)",city:"Kyoto",area:"Kyoto",neighborhood:"Higashiyama",cat:"culture",rating:4.5,prix:"~3000¥",lat:35.0024,lng:135.7800,desc:"Atelier de poterie traditionnelle Kyo-yaki / Kiyomizu-yaki dans Higashiyama. Fabriquer ou peindre une pièce encadrée par un artisan. Résultat envoyé par courrier à domicile si désiré.",gmaps:"https://maps.google.com/?q=Kiyomizu+Pottery+Workshop+Kyoto"},
+  {name:"Nijo Castle",city:"Kyoto",area:"Kyoto",neighborhood:"Centre Kyoto",cat:"château",rating:4.5,prix:"1000¥",lat:35.0142,lng:135.7480,desc:"Château shogunal du 17e siècle avec les célèbres 'planchers rossignols' (nightingale floors) qui grincent pour alerter des intrus. UNESCO. Jardins magnifiques.",gmaps:"https://maps.google.com/?q=Nijo+Castle+Kyoto"},
+  {name:"Iwatayama Monkey Park",city:"Kyoto",area:"Kyoto",neighborhood:"Arashiyama",cat:"nature",rating:4.3,prix:"600¥",lat:35.0094,lng:135.6725,desc:"130 singes macaques en liberté sur la montagne d'Arashiyama. Vue panoramique sur Kyoto depuis le sommet. Parfait à combiner avec la forêt de bambous.",gmaps:"https://maps.google.com/?q=Iwatayama+Monkey+Park+Arashiyama+Kyoto"},
+  {name:"Gion Corner",city:"Kyoto",area:"Kyoto",neighborhood:"Gion",cat:"culture",rating:4.2,prix:"3150¥",lat:35.0031,lng:135.7747,desc:"Spectacle condensé des arts traditionnels de Kyoto : cérémonie du thé, Ikebana, Koto, Kyogen, danse Maiko. 50 min. Shows quotidiens à 18h et 19h.",gmaps:"https://maps.google.com/?q=Gion+Corner+Kyoto"},
+  {name:"Arashiyama Bamboo Grove",city:"Kyoto",area:"Kyoto",neighborhood:"Arashiyama",cat:"nature",rating:4.6,prix:"Gratuit",lat:35.0094,lng:135.6761,desc:"Forêt de bambous géants. Magique tôt le matin (avant 8h). Après 10h = foule intense.",gmaps:"https://maps.google.com/?q=Arashiyama+Bamboo+Grove+Kyoto"},
+  {name:"Fushimi Inari Taisha",city:"Kyoto",area:"Kyoto",neighborhood:"Fushimi",cat:"temple",rating:4.8,prix:"Gratuit",lat:34.9671,lng:135.7727,desc:"10 000 torii vermillon sur la montagne. Montée complète 2h A/R. Y aller à l'aube (6h) pour les photos.",gmaps:"https://maps.google.com/?q=Fushimi+Inari+Taisha+Kyoto"},
+  {name:"Kinkaku-ji Temple Doré",city:"Kyoto",area:"Kyoto",neighborhood:"Kinkaku-ji",cat:"temple",rating:4.7,prix:"500¥",lat:35.0394,lng:135.7292,desc:"Pavillon d'Or recouvert de feuilles d'or. Incontournable. Arriver à l'ouverture (9h) pour éviter les groupes.",gmaps:"https://maps.google.com/?q=Kinkaku-ji+Golden+Pavilion+Kyoto"},
+  {name:"Ryoan-ji (Jardin Zen)",city:"Kyoto",area:"Kyoto",neighborhood:"Kinkaku-ji",cat:"temple",rating:4.5,prix:"600¥",lat:35.0345,lng:135.7179,desc:"Le jardin sec de pierres (karesansui) le plus célèbre du monde. 15 pierres dont une toujours cachée selon l'angle.",gmaps:"https://maps.google.com/?q=Ryoanji+Temple+Kyoto"},
+  // ── NARA ──────────────────────────────────────────────────────
+  {name:"Nara Deer Park",city:"Nara",area:"Nara",neighborhood:"Centre Nara",cat:"nature",rating:4.7,prix:"Gratuit",lat:34.6851,lng:135.8048,desc:"Cerfs sacrés en liberté partout. Galettes de riz (shika senbei, 200¥) pour les nourrir — ils s'inclinent pour demander.",gmaps:"https://maps.google.com/?q=Nara+Deer+Park"},
+  {name:"Todai-ji Temple",city:"Nara",area:"Nara",neighborhood:"Centre Nara",cat:"temple",rating:4.7,prix:"600¥",lat:34.6888,lng:135.8398,desc:"Le plus grand bâtiment en bois du monde. Grand Bouddha de 15m. UNESCO. Impressionnant.",gmaps:"https://maps.google.com/?q=Todaiji+Temple+Nara"},
+  // ── OSAKA ─────────────────────────────────────────────────────
+  {name:"Tonbori River Cruise",city:"Osaka",area:"Osaka",neighborhood:"Dotonbori",cat:"incontournable",rating:4.4,prix:"900¥",lat:34.6686,lng:135.5012,desc:"Croisière nocturne de 20 min sur le canal Dotonbori — voir les néons et enseignes géantes depuis l'eau. Le soir à partir de 19h. Point de départ : Tazaemon Bridge. Vue unique et très photogénique.",gmaps:"https://maps.google.com/?q=Tombori+River+Cruise+Osaka"},
+  {name:"Spa World Osaka",city:"Osaka",area:"Osaka",neighborhood:"Shinsekai",cat:"onsen",rating:4.3,prix:"1000–2500¥",lat:34.6497,lng:135.5058,desc:"Parc thermal géant sur 6 étages — bains thématiques Europe & Asie, saunas, piscines. Ouvert 24h/24. Parfait après une longue journée. Règles onsen standard (pas de tatouages).",gmaps:"https://maps.google.com/?q=Spa+World+Osaka"},
+  {name:"Umeda Sky Building",city:"Osaka",area:"Osaka",neighborhood:"Umeda",cat:"vue",rating:4.6,prix:"1500¥",lat:34.7056,lng:135.4901,desc:"Floating Garden Observatory — terrasse panoramique en anneau à 173m de haut entre deux tours reliées. Vue 360° sur Osaka. Très photogénique de nuit.",gmaps:"https://maps.google.com/?q=Umeda+Sky+Building+Osaka"},
+  {name:"Tsutenkaku Tower & Shinsekai",city:"Osaka",area:"Osaka",neighborhood:"Shinsekai",cat:"incontournable",rating:4.4,prix:"900¥",lat:34.6526,lng:135.5065,desc:"Tour symbole du vieux Osaka (103m). Shinsekai autour = quartier nostalgique années 50 avec kushikatsu, mahjong, néons rétro. Vue sur la ville depuis le sommet.",gmaps:"https://maps.google.com/?q=Tsutenkaku+Tower+Osaka"},
+  {name:"Amerika-Mura",city:"Osaka",area:"Osaka",neighborhood:"Shinsaibashi",cat:"shopping",rating:4.3,prix:"Gratuit",lat:34.6733,lng:135.4993,desc:"Le Harajuku d'Osaka — streetwear japonais, vintage américain, friperies, food trucks. Triangle Park au centre. Plus authentique et moins cher que Tokyo.",gmaps:"https://maps.google.com/?q=Amerika-Mura+Osaka"},
+  {name:"Osaka Castle",city:"Osaka",area:"Osaka",neighborhood:"Chuo",cat:"château",rating:4.5,prix:"600¥",lat:34.6873,lng:135.5259,desc:"Château emblématique. Musée à l'intérieur, parc gratuit autour. Vue panoramique depuis le donjon.",gmaps:"https://maps.google.com/?q=Osaka+Castle"},
+  {name:"Universal Studios Japan",city:"Osaka",area:"Osaka",neighborhood:"Sakurajima",cat:"parc",rating:4.7,prix:"~10400¥/p",lat:34.6654,lng:135.4323,desc:"Harry Potter World, Nintendo World (Mario Kart!), Hollywood. Réserver Express Pass à l'avance obligatoire en été.",gmaps:"https://maps.google.com/?q=Universal+Studios+Japan+Osaka",booking:"https://www.usj.co.jp/"},
+  {name:"Dotonbori — Namba",city:"Osaka",area:"Osaka",neighborhood:"Dotonbori",cat:"incontournable",rating:4.6,prix:"Gratuit",lat:34.6687,lng:135.5014,desc:"Le cœur d'Osaka. Enseignes géantes, Glico Man, street food de tous les côtés. Le soir est particulièrement animé.",gmaps:"https://maps.google.com/?q=Dotonbori+Osaka"},
+  {name:"Kaiyukan Aquarium",city:"Osaka",area:"Osaka",neighborhood:"Tempozan",cat:"parc",rating:4.7,prix:"2400¥",lat:34.6552,lng:135.4283,desc:"L'un des plus grands aquariums du monde. Requin-baleine dans un bassin central de 5400m³. Idéal par forte chaleur.",gmaps:"https://maps.google.com/?q=Osaka+Aquarium+Kaiyukan",booking:"https://www.kaiyukan.com/"},
+  {name:"Hozenji Yokocho",city:"Osaka",area:"Osaka",neighborhood:"Namba",cat:"incontournable",rating:4.5,prix:"Gratuit",lat:34.6678,lng:135.5025,desc:"Venelle mystérieuse du vieux Osaka. Temple moussu, lanternes rouges, restaurants traditionnels. Atmosphère Showa préservée.",gmaps:"https://maps.google.com/?q=Hozenji+Yokocho+Osaka"}
+];
+
+const SUGGESTIONS = [
+  {id:"s1",name:"Yanaka Cemetery au coucher du soleil",cat:"Cache-cache Tokyo",city:"Tokyo",area:"Yanaka",lat:35.7243,lng:139.7659,reason:"Ce cimetière historique du 19e siècle est l'un des seuls endroits à Tokyo qui ressemble encore au vieux Edo. Les chats errants, les temples de quartier, les boutiques artisanales — une bulle hors du temps. Le coucher du soleil entre les stèles est magique et quasi-inconnu des touristes.",added:false},
+  {id:"s2",name:"Koenji — Quartier des Bohèmes",cat:"Quartier local Tokyo",city:"Tokyo",area:"Koenji",lat:35.7044,lng:139.6499,reason:"Koenji est le quartier des musiciens, artistes et fripeurs de Tokyo. Less touristique que Shimokitazawa, beaucoup de disquaires de jazz, live houses underground, cafés tea-room years 70. À voir un jeudi ou vendredi soir.",added:false},
+  {id:"s3",name:"Yugawara Onsen (proche Hakone)",cat:"Onsen secret",city:"Hakone",area:"Yugawara",lat:35.1507,lng:139.0738,reason:"Moins fréquenté que les onsen de Hakone, Yugawara est un village thermal authentique où dorment les artistes et écrivains japonais depuis le 19e siècle. Bains publics à 450¥ au lieu de 3000¥ dans les grands ryokans.",added:false},
+  {id:"s4",name:"Philosopher's Path avant l'aube",cat:"Kyoto au calme",city:"Kyoto",area:"Higashiyama",lat:35.0272,lng:135.7964,reason:"Le Chemin de la Philosophie à 6h du matin en été est une expérience à part entière — brume légère sur le canal, grenouilles, chats, et personnes âgées faisant leur promenade. Zéro touriste. Prendre un café au Café de Philosophie qui ouvre tôt.",added:false},
+  {id:"s5",name:"Nishiki Tenmangu — le sanctuaire caché",cat:"Temple discret Kyoto",city:"Kyoto",area:"Nishiki",lat:35.0046,lng:135.7638,reason:"Coincé entre les étals du marché Nishiki, ce petit sanctuaire avec ses multiples têtes de bœuf est étrange et fascinant. Presque tous les touristes passent devant sans le remarquer.",added:false},
+  {id:"s6",name:"Shinsekai la nuit",cat:"Osaka populaire",city:"Osaka",area:"Shinsekai",lat:34.6512,lng:135.5065,reason:"Shinsekai ressemble à un décor de film neon-yakuza des années 80. Les enseigns clignotent, les vieux jouent au shogi, les senteurs de kushikatsu emplissent l'air. Voir ça après 20h est une expérience hors du temps.",added:false},
+  {id:"s7",name:"Kuroshio Market (Osaka Aquarium)",cat:"Osaka insolite",city:"Osaka",area:"Tempozan",lat:34.6552,lng:135.4289,reason:"Le marché intérieur de la zone de l'Aquarium de Kaiyukan. Le dimanche matin, thoniers et criées reconstituées avec dégustation. Moins cher et plus authentique que Tsukiji selon certains locaux.",added:false},
+  {id:"s8",name:"Shimokitazawa Bonus Round — Cafés littéraires",cat:"Cafés Tokyo",city:"Tokyo",area:"Shimokitazawa",lat:35.6613,lng:139.6672,reason:"B&B Books (librairie-bar), Que Sera (café jazz), Darwin Room (cabinet de curiosités). Ces trois adresses à Shimo sont les plus belles de Tokyo selon ceux qui y vivent. Aucune enseigne visible depuis la rue.",added:false},
+  {id:"s10",name:"Depachika de Isetan Shinjuku",cat:"Gastronomie Tokyo",city:"Tokyo",area:"Shinjuku",lat:35.6916,lng:139.7034,reason:"Les sous-sols de Isetan Shinjuku (B1 et B2) sont les meilleurs food halls du Japon. Pâtisseries, chocolats, wagyu, sushi, yakitori préparés devant vous. Budget 2000-5000¥ pour se faire plaisir. Parfait pour cadeaux aussi.",added:false}
+];
+
+const PHRASES = {
+  "🙏 Salutations & Politesse": [
+    ["Bonjour (matin)","おはようございます","Ohayō gozaimasu"],
+    ["Bonjour (journée)","こんにちは","Konnichiwa"],
+    ["Bonsoir","こんばんは","Konbanwa"],
+    ["Au revoir","さようなら","Sayōnara"],
+    ["À bientôt !","またね！","Mata ne!"],
+    ["Merci","ありがとうございます","Arigatō gozaimasu"],
+    ["Je vous en prie","どういたしまして","Dō itashimashite"],
+    ["S'il vous plaît","おねがいします","Onegai shimasu"],
+    ["Excusez-moi","すみません","Sumimasen"],
+    ["Je ne comprends pas","わかりません","Wakarimasen"],
+    ["Parlez-vous anglais ?","英語を話せますか？","Eigo o hanasemasu ka?"],
+  ],
+  "🍜 Restaurant & Nourriture": [
+    ["Une table pour 2","二人です","Futari desu"],
+    ["C'est délicieux !","おいしい！","Oishii!"],
+    ["L'addition s'il vous plaît","お会計をお願いします","Okaikei o onegaishimasu"],
+    ["Ça coûte combien ?","いくらですか？","Ikura desu ka?"],
+    ["Allergique à...","...アレルギーがあります","...arerugī ga arimasu"],
+    ["Végétarien(ne)","ベジタリアンです","Bejitarian desu"],
+    ["Sans porc","豚肉なしでお願いします","Butaniku nashi de onegaishimasu"],
+    ["Très bon, merci !","とてもおいしかったです！","Totemo oishikatta desu!"],
+    ["Encore un peu","もう少しください","Mō sukoshi kudasai"],
+    ["Eau froide s'il vous plaît","冷たい水をください","Tsumetai mizu o kudasai"],
+  ],
+  "🚇 Transport & Direction": [
+    ["Un billet pour...","...まで一枚","...made ichimai"],
+    ["Où est... ?","...はどこですか？","...wa doko desu ka?"],
+    ["À gauche","左","Hidari"],
+    ["À droite","右","Migi"],
+    ["Tout droit","まっすぐ","Massugu"],
+    ["Je suis perdu(e)","迷子になりました","Maigo ni narimashita"],
+    ["À quelle heure part le train ?","電車は何時ですか？","Densha wa nanji desu ka?"],
+    ["Où est la gare ?","駅はどこですか？","Eki wa doko desu ka?"],
+  ],
+  "🛍️ Shopping": [
+    ["Je regarde juste","見ているだけです","Mite iru dake desu"],
+    ["Avez-vous une taille M ?","Mサイズはありますか？","M saizu wa arimasu ka?"],
+    ["Détaxe s'il vous plaît","免税でお願いします","Menzei de onegaishimasu"],
+    ["Puis-je payer par carte ?","カードで払えますか？","Kādo de haraemasu ka?"],
+    ["Un sac s'il vous plaît","袋をください","Fukuro o kudasai"],
+    ["Avez-vous plus moins cher ?","もっと安いのはありますか？","Motto yasui no wa arimasu ka?"],
+  ],
+  "🆘 Urgences & Santé": [
+    ["Au secours !","助けてください！","Tasukete kudasai!"],
+    ["Appelez la police !","警察を呼んでください！","Keisatsu o yonde kudasai!"],
+    ["Appelez une ambulance !","救急車を呼んでください！","Kyūkyūsha o yonde kudasai!"],
+    ["J'ai besoin d'un médecin","医者が必要です","Isha ga hitsuyō desu"],
+    ["J'ai perdu mon passeport","パスポートをなくしました","Pasupōto o nakushimashita"],
+    ["J'ai mal ici","ここが痛いです","Koko ga itai desu"],
+    ["Toilettes","トイレ","Toire"],
+  ],
+};
+
+const MAP_PLACES = [
+  {name:"Airbnb #1 — Nakano, Tokyo",cat:"logement",lat:35.7055,lng:139.6665,desc:"3-33 Yayoichō, Nakano City — Check-in 15 Jul, Check-out 29 Jul"},
+  {name:"Airbnb #2 — Nakano, Tokyo",cat:"logement",lat:35.7050,lng:139.6660,desc:"Yayoichō, Nakano City — juste à côté de l'Airbnb #1"},
+  {name:"Shin-Nakano Station",cat:"transport",lat:35.7015,lng:139.6654,desc:"Marunouchi Line — 7 min à pied de l'Airbnb → Shinjuku en 8 min"},
+  {name:"Nakano Station",cat:"transport",lat:35.7059,lng:139.6650,desc:"JR Chuo Line + Tozai Metro — 12 min à pied → Shinjuku en 5 min"},
+  {name:"Nakano Broadway",cat:"shop",lat:35.7085,lng:139.6648,desc:"Manga, anime, figurines rétro — 12 min à pied de l'Airbnb"},
+  {name:"Tokyo Station",cat:"transport",lat:35.6812,lng:139.7671,desc:"Hub principal — Shinkansen, Yamanote Line"},
+  {name:"Shinjuku Station",cat:"transport",lat:35.6896,lng:139.7006,desc:"Gare la plus fréquentée du monde"},
+  {name:"Kyoto Station",cat:"transport",lat:34.9856,lng:135.7589,desc:"Arrivée Kyoto — Shinkansen, bus locaux"},
+  {name:"Osaka Station",cat:"transport",lat:34.7024,lng:135.4959,desc:"Hub Osaka — JR, Hankyu, Hanshin"},
+  {name:"Narita Airport",cat:"transport",lat:35.7720,lng:140.3929,desc:"Aéroport principal Tokyo"},
+  ...RESTAURANTS.map(r=>({name:r.name,cat:"resto",lat:r.lat,lng:r.lng,desc:r.desc})),
+  ...ACTIVITIES.map(a=>({name:a.name,cat:"activite",lat:a.lat,lng:a.lng,desc:a.desc})),
+  ...SUGGESTIONS.map(s=>({name:s.name,cat:"suggestion",lat:s.lat,lng:s.lng,desc:s.reason.substring(0,100)+"..."}))
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let mapInstance=null;
+let mapMarkers=[];
+let currentSuggestion=null;
+let selectedDay=null;
+let expenses=JSON.parse(localStorage.getItem('jp_expenses')||'[]');
+let dayNotes=JSON.parse(localStorage.getItem('jp_notes')||'{}');
+let dayChecked=JSON.parse(localStorage.getItem('jp_checked')||'{}');
+let addedSuggestions=JSON.parse(localStorage.getItem('jp_suggestions')||'[]');
+
+// ═══════════════════════════════════════════
+// COUNTDOWN
+// ═══════════════════════════════════════════
+function updateCountdown(){
+  const target=new Date('2026-07-15T00:00:00');
+  const now=new Date();
+  const diff=target-now;
+  if(diff<=0){
+    document.getElementById('cd-days').textContent='0';
+    document.getElementById('cd-hrs').textContent='0';
+    document.getElementById('cd-min').textContent='0';
+    return;
+  }
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  document.getElementById('cd-days').textContent=d;
+  document.getElementById('cd-hrs').textContent=h;
+  document.getElementById('cd-min').textContent=m;
+}
+updateCountdown();
+setInterval(updateCountdown,60000);
+
+// ═══════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelector(`[data-tab="${name}"]`).classList.add('active');
+  if(name==='carte') initMap();
+}
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>showTab(btn.dataset.tab));
+});
+
+// ═══════════════════════════════════════════
+// DAYS
+// ═══════════════════════════════════════════
+function renderDays(filter='all'){
+  const container=document.getElementById('days-container');
+  container.innerHTML='';
+  DAYS.filter(d=>filter==='all'||d.city===filter).forEach(d=>{
+    const checked=dayChecked[d.day]||false;
+    const note=dayNotes[d.day]||'';
+    const div=document.createElement('div');
+    div.className='day-card';
+    div.dataset.day=d.day;
+    div.dataset.city=d.city;
+    div.innerHTML=`
+      <div class="day-header" onclick="toggleDay(${d.day})">
+        <input type="checkbox" class="day-check" ${checked?'checked':''} onclick="toggleCheck(event,${d.day})" title="Marquer comme fait">
+        <div class="day-num ${checked?'done':''}">${d.day}</div>
+        <div class="day-info">
+          <div class="date">📅 ${d.date} &nbsp;·&nbsp; <span style="color:var(--gold)">${d.city}</span></div>
+          <div class="title">${d.area}</div>
+        </div>
+        <span class="day-emoji">${d.emoji}</span>
+        <span class="day-toggle">▼</span>
+      </div>
+      <div class="day-body">
+        <div class="day-sections">
+          <div class="day-section"><h4>🌅 Matin</h4><p>${d.morning}</p></div>
+          <div class="day-section"><h4>☀️ Après-midi</h4><p>${d.afternoon}</p></div>
+          <div class="day-section"><h4>🌙 Soirée</h4><p>${d.evening}</p></div>
+        </div>
+        <div class="highlights">
+          ${d.highlights.map(h=>`<span class="highlight-tag">📍 ${h}</span>`).join('')}
+        </div>
+        <div class="tip-box">💡 ${d.tip}</div>
+        <div style="margin-top:12px">
+          <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">📝 Notes personnelles</div>
+          <textarea class="notes-area" placeholder="Ajouter des notes..." onchange="saveNote(${d.day},this.value)">${note}</textarea>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+  updateStats();
+}
+
+function toggleDay(n){
+  const card=document.querySelector(`.day-card[data-day="${n}"]`);
+  card.classList.toggle('open');
+}
+function expandAll(){document.querySelectorAll('.day-card').forEach(c=>c.classList.add('open'))}
+function collapseAll(){document.querySelectorAll('.day-card').forEach(c=>c.classList.remove('open'))}
+function filterCity(city,el){
+  document.querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  renderDays(city);
+}
+function toggleCheck(e,n){
+  e.stopPropagation();
+  dayChecked[n]=e.target.checked;
+  localStorage.setItem('jp_checked',JSON.stringify(dayChecked));
+  const numEl=e.target.closest('.day-header').querySelector('.day-num');
+  if(e.target.checked) numEl.classList.add('done'); else numEl.classList.remove('done');
+  updateStats();
+}
+function saveNote(n,val){
+  dayNotes[n]=val;
+  localStorage.setItem('jp_notes',JSON.stringify(dayNotes));
+}
+function updateStats(){
+  const done=Object.values(dayChecked).filter(Boolean).length;
+  const statEl=document.getElementById('days-done-stat');
+  if(statEl) statEl.textContent=done;
+  const prog=document.getElementById('trip-progress');
+  if(prog) prog.style.width=(done/30*100)+'%';
+}
+
+// ═══════════════════════════════════════════
+// MAP
+// ═══════════════════════════════════════════
+const CAT_COLORS={
+  logement:'#E63946',resto:'#F4D03F',activite:'#58A6FF',
+  transport:'#3FB950',shop:'#A371F7',suggestion:'#FF8C00'
+};
+const CAT_ICONS={
+  logement:'🏠',resto:'🍜',activite:'⛩️',transport:'🚇',shop:'🛍️',suggestion:'✨'
+};
+
+function initMap(){
+  if(mapInstance) return;
+  mapInstance=L.map('map').setView([36.2,138.5],6);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap contributors',
+    maxZoom:19
+  }).addTo(mapInstance);
+  MAP_PLACES.forEach(p=>addMarker(p));
+  document.querySelectorAll('#map-filters .filter-btn').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('#map-filters .filter-btn').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+      filterMarkers(this.dataset.cat);
+    });
+  });
+}
+
+function addMarker(p){
+  const color=CAT_COLORS[p.cat]||'#888';
+  const icon=CAT_ICONS[p.cat]||'📍';
+  const marker=L.marker([p.lat,p.lng],{
+    icon:L.divIcon({
+      html:`<div style="background:${color};width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4)">${icon}</div>`,
+      className:'',iconSize:[28,28],iconAnchor:[14,14]
+    })
+  });
+  marker.bindPopup(`<div style="min-width:160px"><strong>${p.name}</strong><br><span style="font-size:.75rem;color:#666">${p.cat}</span><br><p style="font-size:.78rem;margin-top:6px">${p.desc||''}</p></div>`);
+  marker.dataset_cat=p.cat;
+  marker.addTo(mapInstance);
+  mapMarkers.push({marker,cat:p.cat});
+}
+
+function filterMarkers(cat){
+  mapMarkers.forEach(({marker,cat:c})=>{
+    if(cat==='all'||c===cat) mapInstance.addLayer(marker);
+    else mapInstance.removeLayer(marker);
+  });
+}
+
+// ═══════════════════════════════════════════
+// FOOD & ACTIVITIES — FILTRES AVANCÉS
+// ═══════════════════════════════════════════
+const foodFilters={city:'all',neighborhood:'all',rating:'0',price:'all'};
+const actFilters={city:'all',neighborhood:'all',rating:'0'};
+let favs=JSON.parse(localStorage.getItem('jp_favs')||'[]');
+let visited=JSON.parse(localStorage.getItem('jp_visited')||'[]');
+function toggleFav(name,btn){
+  const i=favs.indexOf(name);
+  if(i>=0) favs.splice(i,1); else favs.push(name);
+  localStorage.setItem('jp_favs',JSON.stringify(favs));
+  btn.classList.toggle('active',favs.includes(name));
+  btn.textContent=favs.includes(name)?'❤️ Favori':'🤍 Favori';
+  if(foodFilters.city==='favs'||actFilters.city==='favs'){applyFoodFilters();applyActFilters();}
+}
+function toggleVisited(name,btn){
+  const i=visited.indexOf(name);
+  if(i>=0) visited.splice(i,1); else visited.push(name);
+  localStorage.setItem('jp_visited',JSON.stringify(visited));
+  applyFoodFilters(); applyActFilters();
+}
+
+function renderStars(r){
+  if(!r) return '';
+  const full=Math.floor(r), half=r%1>=0.5?1:0, empty=5-full-half;
+  return `<span style="color:#F4D03F;font-size:.85rem">${'★'.repeat(full)}${half?'<span style="font-size:.7rem">½</span>':''}<span style="color:#30363D">${'★'.repeat(empty)}</span></span>`;
+}
+function priceColor(p){return p==='¥'?'#3FB950':p==='¥¥'?'#F4D03F':'#E63946';}
+
+function placeCard(item,type){
+  const isNakano=item.neighborhood&&item.neighborhood.toLowerCase().includes('nakano');
+  const isFav=favs.includes(item.name);
+  const isVisited=visited.includes(item.name);
+  return `<div class="place-card${isVisited?' visited':''}" style="${isNakano?'border-top:3px solid var(--red)':''}">
+    <div style="display:flex;align-items:start;justify-content:space-between;gap:8px">
+      <h3 style="font-size:.9rem">${item.name}${isNakano?' <span style="font-size:.65rem;background:rgba(230,57,70,.2);color:var(--red);padding:1px 6px;border-radius:10px">🏠 Airbnb</span>':''}${isVisited?' <span class="visited-badge">✓ Visité</span>':''}</h3>
+      ${item.price?`<span style="color:${priceColor(item.price)};font-weight:700;font-size:.85rem;flex-shrink:0">${item.price}</span>`:''}
+    </div>
+    ${item.rating?`<div style="display:flex;align-items:center;gap:6px;margin:4px 0">${renderStars(item.rating)}<span style="font-size:.72rem;color:var(--muted)">${item.rating}/5</span></div>`:''}
+    <div class="meta" style="margin-bottom:6px">📍 ${item.city}${item.neighborhood?' — '+item.neighborhood:' — '+item.area} &nbsp;·&nbsp; ${item.cuisine||item.cat}${type==='act'?' &nbsp;·&nbsp; 💰 '+item.prix:''}</div>
+    <p style="font-size:.8rem">${item.desc}</p>
+    <div class="place-actions">
+      ${item.gmaps?`<a href="${item.gmaps}" target="_blank" class="btn btn-ghost">🗺️ Maps</a>`:`<a href="https://maps.google.com/?q=${encodeURIComponent(item.name+' '+item.city)}" target="_blank" class="btn btn-ghost">🗺️ Maps</a>`}
+      ${item.booking?`<a href="${item.booking}" target="_blank" class="btn" style="background:var(--red)">🎟️ Réserver</a>`:''}
+      <button class="btn" onclick='openModal(${JSON.stringify(item.name)})'>+ Planning</button>
+      <button class="fav-btn${isFav?' active':''}" onclick='toggleFav(${JSON.stringify(item.name)},this)'>${isFav?'❤️ Favori':'🤍 Favori'}</button>
+      <button class="visit-btn${isVisited?' active':''}" onclick='toggleVisited(${JSON.stringify(item.name)},this)'>${isVisited?'✓ Visité':'Marquer visité'}</button>
+    </div>
+  </div>`;
+}
+
+function applyFoodFilters(){
+  const search=document.getElementById('search-food').value.toLowerCase();
+  const items=RESTAURANTS.filter(r=>{
+    if(foodFilters.city==='favs') return favs.includes(r.name);
+    if(foodFilters.city==='visited') return visited.includes(r.name);
+    const matchCity=foodFilters.city==='all'||r.city===foodFilters.city;
+    const matchNbhd=foodFilters.neighborhood==='all'||
+      (r.neighborhood&&r.neighborhood.toLowerCase().includes(foodFilters.neighborhood.toLowerCase()))||
+      (r.area&&r.area.toLowerCase().includes(foodFilters.neighborhood.toLowerCase()));
+    const matchRating=!r.rating||(r.rating>=(parseFloat(foodFilters.rating)||0));
+    const matchPrice=foodFilters.price==='all'||r.price===foodFilters.price;
+    const matchSearch=!search||(r.name+r.desc+(r.cuisine||r.cat)+(r.neighborhood||'')).toLowerCase().includes(search);
+    return matchCity&&matchNbhd&&matchRating&&matchPrice&&matchSearch;
+  });
+  const vCount=RESTAURANTS.filter(r=>visited.includes(r.name)).length;
+  document.getElementById('food-list').innerHTML=items.length?items.map(r=>placeCard(r,'food')).join(''):'<div style="padding:20px;color:var(--muted);font-size:.85rem">Aucun résultat pour ces filtres.</div>';
+  document.getElementById('food-count').textContent=`${items.length} restaurant${items.length>1?'s':''} trouvé${items.length>1?'s':''} · ✓ ${vCount}/${RESTAURANTS.length} visités`;
+}
+
+function setFoodFilter(key,val,el){
+  foodFilters[key]=val;
+  if(key==='city'&&val!=='all'&&val!=='Tokyo'&&val!=='favs'&&val!=='visited'){
+    foodFilters.neighborhood='all';
+    const nbhdFilter=document.getElementById('food-neighborhood-filter');
+    if(nbhdFilter){nbhdFilter.querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));nbhdFilter.querySelector('.city-pill').classList.add('active');}
+  }
+  el.closest('.city-tab').querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  applyFoodFilters();
+}
+
+function applyActFilters(){
+  const search=document.getElementById('search-act').value.toLowerCase();
+  const items=ACTIVITIES.filter(a=>{
+    if(actFilters.city==='favs') return favs.includes(a.name);
+    if(actFilters.city==='visited') return visited.includes(a.name);
+    const matchCity=actFilters.city==='all'||a.city===actFilters.city;
+    const matchNbhd=actFilters.neighborhood==='all'||
+      (a.neighborhood&&a.neighborhood.toLowerCase().includes(actFilters.neighborhood.toLowerCase()))||
+      (a.area&&a.area.toLowerCase().includes(actFilters.neighborhood.toLowerCase()));
+    const matchRating=!a.rating||(a.rating>=(parseFloat(actFilters.rating)||0));
+    const matchSearch=!search||(a.name+a.desc+(a.neighborhood||'')+a.city).toLowerCase().includes(search);
+    return matchCity&&matchNbhd&&matchRating&&matchSearch;
+  });
+  const vCountA=ACTIVITIES.filter(a=>visited.includes(a.name)).length;
+  document.getElementById('act-list').innerHTML=items.length?items.map(a=>placeCard(a,'act')).join(''):'<div style="padding:20px;color:var(--muted);font-size:.85rem">Aucun résultat.</div>';
+  document.getElementById('act-count').textContent=`${items.length} activité${items.length>1?'s':''} trouvée${items.length>1?'s':''} · ✓ ${vCountA}/${ACTIVITIES.length} faites`;
+}
+
+function setActFilter(key,val,el){
+  actFilters[key]=val;
+  if(key==='city'&&val!=='all'&&val!=='Tokyo'&&val!=='favs'&&val!=='visited'){
+    actFilters.neighborhood='all';
+    const nbhdFilter=document.getElementById('act-neighborhood-filter');
+    if(nbhdFilter){nbhdFilter.querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));nbhdFilter.querySelector('.city-pill').classList.add('active');}
+  }
+  el.closest('.city-tab').querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  applyActFilters();
+}
+
+// ═══════════════════════════════════════════
+// BUDGET
+// ═══════════════════════════════════════════
+const CAT_COLORS_BUDGET={resto:'#58A6FF',activite:'#A371F7',transport:'#F4D03F',shopping:'#3FB950',logement:'#E63946',autre:'#888'};
+function addExpense(){
+  const desc=document.getElementById('exp-desc').value.trim();
+  const amt=parseFloat(document.getElementById('exp-amt').value);
+  const cat=document.getElementById('exp-cat').value;
+  const day=document.getElementById('exp-day').value;
+  if(!desc||isNaN(amt)||amt<=0){alert('Remplir description et montant');return;}
+  expenses.push({id:Date.now(),desc,amt,cat,day});
+  localStorage.setItem('jp_expenses',JSON.stringify(expenses));
+  document.getElementById('exp-desc').value='';
+  document.getElementById('exp-amt').value='';
+  renderExpenses();
+}
+function deleteExpense(id){
+  expenses=expenses.filter(e=>e.id!==id);
+  localStorage.setItem('jp_expenses',JSON.stringify(expenses));
+  renderExpenses();
+}
+function renderExpenses(){
+  const list=document.getElementById('expense-list');
+  if(!expenses.length){list.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:.85rem">Aucune dépense enregistrée</div>';updateBudgetStats();return;}
+  list.innerHTML=expenses.map(e=>`
+    <div class="expense-row">
+      <div class="cat-dot" style="background:${CAT_COLORS_BUDGET[e.cat]||'#888'}"></div>
+      <div class="desc">${e.desc}${e.day?' <span style="color:var(--muted);font-size:.72rem">· Jour '+e.day+'</span>':''}</div>
+      <div class="amt">${e.amt.toFixed(2)}€</div>
+      <button class="del" onclick="deleteExpense(${e.id})">🗑</button>
+    </div>`).join('');
+  updateBudgetStats();
+}
+function updateBudgetStats(){
+  const total=expenses.reduce((s,e)=>s+e.amt,0);
+  document.getElementById('total-eur').textContent=total.toFixed(2)+'€';
+  document.getElementById('total-yen').textContent=Math.round(total*exchangeRate).toLocaleString()+'¥';
+  document.getElementById('budget-stat').textContent=total.toFixed(0)+'€';
+  const bycatAmt=(cat)=>expenses.filter(e=>e.cat===cat).reduce((s,e)=>s+e.amt,0);
+  document.getElementById('budget-resto').textContent=bycatAmt('resto').toFixed(2)+'€';
+  document.getElementById('budget-act').textContent=bycatAmt('activite').toFixed(2)+'€';
+  document.getElementById('budget-shop').textContent=bycatAmt('shopping').toFixed(2)+'€';
+  document.getElementById('budget-trans').textContent=bycatAmt('transport').toFixed(2)+'€';
+  const bycat={};
+  expenses.forEach(e=>{ bycat[e.cat]=(bycat[e.cat]||0)+e.amt; });
+  updateBudgetChart(bycat,total);
+}
+
+// ═══════════════════════════════════════════
+// SUGGESTIONS
+// ═══════════════════════════════════════════
+function renderSuggestions(){
+  const list=document.getElementById('suggestions-list');
+  list.innerHTML=SUGGESTIONS.map(s=>`
+    <div class="suggestion-card ${addedSuggestions.includes(s.id)?'suggestion-added':''}" id="sug-${s.id}">
+      <div class="category">${s.cat} &nbsp;·&nbsp; ${s.city}${s.area?', '+s.area:''}</div>
+      <h3>${s.name}</h3>
+      <div class="reason">${s.reason}</div>
+      <div class="place-actions">
+        <a href="https://maps.google.com/?q=${encodeURIComponent(s.name+' '+s.city+' Japan')}" target="_blank" class="btn btn-ghost">🗺️ Maps</a>
+        ${addedSuggestions.includes(s.id)
+          ?'<button class="btn btn-green" disabled>✓ Ajouté au planning</button>'
+          :`<button class="btn" onclick='openModal(${JSON.stringify(s.name)},${JSON.stringify(s.id)})'>+ Ajouter au planning</button>`}
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════
+function openModal(name,sugId=null){
+  currentSuggestion={name,sugId};
+  selectedDay=null;
+  document.getElementById('modal-place-name').textContent='Ajouter "'+name+'" à un jour de votre voyage';
+  const grid=document.getElementById('modal-days');
+  grid.innerHTML=DAYS.map(d=>`<button class="modal-day-btn" onclick="selectDay(${d.day},this)">J${d.day}<br><span style="font-size:.65rem;opacity:.7">${d.date}</span></button>`).join('');
+  document.getElementById('modal').classList.add('open');
+}
+function selectDay(n,el){
+  selectedDay=n;
+  document.querySelectorAll('.modal-day-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  currentSuggestion=null;selectedDay=null;
+}
+function confirmAdd(){
+  if(!selectedDay){alert('Choisissez un jour');return;}
+  if(currentSuggestion?.sugId){
+    if(!addedSuggestions.includes(currentSuggestion.sugId)){
+      addedSuggestions.push(currentSuggestion.sugId);
+      localStorage.setItem('jp_suggestions',JSON.stringify(addedSuggestions));
+    }
+    renderSuggestions();
+  }
+  // Add to day notes
+  const note=dayNotes[selectedDay]||'';
+  dayNotes[selectedDay]=(note?note+'\n':'')+'➕ Ajouté : '+currentSuggestion.name;
+  localStorage.setItem('jp_notes',JSON.stringify(dayNotes));
+  alert(`✓ "${currentSuggestion.name}" ajouté au Jour ${selectedDay} !`);
+  closeModal();
+}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+// ═══════════════════════════════════════════
+// PHRASES TABLE
+// ═══════════════════════════════════════════
+function renderPhrases(){
+  const tbody=document.getElementById('phrases-table');
+  let html='';
+  Object.entries(PHRASES).forEach(([cat,rows])=>{
+    html+=`<tr><td colspan="3" style="background:var(--card2);padding:8px 14px;font-size:.78rem;font-weight:600;color:var(--gold);border-top:2px solid var(--border)">${cat}</td></tr>`;
+    rows.forEach(([fr,jp,ro])=>{
+      html+=`<tr><td>${fr}</td><td class="jp">${jp}</td><td>${ro}</td></tr>`;
+    });
+  });
+  tbody.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════
+// BUDGET DAY SELECT
+// ═══════════════════════════════════════════
+function populateDaySelect(){
+  const sel=document.getElementById('exp-day');
+  DAYS.forEach(d=>{const opt=document.createElement('option');opt.value=d.day;opt.textContent=`Jour ${d.day} — ${d.date}`;sel.appendChild(opt);});
+}
+
+// ═══════════════════════════════════════════
+// BACK TO TOP
+// ═══════════════════════════════════════════
+window.addEventListener('scroll',()=>{
+  const btn=document.getElementById('back-top');
+  if(window.scrollY>300) btn.classList.add('show'); else btn.classList.remove('show');
+});
+
+// ═══════════════════════════════════════════
+// GLOBAL SEARCH
+// ═══════════════════════════════════════════
+function openSearch(){
+  document.getElementById('gsearch-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('gsearch-input').focus(),50);
+}
+function closeSearch(){document.getElementById('gsearch-overlay').classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSearch();if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();openSearch();}});
+
+function globalSearch(q){
+  const res=document.getElementById('gsearch-results');
+  if(!q||q.length<2){res.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:.85rem">Tapez au moins 2 caractères...</div>';return;}
+  const ql=q.toLowerCase();
+  let html='';
+  // Jours
+  const days=DAYS.filter(d=>(d.area+d.morning+d.afternoon+d.evening+(d.highlights||[]).join('')).toLowerCase().includes(ql));
+  if(days.length){html+=`<div class="gsearch-cat">📅 Jours (${days.length})</div>`;html+=days.slice(0,4).map(d=>`<div class="gsearch-item" onclick="showTab('planning');closeSearch();setTimeout(()=>toggleDay(${d.day}),200)"><span style="font-size:1.2rem">${d.emoji}</span><div style="flex:1"><div style="font-weight:500;font-size:.85rem">Jour ${d.day} — ${d.area}</div><div style="font-size:.72rem;color:var(--muted)">${d.date} · ${d.city}</div></div></div>`).join('');}
+  // Restaurants
+  const restos=RESTAURANTS.filter(r=>(r.name+r.desc+(r.cuisine||r.cat)+(r.neighborhood||r.area)).toLowerCase().includes(ql));
+  if(restos.length){html+=`<div class="gsearch-cat">🍜 Restaurants (${restos.length})</div>`;html+=restos.slice(0,4).map(r=>`<div class="gsearch-item" onclick="showTab('food');closeSearch()"><span>🍜</span><div style="flex:1"><div style="font-weight:500;font-size:.85rem">${r.name}</div><div style="font-size:.72rem;color:var(--muted)">${r.city} — ${r.neighborhood||r.area}${r.rating?' · ⭐'+r.rating:''}</div></div></div>`).join('');}
+  // Activités
+  const acts=ACTIVITIES.filter(a=>(a.name+a.desc+(a.neighborhood||a.area)).toLowerCase().includes(ql));
+  if(acts.length){html+=`<div class="gsearch-cat">⛩️ Activités (${acts.length})</div>`;html+=acts.slice(0,4).map(a=>`<div class="gsearch-item" onclick="showTab('activites');closeSearch()"><span>⛩️</span><div style="flex:1"><div style="font-weight:500;font-size:.85rem">${a.name}</div><div style="font-size:.72rem;color:var(--muted)">${a.city}${a.rating?' · ⭐'+a.rating:''} · ${a.prix}</div></div></div>`).join('');}
+  // Suggestions
+  const sugs=SUGGESTIONS.filter(s=>(s.name+s.reason+s.cat).toLowerCase().includes(ql));
+  if(sugs.length){html+=`<div class="gsearch-cat">✨ Suggestions (${sugs.length})</div>`;html+=sugs.slice(0,3).map(s=>`<div class="gsearch-item" onclick="showTab('suggestions');closeSearch()"><span>✨</span><div style="flex:1"><div style="font-weight:500;font-size:.85rem">${s.name}</div><div style="font-size:.72rem;color:var(--muted)">${s.city} · ${s.cat}</div></div></div>`).join('');}
+  if(!html) html='<div style="padding:20px;text-align:center;color:var(--muted);font-size:.85rem">Aucun résultat pour "'+q+'"</div>';
+  res.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════
+// FESTIVAL COUNTDOWN
+// ═══════════════════════════════════════════
+function updateFestivalCountdown(){
+  const events=[
+    {date:'2026-07-19',el:'days-champuru',banner:'banner-champuru'},
+    {date:'2026-07-25',el:'days-sumida',banner:'banner-sumida'},
+    {date:'2026-07-30',el:'days-gion',banner:'banner-gion'},
+  ];
+  const now=new Date();
+  events.forEach(({date,el,banner})=>{
+    const fest=new Date(date);
+    const diff=Math.ceil((fest-now)/86400000);
+    const elNode=document.getElementById(el);
+    if(elNode){
+      if(diff>0) elNode.textContent='Dans '+diff+' jours !';
+      else if(diff===0) elNode.textContent='C\'est aujourd\'hui ! 🎉';
+      else{elNode.textContent='Passé';const b=document.getElementById(banner);if(b)b.style.display='none';}
+    }
+  });
+}
+updateFestivalCountdown();
+
+// ═══════════════════════════════════════════
+// BUDGET — EXCHANGE RATE + CHART
+// ═══════════════════════════════════════════
+let exchangeRate=parseFloat(localStorage.getItem('jp_rate')||'160');
+function updateRate(val){
+  exchangeRate=parseFloat(val)||160;
+  localStorage.setItem('jp_rate',exchangeRate);
+  renderExpenses();
+}
+
+function updateBudgetChart(bycat,total){
+  const catMap={resto:'resto',activite:'act',transport:'trans',shopping:'shop',logement:'logement',autre:'autre'};
+  Object.entries(catMap).forEach(([cat,id])=>{
+    const amt=bycat[cat]||0;
+    const pct=total>0?Math.round(amt/total*100):0;
+    const fillEl=document.getElementById('bar-'+id);
+    const valEl=document.getElementById('bval-'+id);
+    if(fillEl) fillEl.style.width=pct+'%';
+    if(valEl) valEl.textContent=amt.toFixed(0)+'€';
+  });
+}
+
+// ═══════════════════════════════════════════
+// CHECKLIST
+// ═══════════════════════════════════════════
+const CHECKLIST=[
+  {group:"📋 Documents",items:[
+    "Passeports valides (+ 6 mois après retour)",
+    "Visas — France/Canada : pas nécessaire jusqu'à 90j",
+    "Assurance voyage souscrite",
+    "Billets d'avion téléchargés hors-ligne",
+    "Confirmations Airbnb imprimées ou screenshot",
+    "Photocopies passeports (email à soi-même)",
+    "Ordonnance médicale traduite si médicaments"
+  ]},
+  {group:"🎟️ Réservations",items:[
+    "TeamLab Planets réservé (teamlab.art/e/planets)",
+    "TeamLab Borderless réservé (teamlab.art/e/borderless-azabudai)",
+    "DisneySea réservé (tokyodisneyresort.jp)",
+    "USJ + Express Pass réservé (usj.co.jp)",
+    "Kaiyukan Aquarium réservé si possible (kaiyukan.com)",
+    "Ryokan / hôtel Hakone réservé (27–28 Jul)",
+    "Shinkansen Tokyo→Kyoto (SmartEX)",
+    "Shinkansen Osaka→Tokyo retour",
+    "Logement Kyoto réservé (29 Jul–3 Août)",
+    "Logement Osaka réservé (4–9 Août)",
+    "Logement Tokyo retour réservé (10–12 Août)",
+    "Maguro Mart Nakano réservé (1 mois avant!)"
+  ]},
+  {group:"🧳 Bagages",items:[
+    "Mini ventilateur USB portatif",
+    "Spray eau fraîche / eau thermale",
+    "Crème solaire SPF 50+ (recharge)",
+    "Adaptateur prise Type A (Japon = USA plug)",
+    "Batterie externe chargée (max 100Wh en cabine)",
+    "Médicaments personnels",
+    "Vêtements légers respirants (coton/lin)",
+    "Chaussures très confortables (15 000+ pas/jour)",
+    "Sandales légères (onsen, temples)",
+    "Serviette microfibre rafraîchissante",
+    "Sac à dos léger pour les journées"
+  ]},
+  {group:"📱 Apps à installer",items:[
+    "Google Maps (télécharger le Japon hors-ligne)",
+    "Google Translate (télécharger japonais hors-ligne)",
+    "Suica app iPhone OU configurer sur Google Pay",
+    "SmartEX (réservation Shinkansen)",
+    "HyperDia (horaires trains japonais)",
+    "Tabelog (restaurants japonais, avis locaux)",
+    "PayPay (paiements mobile au Japon)"
+  ]},
+  {group:"🏦 Avant le départ",items:[
+    "Prévenir la banque du voyage au Japon",
+    "Acheter eSIM Japon (Airalo, Holafly) ou Pocket WiFi",
+    "Vérifier taux de change EUR/JPY",
+    "Retirer des euros à convertir à l'aéroport",
+    "Peser les valises (limite bagages compagnie)",
+    "Charger tous les appareils électroniques"
+  ]}
+];
+
+let clState=JSON.parse(localStorage.getItem('jp_checklist')||'{}');
+
+function renderChecklist(){
+  const container=document.getElementById('checklist-container');
+  if(!container)return;
+  container.innerHTML=CHECKLIST.map((grp,gi)=>`
+    <div class="card check-group">
+      <h4>${grp.group} <span style="color:var(--muted);font-weight:400">(${grp.items.filter((_,ii)=>clState[gi+'_'+ii]).length}/${grp.items.length})</span></h4>
+      ${grp.items.map((item,ii)=>{
+        const key=gi+'_'+ii, done=clState[key];
+        return `<label class="check-item ${done?'done':''}">
+          <input type="checkbox" ${done?'checked':''} onchange="toggleClItem(${gi},${ii},this.checked)">
+          <span>${item}</span>
+        </label>`;
+      }).join('')}
+    </div>`).join('');
+  updateClStats();
+}
+
+function toggleClItem(gi,ii,val){
+  clState[gi+'_'+ii]=val;
+  localStorage.setItem('jp_checklist',JSON.stringify(clState));
+  renderChecklist();
+}
+
+function updateClStats(){
+  const total=CHECKLIST.reduce((s,g)=>s+g.items.length,0);
+  const done=Object.values(clState).filter(Boolean).length;
+  const pct=total>0?Math.round(done/total*100):0;
+  const fillEl=document.getElementById('cl-fill');
+  const labelEl=document.getElementById('cl-label');
+  const statEl=document.getElementById('checklist-stat');
+  if(fillEl)fillEl.style.width=pct+'%';
+  if(labelEl)labelEl.textContent=`${done} / ${total} complété — ${pct}%`;
+  if(statEl)statEl.textContent=pct+'%';
+}
+
+function resetChecklist(){
+  if(!confirm('Réinitialiser toute la checklist ?'))return;
+  clState={};
+  localStorage.setItem('jp_checklist',JSON.stringify(clState));
+  renderChecklist();
+}
+
+// ═══════════════════════════════════════════
+// DOCUMENTS
+// ═══════════════════════════════════════════
+let docData=JSON.parse(localStorage.getItem('jp_docs')||'{}');
+function saveDoc(key,val){
+  docData[key]=val;
+  localStorage.setItem('jp_docs',JSON.stringify(docData));
+}
+function loadDocs(){
+  Object.entries(docData).forEach(([k,v])=>{
+    const el=document.getElementById('doc-'+k);
+    if(el)el.value=v;
+  });
+}
+
+// ═══════════════════════════════════════════
+// SHOPPING LIST
+// ═══════════════════════════════════════════
+const SHOPPING=[
+  {cat:"💄 Cosmétiques",items:[
+    {name:"Sunscreen Anessa SPF50+",note:"Meilleure protection japonaise"},
+    {name:"Sheet masks (pack 10)",note:"Kirei Kirei, LuLuLun"},
+    {name:"Essence SK-II ou Hada Labo",note:"Moins cher qu'en France"},
+    {name:"Masque lèvres Laneige",note:"Overnight Lip Mask"},
+    {name:"DHC Lip Cream",note:"Cult product japonais"},
+    {name:"Matsukiyo cosmétiques",note:"Propre marque pharmacie japonaise"}
+  ]},
+  {cat:"🍬 Snacks & Food",items:[
+    {name:"Kit-Kat éditions limitées Japon",note:"Matcha, sakura, wasabi..."},
+    {name:"Pocky matcha / royal milk tea",note:"Introuvables en France"},
+    {name:"Mochi glacé (à consommer sur place)",note:"Convini ou Bâton Rouge"},
+    {name:"Chips japonaises saveurs uniques",note:"Calbee, Koike-ya"},
+    {name:"Thé matcha en poudre (qualité)",note:"Ippodo ou Tsujiri"},
+    {name:"Nori (algues) qualité premium",note:"Yamashin Nori"}
+  ]},
+  {cat:"🎮 Électronique & Loisirs",items:[
+    {name:"Jeux Game Boy / retro console",note:"Mandarake Nakano Broadway"},
+    {name:"Figurines / mangas rares",note:"Mandarake ou Akihabara"},
+    {name:"Appareil photo argentique",note:"Fujiya Camera Nakano"},
+    {name:"Écouteurs Sony (moins chers au Japon)",note:"Sony WH-1000XM5"}
+  ]},
+  {cat:"👘 Vêtements & Mode",items:[
+    {name:"Yukata (kimono léger été)",note:"Asakusa ou Don Quijote"},
+    {name:"Tabi (chaussettes japonaises à 2 doigts)",note:"Tradition japonaise"},
+    {name:"Sneakers Asics / Onitsuka Tiger",note:"20-30% moins chers qu'en France"},
+    {name:"Vêtements vintage Shimokitazawa",note:"Budget prévoir 5000-15000¥"}
+  ]},
+  {cat:"🎁 Cadeaux",items:[
+    {name:"Saké artisanal en bouteille",note:"Aji no Machidaya Nakano"},
+    {name:"Wagashi (pâtisseries japonaises)",note:"Très beaux, se conservent"},
+    {name:"Éventail japonais (sensu)",note:"Asakusa Nakamise"},
+    {name:"Baguettes laquées en coffret",note:"Don Quijote ou Tokyu Hands"},
+    {name:"Kit cérémonie du thé",note:"Kyoto recommandé pour l'achat"}
+  ]}
+];
+
+let shopState=JSON.parse(localStorage.getItem('jp_shopping')||'{}');
+
+function renderShoppingList(){
+  const c=document.getElementById('shopping-list-container');
+  if(!c)return;
+  c.innerHTML=SHOPPING.map((grp,gi)=>`
+    <div class="card">
+      <div class="card-title" style="margin-bottom:10px">${grp.cat}</div>
+      ${grp.items.map((item,ii)=>{
+        const key=gi+'_'+ii, done=shopState[key];
+        return `<label class="shop-item ${done?'bought':''}">
+          <input type="checkbox" ${done?'checked':''} onchange="toggleShop(${gi},${ii},this.checked)">
+          <span>${item.name}</span>
+          <span class="shop-note">${item.note}</span>
+        </label>`;
+      }).join('')}
+    </div>`).join('');
+}
+
+function toggleShop(gi,ii,val){
+  shopState[gi+'_'+ii]=val;
+  localStorage.setItem('jp_shopping',JSON.stringify(shopState));
+  renderShoppingList();
+}
+
+// ═══════════════════════════════════════════
+// TIKTOK / YOUTUBE LINKS
+// ═══════════════════════════════════════════
+let tiktokLinks=JSON.parse(localStorage.getItem('jp_tiktok')||'[]');
+
+function addTiktokLink(){
+  const input=document.getElementById('tiktok-input');
+  const url=input.value.trim();
+  if(!url||(!url.includes('tiktok')&&!url.includes('youtube')&&!url.includes('youtu.be'))){
+    alert('Colle un lien TikTok ou YouTube valide');return;
+  }
+  tiktokLinks.push({url,date:new Date().toLocaleDateString('fr-FR'),analyzed:false});
+  localStorage.setItem('jp_tiktok',JSON.stringify(tiktokLinks));
+  input.value='';
+  renderTiktokLinks();
+}
+
+function renderTiktokLinks(){
+  const el=document.getElementById('tiktok-list');
+  if(!tiktokLinks.length){
+    el.innerHTML='<span style="color:var(--muted)">Aucun lien ajouté pour l\'instant.</span>';
+    return;
+  }
+  el.innerHTML=tiktokLinks.map((l,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:1.2rem">${l.url.includes('tiktok')?'🎵':'🎬'}</span>
+      <a href="${l.url}" target="_blank" style="color:var(--blue);font-size:.82rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.url}</a>
+      <span style="font-size:.7rem;color:var(--muted)">${l.date}</span>
+      <span style="font-size:.72rem;background:${l.analyzed?'rgba(63,185,80,.2)':'rgba(244,208,63,.2)'};color:${l.analyzed?'var(--green)':'var(--gold)'};padding:2px 8px;border-radius:10px">${l.analyzed?'✓ Analysé':'En attente'}</span>
+      <button onclick="deleteTiktok(${i})" style="background:none;border:none;color:var(--muted);cursor:pointer">🗑</button>
+    </div>`).join('');
+}
+
+function deleteTiktok(i){
+  tiktokLinks.splice(i,1);
+  localStorage.setItem('jp_tiktok',JSON.stringify(tiktokLinks));
+  renderTiktokLinks();
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  renderDays();
+  applyFoodFilters();
+  applyActFilters();
+  renderExpenses();
+  renderSuggestions();
+  renderPhrases();
+  populateDaySelect();
+  updateStats();
+  renderTiktokLinks();
+  renderChecklist();
+  renderShoppingList();
+  loadDocs();
+  updateFestivalCountdown();
+  const rateEl=document.getElementById('rate-input');
+  if(rateEl) rateEl.value=exchangeRate;
+});
+</script>
+</body>
+</html>
