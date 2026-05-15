@@ -279,6 +279,51 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
 .shop-item.bought span{opacity:.45;text-decoration:line-through}
 .shop-item .shop-note{font-size:.72rem;color:var(--muted);margin-left:auto}
 
+/* DAY CARD TABS */
+.day-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin:12px -20px 0;padding:0 20px}
+.dtab-btn{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);padding:8px 14px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:.75rem;font-weight:500;transition:all .2s;white-space:nowrap}
+.dtab-btn.active{color:var(--red);border-bottom-color:var(--red)}
+.dtab-pane{display:none;padding-top:14px}.dtab-pane.active{display:block}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:18px}
+.timeline::before{content:'';position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:var(--border);border-radius:2px}
+.tl-item{position:relative;margin-bottom:16px}
+.tl-dot{position:absolute;left:-16px;top:6px;width:10px;height:10px;border-radius:50%;z-index:1}
+.dot-transport{background:var(--green)} .dot-temple,.dot-activite{background:var(--blue)} .dot-resto{background:var(--gold)} .dot-event{background:var(--purple)} .dot-shopping{background:var(--red)} .dot-hotel{background:#FF8C00} .dot-libre,.dot-soiree{background:var(--muted)}
+.tl-time{font-size:.68rem;color:var(--muted);font-weight:700;letter-spacing:.5px;margin-bottom:2px}
+.tl-label{font-size:.84rem;font-weight:600;color:var(--text);margin-right:6px}
+.tl-badge{font-size:.58rem;padding:2px 7px;border-radius:10px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;vertical-align:middle}
+.badge-transport{background:rgba(63,185,80,.15);color:var(--green)} .badge-temple,.badge-activite{background:rgba(88,166,255,.15);color:var(--blue)} .badge-resto{background:rgba(244,208,63,.15);color:var(--gold)} .badge-event{background:rgba(163,113,247,.15);color:var(--purple)} .badge-shopping{background:rgba(230,57,70,.15);color:var(--red)} .badge-hotel{background:rgba(255,140,0,.15);color:#FF8C00} .badge-libre,.badge-soiree{background:rgba(139,148,158,.15);color:var(--muted)}
+.tl-desc{font-size:.76rem;color:var(--muted);margin-top:3px;line-height:1.5}
+.tl-link{display:inline-flex;align-items:center;gap:3px;font-size:.72rem;color:var(--blue);text-decoration:none;margin-top:4px}
+.tl-link:hover{text-decoration:underline}
+
+/* PLANIFICATION TAB */
+.plan-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px;margin-bottom:20px}
+.plan-pill{background:var(--card2);border:1px solid var(--border);color:var(--muted);padding:6px 3px;border-radius:8px;cursor:pointer;font-size:.68rem;text-align:center;transition:all .2s;line-height:1.4}
+.plan-pill:hover{border-color:var(--red);color:var(--text)}
+.plan-pill.active{background:rgba(230,57,70,.15);border-color:var(--red);color:var(--red);font-weight:600}
+.plan-pill.pdone{opacity:.45}
+.plan-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--card2);border-radius:8px;margin-bottom:7px;border:1px solid var(--border)}
+.plan-item-time{font-size:.72rem;font-weight:700;color:var(--muted);width:42px;flex-shrink:0;padding-top:2px}
+.plan-item-body{flex:1;min-width:0}
+.plan-item-label{font-size:.84rem;font-weight:500;color:var(--text)}
+.plan-item-desc{font-size:.72rem;color:var(--muted);margin-top:2px}
+.plan-item-actions{display:flex;gap:4px;flex-shrink:0}
+.plan-act-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:3px 7px;cursor:pointer;font-size:.72rem;color:var(--muted);transition:all .15s}
+.plan-act-btn:hover{background:var(--card);color:var(--text)}
+.plan-act-btn.del{border-color:rgba(230,57,70,.3);color:var(--red)}
+.plan-form-box{background:var(--card);border:1px solid rgba(244,208,63,.3);border-radius:12px;padding:20px;margin-top:16px}
+.plan-form-box h4{font-size:.9rem;font-weight:600;margin-bottom:14px;color:var(--gold)}
+.plan-row{display:grid;gap:10px;margin-bottom:10px}
+.plan-row-3{grid-template-columns:90px 1fr 130px}
+.plan-row-2{grid-template-columns:1fr 1fr}
+.plan-lbl{font-size:.7rem;color:var(--muted);margin-bottom:4px}
+.plan-input{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'Poppins',sans-serif;font-size:.82rem;width:100%}
+.plan-input:focus{outline:none;border-color:var(--red)}
+@media(max-width:600px){.plan-row-3{grid-template-columns:1fr}.plan-row-2{grid-template-columns:1fr}}
+
 /* FESTIVAL ALERT */
 .festival-alert{background:linear-gradient(135deg,rgba(244,208,63,.12),rgba(230,57,70,.08));border:1px solid rgba(244,208,63,.5);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;margin-bottom:20px}
 .festival-alert .fa-icon{font-size:2rem;flex-shrink:0}
@@ -332,6 +377,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
   <button class="nav-btn" data-tab="checklist">✅ Checklist</button>
   <button class="nav-btn" data-tab="pratique">📱 Pratique</button>
   <button class="nav-btn" data-tab="tiktok">🎬 TikTok</button>
+  <button class="nav-btn" data-tab="planification">✏️ Planification</button>
   <button id="gsearch-btn" onclick="openSearch()" title="Recherche globale">🔍</button>
 </nav>
 
@@ -454,6 +500,53 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
     <span class="city-pill" onclick="filterCity('Osaka',this)">🏯 Osaka</span>
   </div>
   <div id="days-container"></div>
+</div>
+
+<!-- ===== PLANIFICATION ===== -->
+<div class="tab" id="tab-planification">
+  <div class="section-title">✏️ Planification — Modifier le Planning</div>
+  <p style="font-size:.85rem;color:var(--muted);margin-bottom:20px">Sélectionne un jour pour modifier son horaire. Ajoute, modifie ou supprime des créneaux. Tout est sauvegardé automatiquement sur cet appareil.</p>
+
+  <div class="plan-grid" id="plan-day-grid"></div>
+
+  <div id="plan-day-editor" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+      <div id="plan-day-title" style="font-size:1rem;font-weight:600"></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="openNewItemForm()">+ Ajouter un créneau</button>
+        <button class="btn btn-ghost" onclick="resetPlanDay()" style="color:var(--muted);font-size:.78rem">↺ Réinitialiser</button>
+      </div>
+    </div>
+    <div id="plan-items-list"></div>
+    <div id="plan-form-box" style="display:none" class="plan-form-box">
+      <h4 id="plan-form-title">➕ Nouveau créneau</h4>
+      <div class="plan-row plan-row-3">
+        <div><div class="plan-lbl">Heure</div><input class="plan-input" type="time" id="pf-time" value="09:00"></div>
+        <div><div class="plan-lbl">Activité / Titre</div><input class="plan-input" type="text" id="pf-label" placeholder="Ex: Senso-ji Temple"></div>
+        <div><div class="plan-lbl">Type</div>
+          <select class="plan-input" id="pf-type">
+            <option value="activite">⛩️ Activité</option>
+            <option value="resto">🍜 Restaurant</option>
+            <option value="transport">🚄 Transport</option>
+            <option value="temple">🏯 Temple/Shrine</option>
+            <option value="shopping">🛍️ Shopping</option>
+            <option value="event">🎉 Événement</option>
+            <option value="hotel">🏨 Hébergement</option>
+            <option value="soiree">🍺 Soirée</option>
+            <option value="libre">🕐 Libre</option>
+          </select>
+        </div>
+      </div>
+      <div class="plan-row plan-row-2">
+        <div><div class="plan-lbl">Lien site web (optionnel)</div><input class="plan-input" type="url" id="pf-link" placeholder="https://..."></div>
+        <div><div class="plan-lbl">Détails / Infos pratiques (optionnel)</div><input class="plan-input" type="text" id="pf-desc" placeholder="Prix, horaires, conseils..."></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn" onclick="savePlanItem()">💾 Sauvegarder</button>
+        <button class="btn btn-ghost" onclick="closePlanForm()">Annuler</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== CARTE ===== -->
@@ -1291,12 +1384,178 @@ const DAYS = [
   {day:23,date:"06 Août",city:"Osaka",area:"Universal Studios Japan",emoji:"🎢",morning:"Universal Studios Japan (ouverture à 8h ou 9h). Harry Potter World, Nintendo World.",afternoon:"Rides : Hollywood Dream, Jurassic Park, Spider-Man. Nintendo World = expérience unique.",evening:"Retour épuisés mais heureux. Repas léger et repos total.",highlights:["Harry Potter World","Nintendo World","Hollywood Dream","Mario Kart Ride"],tip:"Réserver les 'Express Pass' à l'avance pour Harry Potter et Nintendo World — les files sont énormes sans. Billet : ~10 400¥/p."},
   {day:24,date:"07 Août",city:"Osaka",area:"Shopping & Culture",emoji:"🛍️",morning:"Shinsaibashi (grande rue piétonne shopping). Amerika-Mura (streetwear japonais et vintage).",afternoon:"Den Den Town (équivalent d'Akihabara à Osaka — électronique, anime). Namba Parks.",evening:"Hozenji Yokocho — venelle mystérieuse avec temple moussu et restaurants traditionnels.",highlights:["Shinsaibashi","Amerika-Mura vintage","Den Den Town","Hozenji Yokocho"],tip:"Amerika-Mura est excellent pour le streetwear japonais à des prix raisonnables. Beaucoup de pièces uniques."},
   {day:25,date:"08 Août",city:"Osaka",area:"Kaiyukan & Tempozan",emoji:"🐋",morning:"Aquarium Kaiyukan (2400¥) — l'un des plus grands du monde avec un requin-baleine. Ouverture 10h.",afternoon:"Ferris Wheel de Tempozan (1000¥) · Vue panoramique sur la baie d'Osaka. Marché d'artisanat Tempozan.",evening:"Namba Grand Kagetsu (comedy théâtre de manzai/rakugo). Puis Hozenji Yokocho — venelle mystérieuse, temple moussu, dîner izakaya.",highlights:["Requin-baleine Kaiyukan","Grande Roue Tempozan","Hozenji Yokocho","Manzai comedy"],tip:"Kaiyukan est idéal par forte chaleur — 28°C à l'intérieur. Réserver en ligne pour éviter la file. Le requin-baleine nage dans un bassin central visible depuis tous les étages."},
-  {day:26,date:"09 Août",city:"Osaka",area:"Osaka — Journée Libre",emoji:"🌸",morning:"Tempozan Harbour Village. Osaka Aquarium Kaiyukan (2400¥) — l'un des plus grands du monde.",afternoon:"America Mura ou shopping de dernière minute à Osaka. Préparation retour Tokyo.",evening:"Dîner d'adieu à Osaka — Dotonbori ou restaurant choisi par vous.",highlights:["Kaiyukan Aquarium","Ferris Wheel Tempozan","Shopping final Osaka"],tip:"L'Aquarium de Kaiyukan a un requin-baleine — spectaculaire. Idéal si il fait trop chaud dehors."},
+  {day:26,date:"09 Août",city:"Osaka",area:"Osaka — Journée Libre & Derniers Achats",emoji:"🌸",morning:"Grasse matinée. Café dans un kissaten du quartier. Balade sans agenda dans Shinsaibashi ou Hozenji Yokocho pour savourer une dernière fois l'ambiance d'Osaka.",afternoon:"Amerika-Mura pour les derniers achats vintage et streetwear. Den Den Town pour les collectionneurs. Préparer les valises et check-out si prévu.",evening:"Dîner d'adieu à Osaka — Dotonbori ou restaurant étoilé qui vous tenait à cœur depuis le début. Savourez chaque bouchée.",highlights:["Shinsaibashi shopping","Amerika-Mura","Den Den Town","Dîner d'adieu Osaka"],tip:"Journée intentionnellement libre — profitez de revisiter vos endroits préférés d'Osaka ou de découvrir une dernière adresse. Aucun plan fixe requis."},
   {day:27,date:"10 Août",city:"Tokyo",area:"Retour Tokyo",emoji:"🚄",morning:"Shinkansen Osaka→Tokyo (2h30, ~14 000¥/p). Arrivée Tokyo en milieu de matinée.",afternoon:"Ikebukuro — quartier moins touristique avec Sunshine City, animes et Seibu/Tobu department stores.",evening:"Akihabara pour les derniers achats electronics/anime. Soirée libres.",highlights:["Shinkansen retour","Ikebukuro Sunshine City","Pokemon Center Ikebukuro"],tip:"Ikebukuro est souvent négligée mais c'est une excellente alternative à Akihabara pour les mangas/anime."},
   {day:28,date:"11 Août",city:"Tokyo",area:"Revisiter les Favoris",emoji:"🌟",morning:"Retour dans le quartier préféré de votre séjour. Petit café cosy, promenade sans agenda.",afternoon:"Harajuku ou Shibuya shopping final. Takeshita Street pour les souvenirs kawaii.",evening:"Dîner dans le meilleur restaurant du séjour (à choisir pendant le voyage).",highlights:["Quartier favori","Shopping final","Restaurant favori"],tip:"Journée intentionnellement libre — profitez de retrouver des endroits aimés plutôt que de courir."},
   {day:29,date:"12 Août",city:"Tokyo",area:"Achats Souvenirs & Dernière Nuit",emoji:"🎁",morning:"Asakusa pour les souvenirs traditionnels (éventails, chopsticks, sake, Kit-Kat japonais).",afternoon:"Don Quijote de Shinjuku pour les derniers achats (cosmétiques, bonbons, snacks).",evening:"Dîner spécial pour fêter la fin du voyage. Kaiseki, sushi bar ou teppanyaki.",highlights:["Nakamise souvenirs","Don Quijote","Isetan Shinjuku","Dîner d'adieu"],tip:"Les Kit-Kat japonais et les snacks rares sont excellents cadeaux. Don Quijote est parfait pour charger les valises."},
   {day:30,date:"13 Août",city:"Tokyo",area:"Départ — Sayonara Japon ! 🙏",emoji:"🛫",morning:"Petit-déjeuner tranquille. Vérification valises. Départ pour aéroport 3h avant le vol.",afternoon:"Narita Express ou Limousine Bus. Embarquement. Regard mélancolique par le hublot.",evening:"Dans l'avion — déjà l'envie de revenir.",highlights:["Narita/Haneda","Dernier konbini","Premier regard sur Tokyo depuis le hublot"],tip:"N'oubliez pas de demander le remboursement de la taxe sur vos achats tax-free avant le départ (comptoir détaxe à l'aéroport)."}
 ];
+
+// ═══════════════════════════════════════════
+// SCHEDULES — horaires par défaut (modifiables via onglet Planification)
+// ═══════════════════════════════════════════
+const SCHEDULES={
+  1:[{time:"08:00",label:"Atterrissage Narita / Haneda",type:"transport",link:null,desc:"Récupérer les bagages. Acheter la carte Suica au JR East Travel Service Center (1 500¥). Activer eSIM."},
+     {time:"10:30",label:"Narita Express → Shinjuku → Shin-Nakano",type:"transport",link:null,desc:"Narita Express jusqu'à Shinjuku (1h15, 3 020¥), puis Marunouchi Line → Shin-Nakano (2 stops)."},
+     {time:"13:00",label:"Installation Airbnb Nakano",type:"hotel",link:"https://www.airbnb.fr/rooms/1424370603495539216",desc:"3-33 Yayoichō, Nakano City. Dépôt des bagages et premier repère dans le quartier."},
+     {time:"15:00",label:"Nakano Broadway",type:"activite",link:"https://maps.google.com/?q=Nakano+Broadway+Tokyo",desc:"5 niveaux de manga, anime, figurines rétro. 12 min à pied de l'Airbnb."},
+     {time:"19:00",label:"Dîner ramen local",type:"resto",link:null,desc:"Ramen Minowaya ou konbini pour une première soirée sans effort."}],
+  2:[{time:"09:00",label:"Shinjuku Gyoen",type:"activite",link:"https://www.env.go.jp/garden/shinjukugyoen/english/",desc:"Jardin national 58 ha — jardin japonais, français et anglais. 500¥. Ouvert 9h-18h."},
+     {time:"12:00",label:"Déjeuner depachika Isetan B2",type:"resto",link:null,desc:"Sous-sol gastronomique d'Isetan — bento, sushi, pâtisseries japonaises."},
+     {time:"14:00",label:"Kabukicho & Don Quijote",type:"shopping",link:null,desc:"Quartier animé de Shinjuku. Don Quijote pour tous les achats possibles."},
+     {time:"17:30",label:"Golden Gai — apéro",type:"soiree",link:null,desc:"300+ micro-bars dans 6 ruelles. 5-10 places par bar. Cover charge parfois."},
+     {time:"19:30",label:"Omoide Yokocho — yakitori",type:"resto",link:null,desc:"Ruelle des Souvenirs. Mini-bars et grillades yakitori dans une atmosphère retro et fumée."}],
+  3:[{time:"07:30",label:"Meiji Jingu Shrine",type:"temple",link:"https://www.meijijingu.or.jp/en/",desc:"Temple shinto dans une forêt de 70 ha. Gratuit. Arriver tôt pour l'avoir presque pour soi."},
+     {time:"10:00",label:"Takeshita Street",type:"shopping",link:null,desc:"Mode décalée, kawaii, street food. L'artère la plus colorée de Tokyo."},
+     {time:"12:00",label:"Déjeuner à Harajuku",type:"resto",link:null,desc:"Nombreuses options dans les ruelles autour de Takeshita Street."},
+     {time:"14:00",label:"Omotesando & Cat Street",type:"shopping",link:null,desc:"Grandes marques, architecture, boutiques indépendantes. Ambiance luxueuse."},
+     {time:"18:00",label:"Retour Nakano / balade libre",type:"libre",link:null,desc:"Soirée libre selon envies."}],
+  4:[{time:"09:00",label:"Shibuya Scramble Crossing",type:"activite",link:null,desc:"Le croisement le plus fréquenté du monde. Vue depuis Starbucks au-dessus."},
+     {time:"10:00",label:"Shibuya Sky — vue panoramique",type:"activite",link:"https://www.shibuya-sky.jp/",desc:"Toit de Shibuya Scramble Square. Vue 360° sur Tokyo. ~2 000¥. Réserver à l'avance."},
+     {time:"12:00",label:"Déjeuner à Shibuya",type:"resto",link:null,desc:"Gyukatsu Motomura ou Uobei Conveyor Belt Sushi — deux options à 5 min."},
+     {time:"14:00",label:"Daikanyama & Tsutaya Books",type:"activite",link:null,desc:"Quartier branché. Tsutaya Books = librairie design exceptionnelle."},
+     {time:"16:30",label:"Canal de Nakameguro",type:"activite",link:null,desc:"Canal romantique. Boutiques, cafés, restaurants. Meilleure lumière en fin d'après-midi."},
+     {time:"19:00",label:"Dîner en bord de canal",type:"resto",link:null,desc:"Nombreux restaurants dans les ruelles autour du canal de Nakameguro."}],
+  5:[{time:"07:30",label:"Senso-ji Temple",type:"temple",link:"https://www.senso-ji.jp/english/",desc:"Le plus vieux temple de Tokyo (645 AD). Nakamise Street. Arriver avant 8h pour éviter la foule."},
+     {time:"09:30",label:"Nakamise Shopping Street",type:"shopping",link:null,desc:"Allée de boutiques traditionnelles menant au temple. Souvenirs, snacks, accessoires."},
+     {time:"12:00",label:"Déjeuner à Asakusa",type:"resto",link:null,desc:"Tempura Narikura ou ramen local dans le quartier."},
+     {time:"14:00",label:"Ueno Park & Tokyo National Museum",type:"activite",link:"https://www.tnm.jp/?lang=en",desc:"Grand parc avec musées. Tokyo National Museum recommandé (~1 000¥)."},
+     {time:"18:00",label:"🎉 Champuru Festival Nakano",type:"event",link:null,desc:"Festival culturel okinawais gratuit autour de la gare de Nakano. Musique live, danse, street food. 19-20 Juillet."}],
+  6:[{time:"06:30",label:"Tsukiji Outer Market",type:"activite",link:null,desc:"Marché du matin — sushi ultra-frais, tamagoyaki, brochettes. Ouvert 6h30-14h."},
+     {time:"08:30",label:"Sushi du matin",type:"resto",link:null,desc:"Manger les meilleurs sushis de la matinée directement au marché."},
+     {time:"11:00",label:"Ginza — shopping & galeries",type:"shopping",link:null,desc:"Quartier luxe. Itoya (papeterie 10 étages), Mitsukoshi, flagship stores."},
+     {time:"13:00",label:"Déjeuner à Ginza",type:"resto",link:null,desc:"Nombreuses options de déjeuner abordables dans les ruelles de Ginza."},
+     {time:"19:00",label:"TeamLab Planets Toyosu",type:"activite",link:"https://teamlab.art/e/planets/",desc:"Art numérique immersif — marcher dans l'eau entre les projections. ~3 200¥. RÉSERVER À L'AVANCE."}],
+  7:[{time:"10:00",label:"Akihabara Electric Town",type:"shopping",link:null,desc:"Capitale mondiale de l'électronique, manga, jeux vidéo. Multi-étages de figurines et arcades."},
+     {time:"12:00",label:"Déjeuner Ippudo Ramen",type:"resto",link:null,desc:"Hakata ramen (bouillon de porc) — une des meilleures chaînes du Japon. ~1 300¥."},
+     {time:"14:00",label:"Yanaka Ginza",type:"activite",link:null,desc:"Rue commerçante old-school. Artisans, chats, ambiance Tokyo d'autrefois."},
+     {time:"17:00",label:"Shimokitazawa — cafés & friperies",type:"activite",link:null,desc:"Le Marais de Tokyo. Friperies, disquaires, cafés littéraires. Atmosphère bohème."},
+     {time:"19:30",label:"Dîner et bars Shimokitazawa",type:"soiree",link:null,desc:"Izakayas, bars live music. Quartier populaire des Tokyoïtes branchés."}],
+  8:[{time:"08:00",label:"DisneySea Tokyo — ouverture",type:"activite",link:"https://www.tokyodisneyresort.jp/en/",desc:"Arriver 30 min avant l'ouverture. Billet ~10 900¥/p. RÉSERVER À L'AVANCE."},
+     {time:"09:00",label:"Tower of Terror & Indiana Jones",type:"activite",link:null,desc:"Les deux attractions signatures de DisneySea. Y aller dès l'ouverture (files courtes)."},
+     {time:"12:00",label:"Déjeuner sur place",type:"resto",link:null,desc:"Prévoir budget déjeuner. Nombreuses options thématiques dans le parc."},
+     {time:"14:00",label:"Sindbad, Aquatopia & spectacles",type:"activite",link:null,desc:"Attractions aquatiques et spectacles de l'après-midi."},
+     {time:"18:30",label:"Retour Nakano",type:"transport",link:null,desc:"DisneySea est épuisant ! Train retour, repas léger et repos."}],
+  9:[{time:"10:30",label:"Brunch café Shimokitazawa",type:"resto",link:null,desc:"Nombreux cafés cosy. Grasse matinée méritée après DisneySea."},
+     {time:"12:30",label:"Friperies & disquaires Shimokitazawa",type:"shopping",link:null,desc:"Excellent pour les vêtements vintage japonais authentiques. Pièces uniques."},
+     {time:"15:00",label:"Sangenjaya — quartier local",type:"activite",link:null,desc:"Quartier populaire des Tokyoïtes. Bars, izakayas, restaurants sans touristes."},
+     {time:"19:00",label:"Dîner izakaya Sangenjaya",type:"resto",link:null,desc:"Soirée décontractée dans les izakayas locales."}],
+  10:[{time:"07:00",label:"Train Asakusa → Nikko (Tobu Nikko Line)",type:"transport",link:null,desc:"~2h depuis Asakusa. Réservation conseillée. Partir tôt pour avoir du temps."},
+      {time:"09:30",label:"Tosho-gu Shrine (UNESCO)",type:"temple",link:"https://www.toshogu.jp/english/",desc:"Mausolée de Tokugawa Ieyasu. Décor somptueux, forêt de cèdres millénaires."},
+      {time:"12:30",label:"Déjeuner à Nikko",type:"resto",link:null,desc:"Restaurants locaux près du sanctuaire. Spécialité : yuba (peau de tofu)."},
+      {time:"14:00",label:"Rinno-ji & Futarasan Shrine",type:"temple",link:null,desc:"Deux autres temples majeurs du site UNESCO de Nikko."},
+      {time:"16:30",label:"Train retour Tokyo",type:"transport",link:null,desc:"Retour en soirée. Emporter un coupe-vent — plus frais en altitude."},
+      {time:"19:30",label:"Dîner à Tokyo",type:"resto",link:null,desc:"Dîner simple à Asakusa ou Nakano après une longue journée."}],
+  11:[{time:"07:00",label:"Train Shinjuku → Kamakura (JR ~1h)",type:"transport",link:null,desc:"JR Shōnan-Shinjuku Line direct. Partir tôt pour rentrer avant les feux."},
+      {time:"08:30",label:"Grand Bouddha Kotoku-in",type:"temple",link:"https://www.kotoku-in.jp/",desc:"Statue de bronze de 13m. Gratuit l'extérieur, 20¥ pour l'intérieur. Incontournable."},
+      {time:"10:00",label:"Hase-dera Temple",type:"temple",link:null,desc:"Temple bouddhiste avec jardin en terrasses et vue sur la baie de Sagami."},
+      {time:"12:00",label:"Déjeuner à Kamakura",type:"resto",link:null,desc:"Ramen ou shirasu-don (spécialité locale — anchois blancs sur riz)."},
+      {time:"14:30",label:"Train retour Tokyo — IMPÉRATIF",type:"transport",link:null,desc:"RENTRER AVANT 15H pour avoir une bonne place à Sumida Park."},
+      {time:"17:00",label:"Sumida Park — installation",type:"activite",link:null,desc:"Trouver une bonne place avant 17h. Porter yukata si possible. Apporter tapis et pique-nique."},
+      {time:"19:05",label:"🎆 Sumida River Fireworks",type:"event",link:null,desc:"20 000 feux sur 1h30. L'un des plus grands événements de l'été à Tokyo. 19h05-20h30."}],
+  12:[{time:"10:00",label:"Shopping libre — au choix",type:"shopping",link:null,desc:"Harajuku, Akihabara ou Ginza selon les envies et ce qui manque."},
+      {time:"12:30",label:"Isetan Shinjuku — depachika B1-B2",type:"shopping",link:null,desc:"Paradis alimentaire pour les cadeaux : bento, wagashi, sake, Kit-Kat rares."},
+      {time:"15:00",label:"Préparation valises Hakone",type:"hotel",link:null,desc:"Préparer une petite valise pour Hakone (2 nuits). Départ demain matin."},
+      {time:"19:30",label:"Dîner spécial Tokyo",type:"resto",link:null,desc:"Choisir le restaurant qui vous tenait à cœur depuis le début du voyage."}],
+  13:[{time:"09:00",label:"Train → Odawara → Hakone",type:"transport",link:null,desc:"Shinkansen ou train JR jusqu'à Odawara, puis Hakone Tozan Train."},
+      {time:"11:30",label:"Check-in ryokan Hakone",type:"hotel",link:null,desc:"Installation et dépôt des bagages. Premier contact avec l'ambiance onsen."},
+      {time:"13:00",label:"Hakone Ropeway",type:"activite",link:"https://www.hakoneropeway.co.jp/foreign/en/",desc:"Télécabine au-dessus des fumerolles d'Owakudani. Vue sur le Fuji si ciel dégagé."},
+      {time:"14:30",label:"Owakudani — fumerolles",type:"activite",link:null,desc:"Zone volcanique active. Kurotamago (œufs noirs cuits dans les sources). 500¥/5 œufs."},
+      {time:"16:00",label:"Lac Ashi & Ferry Ashinoko",type:"activite",link:null,desc:"Traversée du lac en ferry avec vue sur le Fuji. Très photographique."},
+      {time:"19:00",label:"Dîner kaiseki au ryokan",type:"resto",link:null,desc:"Cuisine kaiseki multi-plats dans un cadre traditionnel. Onsen privé après dîner."}],
+  14:[{time:"07:00",label:"Onsen matinal au ryokan",type:"activite",link:null,desc:"Source chaude avant le petit-déjeuner. Le meilleur moment pour un onsen."},
+      {time:"09:00",label:"Hakone Open Air Museum",type:"activite",link:"https://www.hakone-oam.or.jp/en/",desc:"Sculptures monumentales en plein air. Salle Picasso. ~1 600¥. Surprenant."},
+      {time:"11:30",label:"Dernière vue sur le Mont Fuji",type:"activite",link:null,desc:"Profiter du panorama avant de repartir. Vue depuis le lac Ashi recommandée."},
+      {time:"13:00",label:"Shinkansen Odawara → Kyoto",type:"transport",link:null,desc:"~2h depuis Odawara. Contempler le Fuji depuis le Shinkansen (côté droit)."},
+      {time:"15:30",label:"Arrivée & installation Kyoto",type:"hotel",link:null,desc:"Check-in logement Kyoto. Dépôt des bagages."},
+      {time:"18:00",label:"Première promenade dans Gion",type:"activite",link:null,desc:"Découverte du quartier historique. Possible aperçu d'une geisha (maiko)."}],
+  15:[{time:"10:00",label:"Installation logement Kyoto",type:"hotel",link:null,desc:"Check-in et exploration du quartier."},
+      {time:"12:00",label:"Nishiki Market",type:"activite",link:"https://www.kyoto-nishiki.or.jp/",desc:"400m de stands alimentaires couverts. Tofu, mochi, pickles, poisson grillé."},
+      {time:"14:00",label:"Gion district — Gion Matsuri 🏮",type:"event",link:null,desc:"Fin du Gion Matsuri ! Stands de street food, kimono, lanternes autour de Yasaka Shrine."},
+      {time:"17:00",label:"Hanamikoji Street",type:"activite",link:null,desc:"Rue principale de Gion. Machiya (maisons de thé) traditionnelles. Crépuscule idéal."},
+      {time:"19:30",label:"Dîner à Pontocho",type:"resto",link:null,desc:"Ruelle 300m en bord de rivière Kamo. Terrasses kawayu en été sur l'eau."}],
+  16:[{time:"07:30",label:"Arashiyama Bamboo Grove",type:"activite",link:null,desc:"Arriver à l'ouverture (ou avant 8h). Forêt de bambous géante. Très photogénique le matin."},
+      {time:"09:00",label:"Tenryu-ji Temple",type:"temple",link:"https://www.tenryuji.com/en/",desc:"Temple Zen UNESCO. Jardin Sogenchi (500¥). Vue parfaite sur les bambous."},
+      {time:"11:00",label:"Monkey Park Iwatayama",type:"activite",link:null,desc:"Escalade + vue panoramique sur Kyoto + 120 singes macaques en liberté."},
+      {time:"13:00",label:"Déjeuner Arashiyama",type:"resto",link:null,desc:"Nombreux restaurants en bord de rivière Oi."},
+      {time:"15:00",label:"Retour Kyoto centre",type:"transport",link:null,desc:"Train ou bus depuis Arashiyama."},
+      {time:"19:00",label:"Dîner izakaya Kyoto-style",type:"resto",link:null,desc:"Cuisine de Kyoto — tofu, légumes de saison, dashi délicat."}],
+  17:[{time:"06:00",label:"Fushimi Inari Taisha — montée complète",type:"temple",link:"https://inari.jp/en/",desc:"ARRIVER À 6H ! 10 000 torii gates. Montée au sommet 2h A/R. Gratuit 24h/24."},
+      {time:"08:30",label:"Retour centre Kyoto",type:"transport",link:null,desc:"Train Inari → Kyoto Station."},
+      {time:"10:00",label:"Tofuku-ji Temple",type:"temple",link:null,desc:"Jardin de mousse. Pont Tsutenkyo avec vue sur les érables."},
+      {time:"12:00",label:"Nishiki Market — lunch",type:"resto",link:null,desc:"Dernière visite au marché couvert pour le déjeuner et emplettes."},
+      {time:"15:00",label:"Repos / Higashiyama balade",type:"libre",link:null,desc:"Quartier Higashiyama — ruelles préservées, boutiques artisanales."},
+      {time:"18:00",label:"🏮 Nagoshi no Harae — Yasaka Shrine",type:"event",link:null,desc:"Cérémonie de purification de fin juillet (18h-21h). Passer sous le cercle de roseaux (chinowa kuguri). Gratuit et émouvant."}],
+  18:[{time:"09:00",label:"Kinkaku-ji — Pavillon d'Or",type:"temple",link:null,desc:"Temple doré emblématique. 500¥. Y être dès 9h pour éviter les groupes."},
+      {time:"10:30",label:"Ryoan-ji — jardin de pierres zen",type:"temple",link:"https://www.ryoanji.jp/smph/eng/",desc:"Le jardin sec le plus célèbre du Japon. 15 pierres, 0 explication. Méditation."},
+      {time:"12:00",label:"Déjeuner Nijo area",type:"resto",link:null,desc:"Restaurants dans le quartier de Nijo Castle."},
+      {time:"13:30",label:"Nijo Castle",type:"activite",link:null,desc:"Château du shogun Tokugawa. Planchers 'rossignol' qui grincent. 1 000¥."},
+      {time:"15:30",label:"Nishijin — quartier des tisserands",type:"shopping",link:null,desc:"Quartier historique de la soie. Artisans et boutiques de textiles traditionnels."},
+      {time:"19:00",label:"Dîner Karasuma Oike",type:"resto",link:null,desc:"Quartier dynamique avec restaurants variés et bars."}],
+  19:[{time:"08:00",label:"Train JR → Nara (~50 min)",type:"transport",link:null,desc:"JR Nara Line depuis Kyoto Station. Simple et direct."},
+      {time:"09:00",label:"Nara Park — cerfs sacrés",type:"activite",link:null,desc:"Cerfs en liberté partout. Shika senbei (craquelins) 200¥ pour les nourrir."},
+      {time:"10:30",label:"Todai-ji — Grand Bouddha",type:"temple",link:"https://www.todaiji.or.jp/english/",desc:"Le plus grand temple en bois du Japon. Bouddha de bronze 15m. 600¥."},
+      {time:"12:30",label:"Déjeuner à Nara",type:"resto",link:null,desc:"Kakinoha-zushi (sushi feuille de kaki) — spécialité locale."},
+      {time:"14:00",label:"Kasuga Taisha Shrine",type:"temple",link:null,desc:"5 000 lanternes en pierre et bronze. Forêt primaire protégée derrière."},
+      {time:"16:00",label:"Train retour Kyoto",type:"transport",link:null,desc:"Retour en fin d'après-midi. Dernière soirée à Kyoto."},
+      {time:"18:30",label:"Dîner tranquille Kyoto",type:"resto",link:null,desc:"Repos mérité après une excellente journée à Nara."}],
+  20:[{time:"08:00",label:"Chemin de la Philosophie",type:"activite",link:null,desc:"Tetsugaku-no-michi — 2 km le long d'un canal bordé d'érables. Prévoir 2h tranquilles."},
+      {time:"10:00",label:"Nanzen-ji — aqueduc Meiji",type:"temple",link:null,desc:"Temple zen et son aqueduc en brique rouge. Sous-temple Tenjuan (jardin)."},
+      {time:"11:30",label:"Eikan-do Temple",type:"temple",link:null,desc:"Temple avec le Bouddha qui se retourne. Vue panoramique sur Kyoto."},
+      {time:"13:00",label:"Déjeuner Higashiyama",type:"resto",link:null,desc:"Nombreux restaurants dans le quartier historique préservé."},
+      {time:"15:00",label:"Quartier Higashiyama — balade",type:"activite",link:null,desc:"Ruelles pavées, boutiques artisanales, ambiance Japon ancien."},
+      {time:"19:00",label:"Dîner d'adieu Kyoto",type:"resto",link:null,desc:"Dernière soirée à Kyoto. Choisir un restaurant qui vous tenait à cœur."}],
+  21:[{time:"09:00",label:"Shinkansen Kyoto → Osaka",type:"transport",link:null,desc:"15 min seulement, 560¥. Le trajet le plus court du voyage !"},
+      {time:"10:00",label:"Installation logement Osaka",type:"hotel",link:null,desc:"Check-in et dépôt des bagages. Osaka est plus décontractée que Tokyo."},
+      {time:"13:00",label:"Dotonbori — cœur touristique",type:"activite",link:null,desc:"Glico Running Man, enseignes géantes, atmosphère folle. Le symbole d'Osaka."},
+      {time:"15:00",label:"Takoyaki & street food Namba",type:"resto",link:null,desc:"Wanaka Takoyaki ou Hanadako — les meilleurs takoyaki d'Osaka selon les locaux."},
+      {time:"19:00",label:"Dîner izakaya Namba",type:"resto",link:null,desc:"Namba Walk ou Hozenji Yokocho pour une première soirée à Osaka."}],
+  22:[{time:"09:00",label:"Osaka Castle Park",type:"activite",link:null,desc:"Château emblématique. Extérieur gratuit, musée 600¥. Vue panoramique du donjon."},
+      {time:"11:00",label:"Musée du château d'Osaka",type:"activite",link:null,desc:"Histoire de Toyotomi Hideyoshi et des batailles d'Osaka."},
+      {time:"13:00",label:"Kuromon Ichiba Market",type:"activite",link:null,desc:"Le 'ventre d'Osaka'. Fruits de mer frais, wagyu à déguster, street food premium."},
+      {time:"15:30",label:"Shinsekai — quartier populaire",type:"activite",link:null,desc:"Ambiance années 50, Tsutenkaku Tower, atmo populaire authentique."},
+      {time:"18:00",label:"Kushikatsu à Shinsekai",type:"resto",link:null,desc:"Yaekatsu Kushikatsu ou Daruma. RÈGLE D'OR : ne jamais re-tremper dans la sauce !"}],
+  23:[{time:"08:00",label:"Universal Studios Japan — ouverture",type:"activite",link:"https://www.usj.co.jp/web/en/us",desc:"Arriver 30 min avant. Billet ~10 400¥/p. RÉSERVER À L'AVANCE. Express Pass recommandé."},
+      {time:"09:00",label:"Harry Potter World",type:"activite",link:null,desc:"Butter Beer, Honeydukes, Ollivanders. Y aller en premier dès l'ouverture."},
+      {time:"12:00",label:"Déjeuner sur place USJ",type:"resto",link:null,desc:"Nombreuses options thématiques dans le parc. Prévoir budget."},
+      {time:"14:00",label:"Nintendo World & Mario Kart Ride",type:"activite",link:null,desc:"Expérience interactive unique au monde. Bracelet Power-Up Band."},
+      {time:"19:00",label:"Retour Osaka",type:"transport",link:null,desc:"Train retour. Repas léger et repos total — journée épuisante !"}],
+  24:[{time:"10:00",label:"Shinsaibashi — shopping",type:"shopping",link:null,desc:"Grande rue piétonne. Marques japonaises et internationales."},
+      {time:"12:00",label:"Amerika-Mura",type:"shopping",link:null,desc:"Streetwear japonais et vintage à prix raisonnables. Pièces uniques."},
+      {time:"14:00",label:"Den Den Town",type:"shopping",link:null,desc:"Équivalent d'Akihabara à Osaka. Électronique, anime, manga."},
+      {time:"16:30",label:"Collation Namba",type:"resto",link:null,desc:"Pause street food dans le quartier Namba."},
+      {time:"19:00",label:"Hozenji Yokocho",type:"activite",link:null,desc:"Venelle mystérieuse avec temple moussu. Atmosphère unique et photogénique."},
+      {time:"20:00",label:"Dîner izakaya traditionnelle",type:"resto",link:null,desc:"Restaurants intimistes autour de Hozenji."}],
+  25:[{time:"10:00",label:"Kaiyukan Aquarium",type:"activite",link:"https://www.kaiyukan.com/language/eng/",desc:"L'un des plus grands aquariums du monde. Requin-baleine dans le bassin central. 2 400¥."},
+      {time:"13:00",label:"Déjeuner Tempozan",type:"resto",link:null,desc:"Restaurants autour du port de Tempozan."},
+      {time:"14:00",label:"Grande Roue Tempozan",type:"activite",link:null,desc:"Vue panoramique sur la baie d'Osaka. 1 000¥. Parmi les plus grandes du Japon."},
+      {time:"15:30",label:"Marché d'artisanat Tempozan",type:"shopping",link:null,desc:"Artisans locaux. Souvenirs originaux de qualité."},
+      {time:"19:00",label:"Dîner Namba / Dotonbori",type:"resto",link:null,desc:"Dernière grande soirée animée à Osaka."}],
+  26:[{time:"10:00",label:"Balade libre Osaka",type:"libre",link:null,desc:"Retourner dans un endroit aimé ou explorer un quartier non visité."},
+      {time:"13:00",label:"Shopping final Osaka",type:"shopping",link:null,desc:"Derniers achats — Amerika-Mura, Shinsaibashi ou Namba."},
+      {time:"16:00",label:"Préparation valises — retour Tokyo",type:"hotel",link:null,desc:"Préparer les bagages pour le Shinkansen de demain matin."},
+      {time:"20:00",label:"Dîner d'adieu Osaka",type:"resto",link:null,desc:"Dotonbori ou restaurant choisi par vous. Saveur finale de l'Osaka kuidaore."}],
+  27:[{time:"09:00",label:"Shinkansen Osaka → Tokyo",type:"transport",link:null,desc:"~2h30, ~14 000¥/p. Réserver à l'avance. Vue sur le Fuji (côté droit en montant)."},
+      {time:"12:00",label:"Arrivée Tokyo — installation",type:"hotel",link:null,desc:"Retour à Nakano ou nouvel hébergement pour les dernières nuits."},
+      {time:"14:00",label:"Ikebukuro Sunshine City",type:"activite",link:null,desc:"Quartier moins touristique. Sunshine City, Seibu/Tobu department stores."},
+      {time:"16:00",label:"Pokemon Center Ikebukuro",type:"shopping",link:null,desc:"Grands formats exclusifs et articles introuvables ailleurs."},
+      {time:"18:00",label:"Akihabara — derniers achats",type:"shopping",link:null,desc:"Electronics, figurines, manga et anime de dernière minute."},
+      {time:"20:00",label:"Dîner Tokyo",type:"resto",link:null,desc:"Retrouver les saveurs de Tokyo après Osaka."}],
+  28:[{time:"10:00",label:"Retour dans le quartier favori",type:"libre",link:null,desc:"Journée intentionnellement libre. Retrouver des endroits aimés plutôt que courir."},
+      {time:"12:00",label:"Café cosy & promenade sans agenda",type:"libre",link:null,desc:"Profiter du temps. Observer la vie locale."},
+      {time:"14:00",label:"Harajuku / Shibuya — shopping final",type:"shopping",link:null,desc:"Takeshita Street pour les souvenirs kawaii de dernière minute."},
+      {time:"20:00",label:"Dîner au restaurant favori du séjour",type:"resto",link:null,desc:"Choisir le meilleur repas vécu pendant le voyage et le refaire."}],
+  29:[{time:"10:00",label:"Asakusa Nakamise — souvenirs",type:"shopping",link:null,desc:"Éventails, chopsticks, sake, Kit-Kat japonais. Le meilleur spot souvenirs."},
+      {time:"12:00",label:"Don Quijote Shinjuku",type:"shopping",link:null,desc:"Cosmétiques, bonbons, snacks rares. Idéal pour charger les valises."},
+      {time:"14:00",label:"Isetan Shinjuku — Food Hall B2",type:"shopping",link:null,desc:"Cadeaux alimentaires de qualité : wagashi, sake, thé matcha."},
+      {time:"17:00",label:"Préparation valises départ",type:"hotel",link:null,desc:"Vérifier les bagages, préparer les documents de voyage."},
+      {time:"20:00",label:"Dîner spécial d'adieu",type:"resto",link:null,desc:"Kaiseki, sushi bar ou teppanyaki — fêter la fin d'un voyage exceptionnel."}],
+  30:[{time:"07:00",label:"Petit-déjeuner & vérification bagages",type:"hotel",link:null,desc:"Dernier repas calme. Vérifier que tout est dans les valises."},
+      {time:"09:00",label:"Départ pour l'aéroport",type:"transport",link:null,desc:"Partir 3h avant le vol. Narita Express (1h15, 3 020¥) ou Limousine Bus."},
+      {time:"11:00",label:"Enregistrement & détaxe",type:"transport",link:null,desc:"Comptoir de détaxe à l'aéroport — récupérer la taxe sur vos achats tax-free."},
+      {time:"12:30",label:"Dernier konbini de l'aéroport",type:"resto",link:null,desc:"Onigiri, sandwich tamago et dernière boisson japonaise avant le vol."},
+      {time:"15:00",label:"Embarquement ✈️ — Sayonara Japon !",type:"transport",link:null,desc:"Regard mélancolique par le hublot sur Tokyo. Déjà l'envie de revenir."}]
+};
 
 const RESTAURANTS = [
   // ── NAKANO (autour de l'Airbnb) ──────────────────────────────
@@ -1422,6 +1681,7 @@ const SUGGESTIONS = [
   {id:"s6",name:"Shinsekai la nuit",cat:"Osaka populaire",city:"Osaka",area:"Shinsekai",lat:34.6512,lng:135.5065,reason:"Shinsekai ressemble à un décor de film neon-yakuza des années 80. Les enseigns clignotent, les vieux jouent au shogi, les senteurs de kushikatsu emplissent l'air. Voir ça après 20h est une expérience hors du temps.",added:false},
   {id:"s7",name:"Kuroshio Market (Osaka Aquarium)",cat:"Osaka insolite",city:"Osaka",area:"Tempozan",lat:34.6552,lng:135.4289,reason:"Le marché intérieur de la zone de l'Aquarium de Kaiyukan. Le dimanche matin, thoniers et criées reconstituées avec dégustation. Moins cher et plus authentique que Tsukiji selon certains locaux.",added:false},
   {id:"s8",name:"Shimokitazawa Bonus Round — Cafés littéraires",cat:"Cafés Tokyo",city:"Tokyo",area:"Shimokitazawa",lat:35.6613,lng:139.6672,reason:"B&B Books (librairie-bar), Que Sera (café jazz), Darwin Room (cabinet de curiosités). Ces trois adresses à Shimo sont les plus belles de Tokyo selon ceux qui y vivent. Aucune enseigne visible depuis la rue.",added:false},
+  {id:"s9",name:"Tsuruhashi — Quartier Coréen d'Osaka",cat:"Osaka authentique",city:"Osaka",area:"Tsuruhashi",lat:34.6651,lng:135.5340,reason:"Tsuruhashi est le plus grand quartier coréen du Japon — un labyrinthe de ruelles couvertes avec barbecues coréens, kimchi maison, vêtements vintage. Moins cher que Dotonbori et 100x plus authentique. Dépaysement garanti à 10 min d'Osaka.",added:false},
   {id:"s10",name:"Depachika de Isetan Shinjuku",cat:"Gastronomie Tokyo",city:"Tokyo",area:"Shinjuku",lat:35.6916,lng:139.7034,reason:"Les sous-sols de Isetan Shinjuku (B1 et B2) sont les meilleurs food halls du Japon. Pâtisseries, chocolats, wagyu, sushi, yakitori préparés devant vous. Budget 2000-5000¥ pour se faire plaisir. Parfait pour cadeaux aussi.",added:false}
 ];
 
@@ -1570,17 +1830,25 @@ function renderDays(filter='all'){
         <span class="day-toggle">▼</span>
       </div>
       <div class="day-body">
-        <div class="day-sections">
-          <div class="day-section"><h4>🌅 Matin</h4><p>${d.morning}</p></div>
-          <div class="day-section"><h4>☀️ Après-midi</h4><p>${d.afternoon}</p></div>
-          <div class="day-section"><h4>🌙 Soirée</h4><p>${d.evening}</p></div>
+        <div class="day-tabs">
+          <button class="dtab-btn active" onclick="switchDayTab(${d.day},'resume',this)">📋 Résumé</button>
+          <button class="dtab-btn" onclick="switchDayTab(${d.day},'horaire',this)">⏰ Horaire</button>
+          <button class="dtab-btn" onclick="switchDayTab(${d.day},'notes',this)">📝 Notes</button>
         </div>
-        <div class="highlights">
-          ${d.highlights.map(h=>`<span class="highlight-tag">📍 ${h}</span>`).join('')}
+        <div class="dtab-pane active" id="dtab-resume-${d.day}">
+          <div class="day-sections">
+            <div class="day-section"><h4>🌅 Matin</h4><p>${d.morning}</p></div>
+            <div class="day-section"><h4>☀️ Après-midi</h4><p>${d.afternoon}</p></div>
+            <div class="day-section"><h4>🌙 Soirée</h4><p>${d.evening}</p></div>
+          </div>
+          <div class="highlights">${d.highlights.map(h=>`<span class="highlight-tag">📍 ${h}</span>`).join('')}</div>
+          <div class="tip-box">💡 ${d.tip}</div>
+          <div style="margin-top:10px;text-align:right">
+            <button class="btn btn-ghost" style="font-size:.75rem" onclick="showTab('planification');openPlanDay(${d.day})">✏️ Modifier le planning</button>
+          </div>
         </div>
-        <div class="tip-box">💡 ${d.tip}</div>
-        <div style="margin-top:12px">
-          <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">📝 Notes personnelles</div>
+        <div class="dtab-pane" id="dtab-horaire-${d.day}"></div>
+        <div class="dtab-pane" id="dtab-notes-${d.day}">
           <textarea class="notes-area" placeholder="Ajouter des notes..." onchange="saveNote(${d.day},this.value)">${note}</textarea>
         </div>
       </div>`;
@@ -1596,7 +1864,7 @@ function toggleDay(n){
 function expandAll(){document.querySelectorAll('.day-card').forEach(c=>c.classList.add('open'))}
 function collapseAll(){document.querySelectorAll('.day-card').forEach(c=>c.classList.remove('open'))}
 function filterCity(city,el){
-  document.querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));
+  el.closest('.city-tab').querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
   renderDays(city);
 }
@@ -1618,6 +1886,190 @@ function updateStats(){
   if(statEl) statEl.textContent=done;
   const prog=document.getElementById('trip-progress');
   if(prog) prog.style.width=(done/30*100)+'%';
+}
+
+// ═══════════════════════════════════════════
+// SCHEDULE / TIMELINE / PLANIFICATION
+// ═══════════════════════════════════════════
+let planCustom=JSON.parse(localStorage.getItem('jp_plan_custom')||'{}');
+let planEditingDay=null;
+let planEditingIdx=null;
+
+function getSchedule(dayNum){
+  return planCustom[dayNum]
+    ? JSON.parse(JSON.stringify(planCustom[dayNum]))
+    : (SCHEDULES[dayNum]||[]);
+}
+
+function switchDayTab(dayNum,tab,btn){
+  const card=document.querySelector(`.day-card[data-day="${dayNum}"]`);
+  card.querySelectorAll('.dtab-btn').forEach(b=>b.classList.remove('active'));
+  card.querySelectorAll('.dtab-pane').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  const pane=card.querySelector(`#dtab-${tab}-${dayNum}`);
+  pane.classList.add('active');
+  if(tab==='horaire'&&pane.innerHTML==='') renderDayTimeline(dayNum,pane);
+}
+
+function renderDayTimeline(dayNum,pane){
+  const items=getSchedule(dayNum);
+  if(!items.length){pane.innerHTML='<p style="color:var(--muted);font-size:.82rem">Aucun horaire défini pour ce jour.</p>';return;}
+  const typeLabel={transport:'Transport',temple:'Temple/Shrine',activite:'Activité',resto:'Restaurant',shopping:'Shopping',event:'Événement',hotel:'Hébergement',soiree:'Soirée',libre:'Temps libre'};
+  pane.innerHTML=`<div class="timeline">${items.map(it=>`
+    <div class="tl-item">
+      <div class="tl-dot dot-${it.type}"></div>
+      <div class="tl-time">${it.time}</div>
+      <div>
+        <span class="tl-label">${it.label}</span>
+        <span class="tl-badge badge-${it.type}">${typeLabel[it.type]||it.type}</span>
+      </div>
+      ${it.desc?`<div class="tl-desc">${it.desc}</div>`:''}
+      ${it.link?`<a class="tl-link" href="${it.link}" target="_blank" rel="noopener">↗ Voir le site</a>`:''}
+    </div>`).join('')}
+  </div>
+  <div style="margin-top:12px;text-align:right">
+    <button class="btn btn-ghost" style="font-size:.75rem" onclick="showTab('planification');openPlanDay(${dayNum})">✏️ Modifier cet horaire</button>
+  </div>`;
+}
+
+function renderPlanDayGrid(){
+  const grid=document.getElementById('plan-day-grid');
+  if(!grid) return;
+  grid.innerHTML=DAYS.map(d=>{
+    const done=dayChecked[d.day]||false;
+    return `<div class="plan-pill${planEditingDay===d.day?' active':''}${done?' pdone':''}" onclick="openPlanDay(${d.day})" title="Jour ${d.day} — ${d.date}">
+      <div>${d.day}</div>
+      <div style="font-size:.6rem;margin-top:2px">${d.emoji}</div>
+    </div>`;
+  }).join('');
+}
+
+function openPlanDay(dayNum){
+  planEditingDay=dayNum;
+  renderPlanDayGrid();
+  const day=DAYS.find(d=>d.day===dayNum);
+  const editor=document.getElementById('plan-day-editor');
+  const title=document.getElementById('plan-day-title');
+  if(!editor||!title) return;
+  title.innerHTML=`<span style="color:var(--gold)">Jour ${dayNum}</span> — ${day.date} · ${day.city} ${day.emoji}`;
+  editor.style.display='block';
+  closePlanForm();
+  renderPlanItems();
+  setTimeout(()=>editor.scrollIntoView({behavior:'smooth',block:'start'}),80);
+}
+
+function renderPlanItems(){
+  const list=document.getElementById('plan-items-list');
+  if(!list) return;
+  const items=getSchedule(planEditingDay);
+  const typeIcon={transport:'🚄',temple:'🏯',activite:'⛩️',resto:'🍜',shopping:'🛍️',event:'🎉',hotel:'🏨',soiree:'🍺',libre:'🕐'};
+  if(!items.length){list.innerHTML='<p style="color:var(--muted);font-size:.82rem;margin-bottom:10px">Aucun créneau. Clique sur "+ Ajouter" pour commencer.</p>';return;}
+  list.innerHTML=items.map((it,i)=>`
+    <div class="plan-item">
+      <div class="plan-item-time">${it.time}</div>
+      <div class="plan-item-body">
+        <div class="plan-item-label">${typeIcon[it.type]||'•'} ${it.label}</div>
+        ${it.desc?`<div class="plan-item-desc">${it.desc}</div>`:''}
+        ${it.link?`<a href="${it.link}" target="_blank" rel="noopener" style="font-size:.7rem;color:var(--blue)">↗ Lien</a>`:''}
+      </div>
+      <div class="plan-item-actions">
+        ${i>0?`<button class="plan-act-btn" onclick="movePlanItem(${i},-1)" title="Monter">↑</button>`:''}
+        ${i<items.length-1?`<button class="plan-act-btn" onclick="movePlanItem(${i},1)" title="Descendre">↓</button>`:''}
+        <button class="plan-act-btn" onclick="openEditForm(${i})" title="Modifier">✏️</button>
+        <button class="plan-act-btn del" onclick="deletePlanItem(${i})" title="Supprimer">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function openNewItemForm(){
+  planEditingIdx=null;
+  document.getElementById('plan-form-title').textContent='➕ Nouveau créneau';
+  document.getElementById('pf-time').value='09:00';
+  document.getElementById('pf-label').value='';
+  document.getElementById('pf-type').value='activite';
+  document.getElementById('pf-link').value='';
+  document.getElementById('pf-desc').value='';
+  const box=document.getElementById('plan-form-box');
+  box.style.display='block';
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function openEditForm(idx){
+  planEditingIdx=idx;
+  const items=getSchedule(planEditingDay);
+  const it=items[idx];
+  document.getElementById('plan-form-title').textContent='✏️ Modifier le créneau';
+  document.getElementById('pf-time').value=it.time||'09:00';
+  document.getElementById('pf-label').value=it.label||'';
+  document.getElementById('pf-type').value=it.type||'activite';
+  document.getElementById('pf-link').value=it.link||'';
+  document.getElementById('pf-desc').value=it.desc||'';
+  const box=document.getElementById('plan-form-box');
+  box.style.display='block';
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function closePlanForm(){
+  const box=document.getElementById('plan-form-box');
+  if(box) box.style.display='none';
+  planEditingIdx=null;
+}
+
+function savePlanItem(){
+  const time=document.getElementById('pf-time').value.trim();
+  const label=document.getElementById('pf-label').value.trim();
+  const type=document.getElementById('pf-type').value;
+  const link=document.getElementById('pf-link').value.trim()||null;
+  const desc=document.getElementById('pf-desc').value.trim()||null;
+  if(!label){alert('Merci de saisir un titre.');return;}
+  const items=getSchedule(planEditingDay);
+  const newItem={time,label,type,link,desc};
+  if(planEditingIdx===null){
+    items.push(newItem);
+    items.sort((a,b)=>a.time.localeCompare(b.time));
+  } else {
+    items[planEditingIdx]=newItem;
+    items.sort((a,b)=>a.time.localeCompare(b.time));
+  }
+  planCustom[planEditingDay]=items;
+  localStorage.setItem('jp_plan_custom',JSON.stringify(planCustom));
+  closePlanForm();
+  renderPlanItems();
+  invalidateDayTimeline(planEditingDay);
+}
+
+function deletePlanItem(idx){
+  if(!confirm('Supprimer ce créneau ?')) return;
+  const items=getSchedule(planEditingDay);
+  items.splice(idx,1);
+  planCustom[planEditingDay]=items;
+  localStorage.setItem('jp_plan_custom',JSON.stringify(planCustom));
+  renderPlanItems();
+  invalidateDayTimeline(planEditingDay);
+}
+
+function movePlanItem(idx,dir){
+  const items=getSchedule(planEditingDay);
+  const to=idx+dir;
+  if(to<0||to>=items.length) return;
+  [items[idx],items[to]]=[items[to],items[idx]];
+  planCustom[planEditingDay]=items;
+  localStorage.setItem('jp_plan_custom',JSON.stringify(planCustom));
+  renderPlanItems();
+  invalidateDayTimeline(planEditingDay);
+}
+
+function resetPlanDay(){
+  if(!confirm('Réinitialiser le planning de ce jour aux valeurs par défaut ?')) return;
+  delete planCustom[planEditingDay];
+  localStorage.setItem('jp_plan_custom',JSON.stringify(planCustom));
+  renderPlanItems();
+  invalidateDayTimeline(planEditingDay);
+}
+
+function invalidateDayTimeline(dayNum){
+  const pane=document.getElementById(`dtab-horaire-${dayNum}`);
+  if(pane) pane.innerHTML='';
 }
 
 // ═══════════════════════════════════════════
@@ -1878,10 +2330,11 @@ function confirmAdd(){
     }
     renderSuggestions();
   }
-  // Add to day notes
   const note=dayNotes[selectedDay]||'';
   dayNotes[selectedDay]=(note?note+'\n':'')+'➕ Ajouté : '+currentSuggestion.name;
   localStorage.setItem('jp_notes',JSON.stringify(dayNotes));
+  const noteArea=document.querySelector(`#dtab-notes-${selectedDay} .notes-area`);
+  if(noteArea) noteArea.value=dayNotes[selectedDay];
   alert(`✓ "${currentSuggestion.name}" ajouté au Jour ${selectedDay} !`);
   closeModal();
 }
@@ -1959,15 +2412,14 @@ function updateFestivalCountdown(){
     {date:'2026-07-30',el:'days-gion',banner:'banner-gion'},
   ];
   const now=new Date();
+  const todayStr=now.toISOString().slice(0,10);
   events.forEach(({date,el,banner})=>{
-    const fest=new Date(date);
-    const diff=Math.ceil((fest-now)/86400000);
     const elNode=document.getElementById(el);
-    if(elNode){
-      if(diff>0) elNode.textContent='Dans '+diff+' jours !';
-      else if(diff===0) elNode.textContent='C\'est aujourd\'hui ! 🎉';
-      else{elNode.textContent='Passé';const b=document.getElementById(banner);if(b)b.style.display='none';}
-    }
+    if(!elNode) return;
+    if(date===todayStr){elNode.textContent='C\'est aujourd\'hui ! 🎉';return;}
+    const diff=Math.round((new Date(date)-new Date(todayStr))/86400000);
+    if(diff>0) elNode.textContent='Dans '+diff+' jour'+(diff>1?'s':'')+' !';
+    else{elNode.textContent='Passé';const b=document.getElementById(banner);if(b)b.style.display='none';}
   });
 }
 updateFestivalCountdown();
@@ -2234,6 +2686,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderShoppingList();
   loadDocs();
   updateFestivalCountdown();
+  renderPlanDayGrid();
   const rateEl=document.getElementById('rate-input');
   if(rateEl) rateEl.value=exchangeRate;
 });
