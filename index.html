@@ -732,6 +732,13 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
 <!-- ===== FOOD ===== -->
 <div class="tab" id="tab-food">
   <div class="section-title">🍜 Restaurants & Food</div>
+
+  <!-- SOURCE SUB-TABS -->
+  <div style="display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:0">
+    <button class="source-tab active" data-source="claude" onclick="setFoodFilter('source','claude',this)" style="background:none;border:none;color:var(--text);padding:10px 18px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:.88rem;font-weight:600;border-bottom:3px solid var(--red);margin-bottom:-1px">🤖 Recherches Claude <span id="food-count-claude" style="color:var(--muted);font-weight:400;font-size:.78rem">(0)</span></button>
+    <button class="source-tab" data-source="user" onclick="setFoodFilter('source','user',this)" style="background:none;border:none;color:var(--muted);padding:10px 18px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:.88rem;font-weight:600;border-bottom:3px solid transparent;margin-bottom:-1px">💎 Tes trouvailles <span id="food-count-user" style="font-weight:400;font-size:.78rem">(0)</span></button>
+  </div>
+
   <input class="search-bar" placeholder="🔍 Chercher un restaurant, une cuisine, un quartier..." id="search-food" oninput="applyFoodFilters()">
   <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px">
     <div>
@@ -745,17 +752,9 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
         <span class="city-pill" onclick="setFoodFilter('city','visited',this)">✓ Visités</span>
       </div>
     </div>
-    <div>
-      <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">📍 Quartier (Tokyo)</div>
-      <div class="city-tab" id="food-neighborhood-filter">
-        <span class="city-pill active" onclick="setFoodFilter('neighborhood','all',this)">Tous</span>
-        <span class="city-pill" onclick="setFoodFilter('neighborhood','Nakano',this)">🏠 Nakano (Airbnb)</span>
-        <span class="city-pill" onclick="setFoodFilter('neighborhood','Shinjuku',this)">Shinjuku</span>
-        <span class="city-pill" onclick="setFoodFilter('neighborhood','Shibuya',this)">Shibuya</span>
-        <span class="city-pill" onclick="setFoodFilter('neighborhood','Asakusa',this)">Asakusa</span>
-        <span class="city-pill" onclick="setFoodFilter('neighborhood','Harajuku',this)">Harajuku</span>
-        <span class="city-pill" onclick="setFoodFilter('neighborhood','Roppongi',this)">Roppongi</span>
-      </div>
+    <div id="food-neighborhood-wrap">
+      <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px" id="food-neighborhood-label">📍 Quartier</div>
+      <div class="city-tab" id="food-neighborhood-filter"></div>
     </div>
     <div style="display:flex;gap:20px;flex-wrap:wrap">
       <div>
@@ -785,6 +784,13 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
 <!-- ===== ACTIVITES ===== -->
 <div class="tab" id="tab-activites">
   <div class="section-title">⛩️ Activités & Sites</div>
+
+  <!-- SOURCE SUB-TABS -->
+  <div style="display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:0">
+    <button class="source-tab active" data-source="claude" onclick="setActFilter('source','claude',this)" style="background:none;border:none;color:var(--text);padding:10px 18px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:.88rem;font-weight:600;border-bottom:3px solid var(--red);margin-bottom:-1px">🤖 Recherches Claude <span id="act-count-claude" style="color:var(--muted);font-weight:400;font-size:.78rem">(0)</span></button>
+    <button class="source-tab" data-source="user" onclick="setActFilter('source','user',this)" style="background:none;border:none;color:var(--muted);padding:10px 18px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:.88rem;font-weight:600;border-bottom:3px solid transparent;margin-bottom:-1px">💎 Tes trouvailles <span id="act-count-user" style="font-weight:400;font-size:.78rem">(0)</span></button>
+  </div>
+
   <input class="search-bar" placeholder="🔍 Chercher une activité, un site, un quartier..." id="search-act" oninput="applyActFilters()">
   <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px">
     <div>
@@ -801,18 +807,9 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
       </div>
     </div>
     <div style="display:flex;gap:20px;flex-wrap:wrap">
-      <div>
-        <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">📍 Quartier (Tokyo)</div>
-        <div class="city-tab" id="act-neighborhood-filter">
-          <span class="city-pill active" onclick="setActFilter('neighborhood','all',this)">Tous</span>
-          <span class="city-pill" onclick="setActFilter('neighborhood','Nakano',this)">🏠 Nakano (Airbnb)</span>
-          <span class="city-pill" onclick="setActFilter('neighborhood','Asakusa',this)">Asakusa</span>
-          <span class="city-pill" onclick="setActFilter('neighborhood','Shibuya',this)">Shibuya</span>
-          <span class="city-pill" onclick="setActFilter('neighborhood','Harajuku',this)">Harajuku</span>
-          <span class="city-pill" onclick="setActFilter('neighborhood','Akihabara',this)">Akihabara</span>
-          <span class="city-pill" onclick="setActFilter('neighborhood','Roppongi',this)">Roppongi</span>
-          <span class="city-pill" onclick="setActFilter('neighborhood','Chiyoda',this)">Chiyoda</span>
-        </div>
+      <div id="act-neighborhood-wrap">
+        <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px" id="act-neighborhood-label">📍 Quartier</div>
+        <div class="city-tab" id="act-neighborhood-filter"></div>
       </div>
       <div>
         <div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">⭐ Note minimum</div>
@@ -1571,7 +1568,7 @@ const RESTAURANTS = [
   {name:"Nakano Beer Kobo",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"bar",cuisine:"🍺 Craft Beer",rating:4.1,price:"¥",lat:35.7087,lng:139.6647,desc:"Micro-brasserie artisanale — IPA, White, Pale Ale en rotation. Fried chicken maison. Petite ruelle cosy derrière la gare.",gmaps:"https://maps.google.com/?q=Nakano+Beer+Kobo+Tokyo"},
   {name:"Juke 80's J-Pop Bar",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"bar",cuisine:"🎵 Bar/Musique",rating:4.5,price:"¥",lat:35.7089,lng:139.6644,desc:"Bar underground 80s japonais. Musique J-Pop/City Pop sur demande, sans cover charge. Bières 500¥. Expérience nocturne unique.",gmaps:"https://maps.google.com/?q=Juke+80s+Bar+Nakano+Tokyo"},
   {name:"Coffee Zingaro",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Broadway",cat:"cafe",cuisine:"☕ Café/Art",rating:4.3,price:"¥¥",lat:35.7086,lng:139.6643,desc:"Café de Takashi Murakami. Tables gaming consoles vintage (Mario, Street Fighter). Café Nordic Fuglen. Pancakes spectaculaires.",gmaps:"https://maps.google.com/?q=Coffee+Zingaro+Nakano+Broadway+Tokyo"},
-  {name:"Shimonya Honten",city:"Tokyo",area:"Nakano",neighborhood:"Araiyakushi-mae",cat:"izakaya",cuisine:"🍢 Yakitori/Yakiton",rating:4.2,price:"¥",lat:35.7211,lng:139.6481,desc:"Izakaya historique au toit jaune. Brochettes dès 110¥. Spécialités rares (basashi, steak rare). Ambiance vieux Tokyo années 60.",gmaps:"https://maps.google.com/?q=Shimonya+Honten+Araiyakushi+Tokyo"},
+  {name:"Shimonya Honten",city:"Tokyo",area:"Nakano",neighborhood:"Araiyakushi-mae",cat:"izakaya",cuisine:"🍢 Yakitori/Yakiton",rating:4.2,price:"¥",lat:35.7193,lng:139.6657,desc:"Izakaya historique au toit jaune. Brochettes dès 110¥. Spécialités rares (basashi, steak rare). Ambiance vieux Tokyo années 60.",gmaps:"https://maps.google.com/?q=Shimonya+Honten+Araiyakushi+Tokyo"},
   {name:"Oyakidokoro Refutei",city:"Tokyo",area:"Nakano",neighborhood:"Sun Mall",cat:"streetfood",cuisine:"🥮 Street Food",rating:4.0,price:"¥",lat:35.7083,lng:139.6650,desc:"Imagawayaki frais — petits gâteaux chauds fourrés (anko, chocolat, cream cheese). Tout sous 200¥. Incontournable dans la galerie.",gmaps:"https://maps.google.com/?q=Oyakidokoro+Refutei+Nakano+Sun+Mall"},
   {name:"Daily Chiko (Glaces)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Broadway",cat:"dessert",cuisine:"🍦 Glaces",rating:4.2,price:"¥",lat:35.7086,lng:139.6643,desc:"Soft serve de 20cm à 8 couches ! Parfums saisonniers changeants. Instagrammable garantit. Dans le sous-sol de Nakano Broadway.",gmaps:"https://maps.google.com/?q=Daily+Chiko+Nakano+Broadway"},
   {name:"Mamatoko (Kakigori)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"dessert",cuisine:"🧊 Kakigori",rating:4.5,price:"¥",lat:35.7086,lng:139.6649,desc:"La 'Reine du Kakigori' (glace pilée japonaise). Sirops de fruits frais, lie de saké, granola. Parfums inventifs selon saison. File l'été.",gmaps:"https://maps.google.com/?q=Mamatoko+Nakano+Tokyo"},
@@ -1624,12 +1621,12 @@ const ACTIVITIES = [
   {name:"Coffee Zingaro (Murakami)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Broadway",cat:"culture",rating:4.3,prix:"~800¥",lat:35.7086,lng:139.6644,desc:"Café de l'artiste Takashi Murakami. Tables gaming rétro (Mario, Donkey Kong). Café Nordic Fuglen. Pancakes spectaculaires.",gmaps:"https://maps.google.com/?q=Coffee+Zingaro+Nakano+Broadway"},
   {name:"Hidari Zingaro Gallery",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Broadway",cat:"culture",rating:4.2,prix:"Gratuit",lat:35.7086,lng:139.6644,desc:"Galerie art contemporain Kaikai Kiki (Takashi Murakami) au 3e étage de Nakano Broadway. Expositions rotatives.",gmaps:"https://maps.google.com/?q=Hidari+Zingaro+Nakano+Broadway"},
   {name:"Fujiya Camera (Nakano)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"shopping",rating:4.5,prix:"Variable",lat:35.7062,lng:139.6649,desc:"80 ans d'histoire. 2000+ appareils et objectifs d'occasion. Paradis pour passionnés photo argentique et vintage.",gmaps:"https://maps.google.com/?q=Fujiya+Camera+Nakano+Tokyo"},
-  {name:"Araiyakushi Baishoin Temple",city:"Tokyo",area:"Nakano",neighborhood:"Araiyakushi-mae",cat:"temple",rating:4.3,prix:"Gratuit",lat:35.7214,lng:139.6478,desc:"Temple Shingon du 16e siècle. Réputé pour soigner les maladies des yeux. Amulettes et plaques ema originales. Calme et authentique.",gmaps:"https://maps.google.com/?q=Araiyakushi+Temple+Nakano+Tokyo"},
-  {name:"Ichi no Yu — Sento",city:"Tokyo",area:"Nakano",neighborhood:"Numabukuro",cat:"onsen",rating:4.4,prix:"520¥",lat:35.7155,lng:139.6540,desc:"Bain public traditionnel (sento) ouvert jusqu'à 1h30 du matin. Sauna vapeur, bain extérieur. Serviettes incluses. Expérience locale.",gmaps:"https://maps.google.com/?q=Ichi+no+Yu+Nakano+Tokyo"},
+  {name:"Araiyakushi Baishoin Temple",city:"Tokyo",area:"Nakano",neighborhood:"Araiyakushi-mae",cat:"temple",rating:4.3,prix:"Gratuit",lat:35.7188,lng:139.6638,desc:"Temple Shingon du 16e siècle. Réputé pour soigner les maladies des yeux. Amulettes et plaques ema originales. Calme et authentique.",gmaps:"https://maps.google.com/?q=Araiyakushi+Temple+Nakano+Tokyo"},
+  {name:"Ichi no Yu — Sento",city:"Tokyo",area:"Nakano",neighborhood:"Numabukuro",cat:"onsen",rating:4.4,prix:"520¥",lat:35.7237,lng:139.6634,desc:"Bain public traditionnel (sento) ouvert jusqu'à 1h30 du matin. Sauna vapeur, bain extérieur. Serviettes incluses. Expérience locale.",gmaps:"https://maps.google.com/?q=Ichi+no+Yu+Nakano+Tokyo"},
   {name:"Nakano Central Park",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Centre",cat:"parc",rating:4.1,prix:"Gratuit",lat:35.7065,lng:139.6644,desc:"Grand parc au nord de la gare Nakano. Food trucks 11h-16h en semaine. Parfait pour un déjeuner en plein air au calme.",gmaps:"https://maps.google.com/?q=Nakano+Central+Park+Tokyo"},
   {name:"🎉 Champuru Festival (19-20 Juil)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Station",cat:"événement",rating:5.0,prix:"Gratuit",lat:35.7063,lng:139.6650,desc:"PENDANT VOTRE SÉJOUR ! 21e édition du festival culturel okinawais. Musique, danse, cuisine traditionnelle. Autour de la gare de Nakano. Week-end du 19-20 juillet.",gmaps:"https://maps.google.com/?q=Nakano+Station+Tokyo"},
   {name:"Mandarake (Vintage Manga)",city:"Tokyo",area:"Nakano",neighborhood:"Nakano Broadway",cat:"shopping",rating:4.4,prix:"Variable",lat:35.7086,lng:139.6643,desc:"Le plus grand magasin de manga/anime vintage du monde. 1M+ articles. Figures rares, dojinshi, jouets US vintage.",gmaps:"https://maps.google.com/?q=Mandarake+Nakano+Broadway"},
-  {name:"Aji no Machidaya (Sake Shop)",city:"Tokyo",area:"Nakano",neighborhood:"Araiyakushi-mae",cat:"shopping",rating:4.3,prix:"Variable",lat:35.7213,lng:139.6479,desc:"Cave à saké, shochu, umeshu artisanaux. Sélection de 'one-cup sake' unique. Service d'envoi à domicile possible.",gmaps:"https://maps.google.com/?q=Aji+No+Machidaya+Nakano+Tokyo"},
+  {name:"Aji no Machidaya (Sake Shop)",city:"Tokyo",area:"Nakano",neighborhood:"Araiyakushi-mae",cat:"shopping",rating:4.3,prix:"Variable",lat:35.7195,lng:139.6655,desc:"Cave à saké, shochu, umeshu artisanaux. Sélection de 'one-cup sake' unique. Service d'envoi à domicile possible.",gmaps:"https://maps.google.com/?q=Aji+No+Machidaya+Nakano+Tokyo"},
   // ── TOKYO AUTRES QUARTIERS ─────────────────────────────────────
   {name:"🎆 Sumida River Fireworks (25 Jul)",city:"Tokyo",area:"Asakusa",neighborhood:"Asakusa",cat:"événement",rating:5.0,prix:"Gratuit",lat:35.7101,lng:139.8007,desc:"PENDANT VOTRE SÉJOUR ! L'un des plus grands feux d'artifice du Japon — 20 000 feux sur 1h30 au-dessus de la Sumida. 25 Juillet dès 19h05. Spots : Sumida Park, pont Komagata, Chabangibashi. Arriver avant 17h pour avoir une place.",gmaps:"https://maps.google.com/?q=Sumida+Park+Asakusa+Tokyo"},
   {name:"TeamLab Borderless Azabudai",city:"Tokyo",area:"Roppongi",neighborhood:"Roppongi",cat:"art",rating:4.8,prix:"3800¥/p",lat:35.6572,lng:139.7394,desc:"La version grand format de TeamLab — 10 000m² d'art numérique immersif sans limites. Réouvert en 2024 à Azabudai Hills. Différent de Planets ! Réserver sur teamlab.art.",gmaps:"https://maps.google.com/?q=TeamLab+Borderless+Azabudai+Hills+Tokyo",booking:"https://www.teamlab.art/e/borderless-azabudai/"},
@@ -1743,9 +1740,9 @@ const PHRASES = {
 const MAP_PLACES = [
   {name:"Airbnb #1 — Nakano, Tokyo",cat:"logement",lat:35.7055,lng:139.6665,desc:"3-33 Yayoichō, Nakano City — Check-in 15 Jul, Check-out 29 Jul"},
   {name:"Airbnb #2 — Nakano, Tokyo",cat:"logement",lat:35.7050,lng:139.6660,desc:"Yayoichō, Nakano City — juste à côté de l'Airbnb #1"},
-  {name:"Shin-Nakano Station",cat:"transport",lat:35.7015,lng:139.6654,desc:"Marunouchi Line — 7 min à pied de l'Airbnb → Shinjuku en 8 min"},
-  {name:"Nakano Station",cat:"transport",lat:35.7059,lng:139.6650,desc:"JR Chuo Line + Tozai Metro — 12 min à pied → Shinjuku en 5 min"},
-  {name:"Nakano Broadway",cat:"shop",lat:35.7085,lng:139.6648,desc:"Manga, anime, figurines rétro — 12 min à pied de l'Airbnb"},
+  {name:"Shin-Nakano Station",cat:"transport",lat:35.6962,lng:139.6634,desc:"Marunouchi Line — 7 min à pied de l'Airbnb → Shinjuku en 8 min"},
+  {name:"Nakano Station",cat:"transport",lat:35.7065,lng:139.6657,desc:"JR Chuo Line + Tozai Metro — 12 min à pied → Shinjuku en 5 min"},
+  {name:"Nakano Broadway",cat:"shop",lat:35.7090,lng:139.6650,desc:"Manga, anime, figurines rétro — 12 min à pied de l'Airbnb"},
   {name:"Tokyo Station",cat:"transport",lat:35.6812,lng:139.7671,desc:"Hub principal — Shinkansen, Yamanote Line"},
   {name:"Shinjuku Station",cat:"transport",lat:35.6896,lng:139.7006,desc:"Gare la plus fréquentée du monde"},
   {name:"Kyoto Station",cat:"transport",lat:34.9856,lng:135.7589,desc:"Arrivée Kyoto — Shinkansen, bus locaux"},
@@ -1755,6 +1752,62 @@ const MAP_PLACES = [
   ...ACTIVITIES.map(a=>({name:a.name,cat:"activite",lat:a.lat,lng:a.lng,desc:a.desc})),
   ...SUGGESTIONS.map(s=>({name:s.name,cat:"suggestion",lat:s.lat,lng:s.lng,desc:s.reason.substring(0,100)+"..."}))
 ];
+
+// ═══════════════════════════════════════════
+// USER-PROVIDED RESTAURANTS & ACTIVITIES (vide pour l'instant — sera rempli au fur et à mesure)
+// ═══════════════════════════════════════════
+const USER_RESTAURANTS = [];
+const USER_ACTIVITIES = [];
+
+// ═══════════════════════════════════════════
+// NEIGHBORHOODS — Quartiers par ville pour filtres dynamiques
+// ═══════════════════════════════════════════
+const NEIGHBORHOODS = {
+  Tokyo: [
+    {key:"Nakano",label:"🏠 Nakano (Airbnb)"},
+    {key:"Shinjuku",label:"Shinjuku"},
+    {key:"Shibuya",label:"Shibuya"},
+    {key:"Harajuku",label:"Harajuku"},
+    {key:"Asakusa",label:"Asakusa"},
+    {key:"Akihabara",label:"Akihabara"},
+    {key:"Roppongi",label:"Roppongi"},
+    {key:"Chiyoda",label:"Chiyoda"},
+    {key:"Tsukiji",label:"Tsukiji"},
+    {key:"Toyosu",label:"Toyosu"},
+    {key:"Koenji",label:"Koenji"},
+    {key:"Maihama",label:"Maihama (Disney)"},
+    {key:"Oshiage",label:"Oshiage (Skytree)"}
+  ],
+  Kyoto: [
+    {key:"Gion",label:"Gion"},
+    {key:"Higashiyama",label:"Higashiyama"},
+    {key:"Arashiyama",label:"Arashiyama"},
+    {key:"Pontocho",label:"Pontocho"},
+    {key:"Centre Kyoto",label:"Centre Kyoto"},
+    {key:"Nanzenji",label:"Nanzenji"},
+    {key:"Kinkaku-ji",label:"Kinkaku-ji"},
+    {key:"Fushimi",label:"Fushimi"}
+  ],
+  Osaka: [
+    {key:"Namba",label:"Namba"},
+    {key:"Dotonbori",label:"Dotonbori"},
+    {key:"Shinsaibashi",label:"Shinsaibashi"},
+    {key:"Umeda",label:"Umeda"},
+    {key:"Shinsekai",label:"Shinsekai"},
+    {key:"Tempozan",label:"Tempozan"},
+    {key:"Nipponbashi",label:"Nipponbashi"},
+    {key:"Fukushima",label:"Fukushima"},
+    {key:"Chuo",label:"Chuo (Château)"},
+    {key:"Sakurajima",label:"Sakurajima (USJ)"}
+  ],
+  Hakone: [
+    {key:"Owakudani",label:"Owakudani"},
+    {key:"Chokoku-no-Mori",label:"Chokoku-no-Mori"}
+  ],
+  Nara: [
+    {key:"Centre Nara",label:"Centre Nara"}
+  ]
+};
 
 // ═══════════════════════════════════════════
 // STATE
@@ -2086,9 +2139,10 @@ const CAT_ICONS={
 function initMap(){
   if(mapInstance) return;
   mapInstance=L.map('map').setView([36.2,138.5],6);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    attribution:'© OpenStreetMap contributors',
-    maxZoom:19
+  L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap France · © OpenStreetMap contributors',
+    maxZoom:20,
+    subdomains:'abc'
   }).addTo(mapInstance);
   MAP_PLACES.forEach(p=>addMarker(p));
   document.querySelectorAll('#map-filters .filter-btn').forEach(btn=>{
@@ -2109,7 +2163,8 @@ function addMarker(p){
       className:'',iconSize:[28,28],iconAnchor:[14,14]
     })
   });
-  marker.bindPopup(`<div style="min-width:160px"><strong>${p.name}</strong><br><span style="font-size:.75rem;color:#666">${p.cat}</span><br><p style="font-size:.78rem;margin-top:6px">${p.desc||''}</p></div>`);
+  const gmapsUrl=`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+' Japan')}`;
+  marker.bindPopup(`<div style="min-width:180px"><strong>${p.name}</strong><br><span style="font-size:.75rem;color:#666">${p.cat}</span><br><p style="font-size:.78rem;margin:6px 0">${p.desc||''}</p><a href="${gmapsUrl}" target="_blank" style="font-size:.75rem;color:#1976d2;text-decoration:none">🗺️ Voir sur Google Maps →</a></div>`);
   marker.dataset_cat=p.cat;
   marker.addTo(mapInstance);
   mapMarkers.push({marker,cat:p.cat});
@@ -2125,8 +2180,8 @@ function filterMarkers(cat){
 // ═══════════════════════════════════════════
 // FOOD & ACTIVITIES — FILTRES AVANCÉS
 // ═══════════════════════════════════════════
-const foodFilters={city:'all',neighborhood:'all',rating:'0',price:'all'};
-const actFilters={city:'all',neighborhood:'all',rating:'0'};
+const foodFilters={source:'claude',city:'all',neighborhood:'all',rating:'0',price:'all'};
+const actFilters={source:'claude',city:'all',neighborhood:'all',rating:'0'};
 let favs=JSON.parse(localStorage.getItem('jp_favs')||'[]');
 let visited=JSON.parse(localStorage.getItem('jp_visited')||'[]');
 function toggleFav(name,btn){
@@ -2173,9 +2228,51 @@ function placeCard(item,type){
   </div>`;
 }
 
+// ─── Quartier dynamique selon ville ───
+function renderNeighborhoodFilter(type){
+  const filters = type==='food' ? foodFilters : actFilters;
+  const filterEl = document.getElementById(type==='food' ? 'food-neighborhood-filter' : 'act-neighborhood-filter');
+  const labelEl  = document.getElementById(type==='food' ? 'food-neighborhood-label' : 'act-neighborhood-label');
+  const wrapEl   = document.getElementById(type==='food' ? 'food-neighborhood-wrap' : 'act-neighborhood-wrap');
+  if(!filterEl) return;
+  const city = filters.city;
+  // Si "Toutes", "Favoris" ou "Visités" → cacher le filtre quartier
+  if(city==='all'||city==='favs'||city==='visited'){
+    if(wrapEl) wrapEl.style.display='none';
+    filters.neighborhood='all';
+    return;
+  }
+  if(wrapEl) wrapEl.style.display='';
+  const list = NEIGHBORHOODS[city] || [];
+  const setter = type==='food' ? 'setFoodFilter' : 'setActFilter';
+  if(labelEl) labelEl.textContent = `📍 Quartier (${city})`;
+  let html = `<span class="city-pill ${filters.neighborhood==='all'?'active':''}" onclick="${setter}('neighborhood','all',this)">Tous</span>`;
+  html += list.map(n=>`<span class="city-pill ${filters.neighborhood===n.key?'active':''}" onclick="${setter}('neighborhood','${n.key.replace(/'/g,"\\'")}',this)">${n.label}</span>`).join('');
+  filterEl.innerHTML = html;
+}
+
+// ─── Source switcher (visuel) ───
+function updateSourceTabs(type){
+  const filters = type==='food' ? foodFilters : actFilters;
+  const tabName = type==='food' ? 'tab-food' : 'tab-activites';
+  document.querySelectorAll(`#${tabName} .source-tab`).forEach(tab=>{
+    if(tab.dataset.source===filters.source){
+      tab.classList.add('active');
+      tab.style.color='var(--text)';
+      tab.style.borderBottomColor='var(--red)';
+      tab.querySelector('span').style.color='var(--muted)';
+    } else {
+      tab.classList.remove('active');
+      tab.style.color='var(--muted)';
+      tab.style.borderBottomColor='transparent';
+    }
+  });
+}
+
 function applyFoodFilters(){
   const search=document.getElementById('search-food').value.toLowerCase();
-  const items=RESTAURANTS.filter(r=>{
+  const dataset = foodFilters.source==='user' ? USER_RESTAURANTS : RESTAURANTS;
+  const items=dataset.filter(r=>{
     if(foodFilters.city==='favs') return favs.includes(r.name);
     if(foodFilters.city==='visited') return visited.includes(r.name);
     const matchCity=foodFilters.city==='all'||r.city===foodFilters.city;
@@ -2187,26 +2284,42 @@ function applyFoodFilters(){
     const matchSearch=!search||(r.name+r.desc+(r.cuisine||r.cat)+(r.neighborhood||'')).toLowerCase().includes(search);
     return matchCity&&matchNbhd&&matchRating&&matchPrice&&matchSearch;
   });
-  const vCount=RESTAURANTS.filter(r=>visited.includes(r.name)).length;
-  document.getElementById('food-list').innerHTML=items.length?items.map(r=>placeCard(r,'food')).join(''):'<div style="padding:20px;color:var(--muted);font-size:.85rem">Aucun résultat pour ces filtres.</div>';
-  document.getElementById('food-count').textContent=`${items.length} restaurant${items.length>1?'s':''} trouvé${items.length>1?'s':''} · ✓ ${vCount}/${RESTAURANTS.length} visités`;
+  const vCount=dataset.filter(r=>visited.includes(r.name)).length;
+  // Mettre à jour les compteurs des sous-onglets
+  const cClaude=document.getElementById('food-count-claude');
+  const cUser=document.getElementById('food-count-user');
+  if(cClaude) cClaude.textContent=`(${RESTAURANTS.length})`;
+  if(cUser) cUser.textContent=`(${USER_RESTAURANTS.length})`;
+  let emptyMsg='Aucun résultat pour ces filtres.';
+  if(foodFilters.source==='user'&&USER_RESTAURANTS.length===0){
+    emptyMsg='💎 Aucune trouvaille pour l\'instant. Envoie-moi un lien, un nom ou une adresse et je l\'ajouterai ici !';
+  }
+  document.getElementById('food-list').innerHTML=items.length?items.map(r=>placeCard(r,'food')).join(''):`<div style="padding:20px;color:var(--muted);font-size:.85rem">${emptyMsg}</div>`;
+  document.getElementById('food-count').textContent=`${items.length} restaurant${items.length>1?'s':''} trouvé${items.length>1?'s':''} · ✓ ${vCount}/${dataset.length} visités`;
 }
 
 function setFoodFilter(key,val,el){
   foodFilters[key]=val;
-  if(key==='city'&&val!=='all'&&val!=='Tokyo'&&val!=='favs'&&val!=='visited'){
-    foodFilters.neighborhood='all';
-    const nbhdFilter=document.getElementById('food-neighborhood-filter');
-    if(nbhdFilter){nbhdFilter.querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));nbhdFilter.querySelector('.city-pill').classList.add('active');}
+  if(key==='source'){
+    updateSourceTabs('food');
+    applyFoodFilters();
+    return;
   }
-  el.closest('.city-tab').querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');
+  if(key==='city'){
+    foodFilters.neighborhood='all';
+    renderNeighborhoodFilter('food');
+  }
+  if(el && el.closest('.city-tab')){
+    el.closest('.city-tab').querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));
+    el.classList.add('active');
+  }
   applyFoodFilters();
 }
 
 function applyActFilters(){
   const search=document.getElementById('search-act').value.toLowerCase();
-  const items=ACTIVITIES.filter(a=>{
+  const dataset = actFilters.source==='user' ? USER_ACTIVITIES : ACTIVITIES;
+  const items=dataset.filter(a=>{
     if(actFilters.city==='favs') return favs.includes(a.name);
     if(actFilters.city==='visited') return visited.includes(a.name);
     const matchCity=actFilters.city==='all'||a.city===actFilters.city;
@@ -2217,20 +2330,34 @@ function applyActFilters(){
     const matchSearch=!search||(a.name+a.desc+(a.neighborhood||'')+a.city).toLowerCase().includes(search);
     return matchCity&&matchNbhd&&matchRating&&matchSearch;
   });
-  const vCountA=ACTIVITIES.filter(a=>visited.includes(a.name)).length;
-  document.getElementById('act-list').innerHTML=items.length?items.map(a=>placeCard(a,'act')).join(''):'<div style="padding:20px;color:var(--muted);font-size:.85rem">Aucun résultat.</div>';
-  document.getElementById('act-count').textContent=`${items.length} activité${items.length>1?'s':''} trouvée${items.length>1?'s':''} · ✓ ${vCountA}/${ACTIVITIES.length} faites`;
+  const vCountA=dataset.filter(a=>visited.includes(a.name)).length;
+  const cClaude=document.getElementById('act-count-claude');
+  const cUser=document.getElementById('act-count-user');
+  if(cClaude) cClaude.textContent=`(${ACTIVITIES.length})`;
+  if(cUser) cUser.textContent=`(${USER_ACTIVITIES.length})`;
+  let emptyMsg='Aucun résultat.';
+  if(actFilters.source==='user'&&USER_ACTIVITIES.length===0){
+    emptyMsg='💎 Aucune trouvaille pour l\'instant. Envoie-moi un lien, un nom ou une adresse et je l\'ajouterai ici !';
+  }
+  document.getElementById('act-list').innerHTML=items.length?items.map(a=>placeCard(a,'act')).join(''):`<div style="padding:20px;color:var(--muted);font-size:.85rem">${emptyMsg}</div>`;
+  document.getElementById('act-count').textContent=`${items.length} activité${items.length>1?'s':''} trouvée${items.length>1?'s':''} · ✓ ${vCountA}/${dataset.length} faites`;
 }
 
 function setActFilter(key,val,el){
   actFilters[key]=val;
-  if(key==='city'&&val!=='all'&&val!=='Tokyo'&&val!=='favs'&&val!=='visited'){
-    actFilters.neighborhood='all';
-    const nbhdFilter=document.getElementById('act-neighborhood-filter');
-    if(nbhdFilter){nbhdFilter.querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));nbhdFilter.querySelector('.city-pill').classList.add('active');}
+  if(key==='source'){
+    updateSourceTabs('activites');
+    applyActFilters();
+    return;
   }
-  el.closest('.city-tab').querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');
+  if(key==='city'){
+    actFilters.neighborhood='all';
+    renderNeighborhoodFilter('act');
+  }
+  if(el && el.closest('.city-tab')){
+    el.closest('.city-tab').querySelectorAll('.city-pill').forEach(p=>p.classList.remove('active'));
+    el.classList.add('active');
+  }
   applyActFilters();
 }
 
@@ -2674,6 +2801,8 @@ function deleteTiktok(i){
 // ═══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
   renderDays();
+  renderNeighborhoodFilter('food');
+  renderNeighborhoodFilter('act');
   applyFoodFilters();
   applyActFilters();
   renderExpenses();
