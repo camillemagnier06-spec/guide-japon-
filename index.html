@@ -373,6 +373,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
   <button class="nav-btn" data-tab="activites">⛩️ Activités</button>
   <button class="nav-btn" data-tab="transport">🚄 Transport</button>
   <button class="nav-btn" data-tab="budget">💴 Budget</button>
+  <button class="nav-btn" data-tab="conversion">💱 Conversion</button>
   <button class="nav-btn" data-tab="suggestions">✨ Suggestions</button>
   <button class="nav-btn" data-tab="checklist">✅ Checklist</button>
   <button class="nav-btn" data-tab="pratique">📱 Pratique</button>
@@ -1004,6 +1005,60 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
       <div style="font-size:.83rem"><strong>⛩️ Activités</strong><br><span style="color:var(--muted)">Temples/Jardins: 500–1000¥<br>TeamLab: 3200¥/p<br>DisneySea: 10 900¥/p<br>USJ: 10 400¥/p</span></div>
       <div style="font-size:.83rem"><strong>🚄 Transport</strong><br><span style="color:var(--muted)">Métro Tokyo: 200–400¥/trajet<br>Tokyo→Kyoto: ~14 000¥/p<br>Kyoto→Osaka: 560¥<br>Suica: 1500¥ départ</span></div>
     </div>
+  </div>
+</div>
+
+<!-- ===== CONVERSION ===== -->
+<div class="tab" id="tab-conversion">
+  <div class="section-title">💱 Convertisseur Yen ↔ Euro</div>
+
+  <!-- EXCHANGE RATE -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;flex-wrap:wrap">
+    <span style="font-size:.85rem;color:var(--muted)">💱 Taux de change :</span>
+    <span style="font-size:.85rem">1 € =</span>
+    <input id="conv-rate-input" type="number" value="160" min="100" max="300" step="1" style="background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:'Poppins',sans-serif;font-size:.9rem;width:80px" oninput="updateRateFromConv(this.value)">
+    <span style="font-size:.85rem">¥ japonais</span>
+    <span style="font-size:.75rem;color:var(--muted);margin-left:8px">Synchronisé avec l'onglet Budget · Vérifier sur Google avant le départ</span>
+  </div>
+
+  <div class="grid-2">
+    <!-- EUR → YEN -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🇪🇺</span> Euros → Yen</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+        <input id="conv-eur" type="number" placeholder="0" min="0" step="0.01" oninput="convertEurToYen(this.value)" style="flex:1;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-family:'Poppins',sans-serif;font-size:1.3rem;font-weight:600">
+        <span style="font-size:1.3rem;font-weight:700;color:var(--blue)">€</span>
+      </div>
+      <div style="text-align:center;font-size:1.4rem;color:var(--muted);margin:12px 0">↓</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div id="conv-yen-result" style="flex:1;background:rgba(244,208,63,.08);border:1px solid rgba(244,208,63,.3);border-radius:8px;padding:12px 14px;color:var(--gold);font-size:1.3rem;font-weight:700">0 ¥</div>
+        <span style="font-size:1.3rem;font-weight:700;color:var(--gold)">¥</span>
+      </div>
+    </div>
+
+    <!-- YEN → EUR -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🇯🇵</span> Yen → Euros</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+        <input id="conv-yen" type="number" placeholder="0" min="0" step="1" oninput="convertYenToEur(this.value)" style="flex:1;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-family:'Poppins',sans-serif;font-size:1.3rem;font-weight:600">
+        <span style="font-size:1.3rem;font-weight:700;color:var(--gold)">¥</span>
+      </div>
+      <div style="text-align:center;font-size:1.4rem;color:var(--muted);margin:12px 0">↓</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div id="conv-eur-result" style="flex:1;background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.3);border-radius:8px;padding:12px 14px;color:var(--blue);font-size:1.3rem;font-weight:700">0 €</div>
+        <span style="font-size:1.3rem;font-weight:700;color:var(--blue)">€</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK REFERENCE -->
+  <div class="card" style="margin-top:16px">
+    <div class="card-title" style="margin-bottom:14px">⚡ Conversions rapides</div>
+    <div class="grid-3" id="conv-quick-grid"></div>
+  </div>
+
+  <div style="background:rgba(244,208,63,.08);border:1px solid rgba(244,208,63,.3);border-radius:10px;padding:14px;margin-top:16px;font-size:.82rem;color:var(--gold)">
+    💡 <strong>Astuce mentale :</strong> au taux ~160¥, pour convertir des yen en euros rapidement, divise par 160 (ou retire un zéro et divise par 16). Ex : 1000¥ ≈ 6€ · 5000¥ ≈ 31€ · 10 000¥ ≈ 62€.
   </div>
 </div>
 
@@ -2559,6 +2614,55 @@ function updateRate(val){
   exchangeRate=parseFloat(val)||160;
   localStorage.setItem('jp_rate',exchangeRate);
   renderExpenses();
+  syncRateInputs();
+  refreshConversions();
+}
+
+// ─── Convertisseur Yen ↔ Euro ───
+function syncRateInputs(){
+  const a=document.getElementById('rate-input');
+  const b=document.getElementById('conv-rate-input');
+  if(a) a.value=exchangeRate;
+  if(b) b.value=exchangeRate;
+}
+function updateRateFromConv(val){
+  exchangeRate=parseFloat(val)||160;
+  localStorage.setItem('jp_rate',exchangeRate);
+  renderExpenses();
+  syncRateInputs();
+  refreshConversions();
+}
+function convertEurToYen(val){
+  const eur=parseFloat(val)||0;
+  const yen=Math.round(eur*exchangeRate);
+  const el=document.getElementById('conv-yen-result');
+  if(el) el.textContent=yen.toLocaleString('fr-FR')+' ¥';
+}
+function convertYenToEur(val){
+  const yen=parseFloat(val)||0;
+  const eur=yen/exchangeRate;
+  const el=document.getElementById('conv-eur-result');
+  if(el) el.textContent=eur.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+}
+function refreshConversions(){
+  const eurIn=document.getElementById('conv-eur');
+  const yenIn=document.getElementById('conv-yen');
+  if(eurIn) convertEurToYen(eurIn.value);
+  if(yenIn) convertYenToEur(yenIn.value);
+  renderQuickConv();
+}
+function renderQuickConv(){
+  const grid=document.getElementById('conv-quick-grid');
+  if(!grid) return;
+  const yenAmounts=[500,1000,3000,5000,10000,20000];
+  grid.innerHTML=yenAmounts.map(y=>{
+    const eur=(y/exchangeRate).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
+    return `<div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+      <div style="font-size:1.05rem;font-weight:700;color:var(--gold)">${y.toLocaleString('fr-FR')} ¥</div>
+      <div style="font-size:.75rem;color:var(--muted);margin:3px 0">≈</div>
+      <div style="font-size:1.05rem;font-weight:700;color:var(--blue)">${eur} €</div>
+    </div>`;
+  }).join('');
 }
 
 function updateBudgetChart(bycat,total){
@@ -2816,8 +2920,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   loadDocs();
   updateFestivalCountdown();
   renderPlanDayGrid();
-  const rateEl=document.getElementById('rate-input');
-  if(rateEl) rateEl.value=exchangeRate;
+  syncRateInputs();
+  renderQuickConv();
 });
 </script>
 </body>
